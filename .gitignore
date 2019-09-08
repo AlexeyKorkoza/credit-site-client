@@ -1,0 +1,35 @@
+# Project
+.idea/
+.vscode/
+node_modules/
+config/local.json
+*/config/local.json
+yarn.lock*
+src/public
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS X
+.DS_Store*
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache

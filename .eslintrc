@@ -1,0 +1,27 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {
+    "API_URL": true,
+    "Headers": true,
+    "document": true,
+    "fetch": true,
+    "localStorage": true,
+    "window": true
+  },
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ]
+}
