@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const rimraf = require('rimraf');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const config = require('config');
 const path = require('path');
 
@@ -27,6 +28,10 @@ const plugins = [
         NODE_ENV: JSON.stringify(environment),
         API_URL: JSON.stringify(`${apiUrl}`),
     }),
+    new HtmlWebPackPlugin({
+        template: path.resolve( __dirname, 'public/index.html'),
+        filename: 'index.html'
+    })
 ];
 
 const optimization = {};
@@ -46,12 +51,12 @@ if (environment === 'production') {
 
 module.exports = [
     {
-        context: path.join(__dirname, '/src'),
-        entry: './index.jsx',
+        context: __dirname,
+        entry: "./src/index.jsx",
         output: {
-            path: path.join(__dirname, './../src/public/build'),
-            publicPath: '/public/build/',
             filename: 'app.js',
+            path: path.resolve(__dirname, 'dist'),
+            publicPath: '/',
         },
         optimization,
         plugins,
@@ -85,7 +90,7 @@ module.exports = [
                 {
                     test: /\.html$/,
                     use: {
-                        loader: 'raw',
+                        loader: 'raw-loader',
                     },
                     exclude: /node_modules/,
                 },
@@ -113,6 +118,9 @@ module.exports = [
         },
         resolve: {
             extensions: ['*', '.js', '.jsx'],
+        },
+        devServer: {
+            historyApiFallback: true,
         },
     },
 ];
