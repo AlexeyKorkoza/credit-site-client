@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import uuid4 from 'uuid/v4';
 
 import Sidebar from './styles';
 import {
@@ -13,24 +14,28 @@ import {
 
 const sidebarItems = [
     {
+        key: uuid4(),
         link: '/clients',
         label: 'Clients',
         icon: Client,
         roles: ['admin', 'manager'],
     },
     {
+        key: uuid4(),
         link: '/loans',
         label: 'Loans',
         icon: Loan,
         roles: ['admin'],
     },
     {
+        key: uuid4(),
         link: '/managers',
         label: 'Managers',
         icon: Manager,
         roles: ['admin'],
     },
     {
+        key: uuid4(),
         link: '/profile',
         label: 'Profile',
         icon: Profile,
@@ -50,11 +55,11 @@ const SidebarComponent = props => {
           <Sidebar.Navigation>
             {sidebarItems
                 .filter(e => e.roles.includes(role))
-                .map((item, index) => {
-                  const { icon: Icon } = item;
+                .map(item => {
+                  const { key, icon: Icon } = item;
 
                   return (
-                    <Sidebar.Navigation.Item key={index.toString()}>
+                    <Sidebar.Navigation.Item key={key}>
                       <Link to={item.link}>
                         <Icon />
                       </Link>
