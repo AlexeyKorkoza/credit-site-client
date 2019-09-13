@@ -36,7 +36,8 @@
     "react-with-styles": "^3.2.3",
     "rxjs": "^6.5.2",
     "simple-react-validator": "^1.0.7",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
