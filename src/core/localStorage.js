@@ -3,15 +3,13 @@
  * @param isJson
  */
 const getItem = (key, isJson = false) => {
-    const data = localStorage.getItem(key);
+  const data = localStorage.getItem(key);
 
-    if (!data) {
-        return null;
-    }
+  if (!data) {
+    return null;
+  }
 
-    return isJson
-        ? JSON.parse(data)
-        : data;
+  return isJson ? JSON.parse(data) : data;
 };
 
 /**
@@ -20,22 +18,18 @@ const getItem = (key, isJson = false) => {
  * @param isJson
  */
 const setItem = (key, data, isJson = false) => {
-    localStorage.setItem(key,
-        isJson
-            ? JSON.stringify(data)
-            : data
-    );
+  localStorage.setItem(key, isJson ? JSON.stringify(data) : data);
 };
 
 /**
  * @param key
  */
 const removeItem = key => {
-    localStorage.removeItem(key);
+  localStorage.removeItem(key);
 };
 
 export default {
-    getItem,
-    setItem,
-    removeItem,
+  getItem,
+  setItem,
+  removeItem,
 };

@@ -10,127 +10,117 @@ import { localDb, notification } from '../../services';
 import { Validator } from '../../shared';
 
 class Authentication extends Component {
-    notificationDOMRef = React.createRef();
-    validator = new SimpleReactValidator({
-        element: message => <Validator>{message}</Validator>
+  notificationDOMRef = React.createRef();
+  validator = new SimpleReactValidator({
+    element: message => <Validator>{message}</Validator>,
+  });
+
+  state = {
+    login: '',
+    password: '',
+    selectedRole: null,
+    roles: [
+      {
+        label: 'admin',
+        value: 'admin',
+      },
+      {
+        label: 'manager',
+        value: 'manager',
+      },
+    ],
+    isActiveModal: false,
+    notificationType: 'Sign In',
+  };
+
+  static propTypes = {
+    history: ReactRouterPropTypes.history.isRequired,
+  };
+
+  componentDidMount() {
+    this.isAuthUser();
+  }
+
+  onInputChange = e => {
+    const target = e.target;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: value,
     });
+  };
 
-    state = {
-        login: '',
-        password: '',
-        selectedRole: null,
-        roles: [
-            {
-                label: 'admin',
-                value: 'admin',
-            },
-            {
-                label: 'manager',
-                value: 'manager',
-            },
-        ],
-        isActiveModal: false,
-        notificationType: "Sign In"
-    };
+  onSelectChange = selectedRole => {
+    this.setState({
+      selectedRole,
+    });
+  };
 
-    static propTypes = {
-        history: ReactRouterPropTypes.history.isRequired,
-    };
+  onSubmit = event => {
+    event.preventDefault();
 
-    componentDidMount() {
-        this.isAuthUser();
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+
+      return;
     }
 
-    onInputChange = e => {
-        const target = e.target;
-        const { value, name } = target;
+    const { login, notificationType, password, selectedRole } = this.state;
+    const { value: role } = selectedRole;
 
-        this.setState({
-            [name]: value,
-        });
+    const data = {
+      login,
+      password,
+      role,
     };
 
-    onSelectChange = selectedRole => {
-        this.setState({
-            selectedRole,
-        });
-    };
+    authentication
+      .logIn(data)
+      .then(result => {
+        localDb.authUser(result);
 
-    onSubmit = event => {
-        event.preventDefault();
-
-        if (!this.validator.allValid()) {
-            this.validator.showMessages();
-
-            return;
+        const { history } = this.props;
+        history.push('/profile');
+      })
+      .catch(error => {
+        const { message } = error;
+        const builtNotification = notification.buildNotification(message, notificationType);
+        if (builtNotification) {
+          this.notificationDOMRef.current.addNotification(builtNotification);
         }
+      });
+  };
 
-        const {
-            login,
-            notificationType,
-            password,
-            selectedRole,
-        } = this.state;
-        const { value: role } = selectedRole;
+  isAuthUser = () => {
+    const data = localDb.getDataAuthUser();
 
-        const data = {
-            login,
-            password,
-            role,
-        };
-
-        authentication.logIn(data)
-            .then(result => {
-                localDb.authUser(result);
-
-                const { history } = this.props;
-                history.push('/profile');
-            })
-            .catch(error => {
-                const { message } = error;
-                const builtNotification = notification.buildNotification(message, notificationType);
-                if (builtNotification) {
-                    this.notificationDOMRef.current.addNotification(builtNotification);
-                }
-            });
-    };
-
-    isAuthUser = () => {
-        const data = localDb.getDataAuthUser();
-
-        if (!data) {
-            this.setState({
-                isActiveModal: true,
-            });
-        }
-    };
-
-    render() {
-        const {
-            login,
-            password,
-            selectedRole,
-            roles,
-            isActiveModal,
-        } = this.state;
-
-        return (
-          <Fragment>
-            <ReactNotification ref={this.notificationDOMRef} />
-            <AuthenticationForm
-              login={login}
-              password={password}
-              selectedRole={selectedRole}
-              roles={roles}
-              onInputChange={this.onInputChange}
-              onSelectChange={this.onSelectChange}
-              onSubmit={this.onSubmit}
-              isActiveModal={isActiveModal}
-              validator={this.validator}
-            />
-          </Fragment>
-        );
+    if (!data) {
+      this.setState({
+        isActiveModal: true,
+      });
     }
+  };
+
+  render() {
+    const { login, password, selectedRole, roles, isActiveModal } = this.state;
+
+    return (
+      <Fragment>
+        <ReactNotification ref={this.notificationDOMRef} />
+        <AuthenticationForm
+          login={login}
+          password={password}
+          selectedRole={selectedRole}
+          roles={roles}
+          onInputChange={this.onInputChange}
+          onSelectChange={this.onSelectChange}
+          onSubmit={this.onSubmit}
+          isActiveModal={isActiveModal}
+          validator={this.validator}
+        />
+      </Fragment>
+    );
+  }
 }
 
 export default withRouter(Authentication);

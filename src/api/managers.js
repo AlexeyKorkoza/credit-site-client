@@ -5,8 +5,7 @@ import fetch from './fetch';
  * @return {Promise<any | void>}
  */
 const blockManager = id => {
-    return fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', {})
-        .catch(err => console.error(err.message, 'blockManager'));
+  return fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', {});
 };
 
 /**
@@ -14,8 +13,7 @@ const blockManager = id => {
  * @return {Promise<any | void>}
  */
 const getManager = id => {
-    return fetch(`${API_URL}/api/v1/managers/${id}`, 'get')
-        .catch(err => console.error(err.message, 'getManagers'));
+  return fetch(`${API_URL}/api/v1/managers/${id}`, 'get');
 };
 
 /**
@@ -23,13 +21,11 @@ const getManager = id => {
  * @return {Promise<any | void>}
  */
 const getManagerClients = id => {
-    return fetch(`${API_URL}/api/v1/managers/${id}/clients`, 'get')
-        .catch(err => console.error(err.message, 'getManagerClients'));
+  return fetch(`${API_URL}/api/v1/managers/${id}/clients`, 'get');
 };
 
 const getManagers = () => {
-    return fetch(`${API_URL}/api/v1/managers`, 'get')
-        .catch(err => console.error(err.message, 'getManagers'));
+  return fetch(`${API_URL}/api/v1/managers`, 'get');
 };
 
 /**
@@ -39,18 +35,16 @@ const getManagers = () => {
  */
 const saveManager = (body, id = null) => {
   if (id) {
-      return fetch(`${API_URL}/api/v1/managers/${id}/update-profile`, 'put', body)
-          .catch(err => console.error(err.message, 'updateManager'));
+    return fetch(`${API_URL}/api/v1/managers/${id}/update-profile`, 'put', body);
   }
 
-  return fetch(`${API_URL}/api/v1/managers`, 'post', body)
-      .catch(err => console.error(err.message, 'saveManager'));
+  return fetch(`${API_URL}/api/v1/managers`, 'post', body);
 };
 
 export default {
-    blockManager,
-    getManager,
-    getManagerClients,
-    getManagers,
-    saveManager,
+  blockManager,
+  getManager,
+  getManagerClients,
+  getManagers,
+  saveManager,
 };
