@@ -11,14 +11,13 @@ const currentUserSubject = new BehaviorSubject(localStorage.getItem('user', true
  * @return {Promise<any | void | never>}
  */
 const logIn = body => {
-    const url = `${API_URL}/auth/login`;
+  const url = `${API_URL}/auth/login`;
 
-    return fetch(url, 'post', body)
-        .then(result => {
-            currentUserSubject.next(result);
+  return fetch(url, 'post', body).then(result => {
+    currentUserSubject.next(result);
 
-            return result;
-        });
+    return result;
+  });
 };
 
 /**
@@ -26,18 +25,16 @@ const logIn = body => {
  */
 // TODO remove item data from localstorage
 const logOut = () => {
-    const url = `${API_URL}/auth/logout`;
+  const url = `${API_URL}/auth/logout`;
 
-    return fetch(url, 'get')
-        .then(() => {
-            localDb.logoutUser('key');
-            currentUserSubject.next({});
-        })
-        .catch(err => console.error(err.message, 'logOut'));
+  return fetch(url, 'get').then(() => {
+    localDb.logoutUser('key');
+    currentUserSubject.next({});
+  });
 };
 
 export default {
-    currentUserSubject,
-    logIn,
-    logOut,
+  currentUserSubject,
+  logIn,
+  logOut,
 };

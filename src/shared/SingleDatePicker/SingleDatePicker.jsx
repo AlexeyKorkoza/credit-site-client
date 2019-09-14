@@ -7,15 +7,15 @@ const Wrapper = styled.div`
     border: none;
     background: none;
   }
-  
+
   .CalendarDay {
     transition: all 100ms linear;
   }
-  
+
   .DateInput {
     width: 175px;
   }
-  
+
   .DateInput_input {
     width: 80%;
     padding: 5px 11px;
@@ -25,11 +25,11 @@ const Wrapper = styled.div`
 `;
 
 const singleDatePicker = props => {
-    return (
-      <Wrapper>
-        <SingleDatePicker {...props} />
-      </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <SingleDatePicker {...props} />
+    </Wrapper>
+  );
 };
 
 export default singleDatePicker;

@@ -2,7 +2,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 const Page = styled.div`
   display: flex;
-  background: #6B5B95;
+  background: #6b5b95;
   margin-left: 70px;
 `;
 
@@ -156,7 +156,4 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export {
-    GlobalStyle,
-    Page,
-};
+export { GlobalStyle, Page };

@@ -15,6 +15,6 @@ const compareDates = (start, end) => !!moment(end).isAfter(start, 'days');
 const subtractDates = (start, end) => moment(end).diff(start, 'days');
 
 export default {
-    compareDates,
-    subtractDates,
-}
+  compareDates,
+  subtractDates,
+};

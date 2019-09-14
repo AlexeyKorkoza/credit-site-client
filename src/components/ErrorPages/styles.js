@@ -71,81 +71,81 @@ const colordancing2 = keyframes`
 `;
 
 export const ErrorContainer = styled.section`
-    text-align: center;
-    font-size: 180px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    
-    > span {
-      display: inline-block;
-      line-height: 0.7;
-      position: relative;
-      color: #FFB485;
-      vertical-align: middle;
-    }
-    
-    > span:nth-of-type(1) {
-      color: #D1F2A5;
-      animation: ${colordancing} 4s infinite;
-    }
-        
-    > span:nth-last-of-type(3) {
-      color: #F56991;
-      animation: ${colordancing2} 4s infinite;
-    }
-    
-    > span:nth-of-type(2) {
+  text-align: center;
+  font-size: 180px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+
+  > span {
+    display: inline-block;
+    line-height: 0.7;
+    position: relative;
+    color: #ffb485;
+    vertical-align: middle;
+  }
+
+  > span:nth-of-type(1) {
+    color: #d1f2a5;
+    animation: ${colordancing} 4s infinite;
+  }
+
+  > span:nth-last-of-type(3) {
+    color: #f56991;
+    animation: ${colordancing2} 4s infinite;
+  }
+
+  > span:nth-of-type(2) {
     width: 120px;
     height: 120px;
     border-radius: 999px;
-    
-      &:before,
-      &:after {
-        border-radius: 0%;
-      content:"";
-    position: absolute;
-    top: 0; left: 0;
-    width: inherit; height: inherit;
-    border-radius: 999px;
-    box-shadow: inset 30px 0 0 rgba(209, 242, 165, 0.4),
-        inset 0 30px 0 rgba(239, 250, 180, 0.4),
-    inset -30px 0 0 rgba(255, 196, 140, 0.4),
-        inset 0 -30px 0 rgba(245, 105, 145, 0.4);
-    animation: ${shadowsdancing} 4s infinite;
-      }
-      
-      &:before {
-         -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    transform: rotate(45deg);
-      }
+
+    &:before,
+    &:after {
+      border-radius: 0%;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: inherit;
+      height: inherit;
+      border-radius: 999px;
+      box-shadow: inset 30px 0 0 rgba(209, 242, 165, 0.4), inset 0 30px 0 rgba(239, 250, 180, 0.4),
+        inset -30px 0 0 rgba(255, 196, 140, 0.4), inset 0 -30px 0 rgba(245, 105, 145, 0.4);
+      animation: ${shadowsdancing} 4s infinite;
     }
+
+    &:before {
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
 `;
 
 export const ScreenReaderText = styled.span`
-position: absolute;
-    top: -9999em;
-    left: -9999em;
+  position: absolute;
+  top: -9999em;
+  left: -9999em;
 `;
 
 export const ProfileLink = styled(Link)`
-    text-transform: uppercase;
-    font-size: 13px;
-    background-color: #92a4ad;
-    padding: 10px 15px;
-    border-radius: 0;
-    color: #416475;
-    display: inline-block;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    line-height: 1.5;
-    text-decoration: none;
-    margin-top: 50px;
-    letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 13px;
+  background-color: #92a4ad;
+  padding: 10px 15px;
+  border-radius: 0;
+  color: #416475;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  line-height: 1.5;
+  text-decoration: none;
+  margin-top: 50px;
+  letter-spacing: 1px;
 `;
 
 export const LinkContainer = styled.div`
-   text-align: center;
+  text-align: center;
 `;
 
 export const Wrapper = styled.div`
