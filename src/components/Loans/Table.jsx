@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import uuid4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import { H1, Table } from '../../shared';
 import List from './styles';
@@ -9,23 +9,23 @@ import List from './styles';
 const headers = [
   {
     content: 'Amount',
-    key: uuid4(),
+    key: uuidv4(),
   },
   {
     content: 'Coefficient',
-    key: uuid4(),
+    key: uuidv4(),
   },
   {
     content: 'Date Issue',
-    key: uuid4(),
+    key: uuidv4(),
   },
   {
     content: 'Date Maturity',
-    key: uuid4(),
+    key: uuidv4(),
   },
   {
     content: 'Total Repayment Amount',
-    key: uuid4(),
+    key: uuidv4(),
   },
 ];
 

@@ -1,35 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import uuid4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import Sidebar from './styles';
 import { Client, Loan, Logout, Manager, Profile } from './icons';
 
 const sidebarItems = [
   {
-    key: uuid4(),
+    key: uuidv4(),
     link: '/clients',
     label: 'Clients',
     icon: Client,
     roles: ['admin', 'manager'],
   },
   {
-    key: uuid4(),
+    key: uuidv4(),
     link: '/loans',
     label: 'Loans',
     icon: Loan,
     roles: ['admin'],
   },
   {
-    key: uuid4(),
+    key: uuidv4(),
     link: '/managers',
     label: 'Managers',
     icon: Manager,
     roles: ['admin'],
   },
   {
-    key: uuid4(),
+    key: uuidv4(),
     link: '/profile',
     label: 'Profile',
     icon: Profile,

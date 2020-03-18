@@ -7,16 +7,7 @@ import { Forbidden } from '../components/ErrorPages';
 
 const accessRoles = ['admin', 'manager'];
 
-const PrivateRouter = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      localDb.getDataAuthUser() ? <Component {...props} /> : <Redirect to="/auth" />
-    }
-  />
-);
-
-const PrivateRouterRole = ({ component: Component, accessRole, ...rest }) => {
+const AuthRoleRoute = ({ component: Component, accessRole, ...rest }) => {
   const isAccess = accessRoles.includes(accessRole);
 
   if (!isAccess) {
@@ -32,27 +23,13 @@ const PrivateRouterRole = ({ component: Component, accessRole, ...rest }) => {
 
   return <Route {...rest} render={props => <Component {...props} />} />;
 };
-
-PrivateRouter.defaultProps = {
-  component: PropTypes.func,
-  rest: null,
-};
-
-PrivateRouter.propTypes = {
-  component: PropTypes.func,
-  rest: PropTypes.shape({
-    exact: PropTypes.bool,
-    path: PropTypes.string,
-  }),
-};
-
-PrivateRouterRole.defaultProps = {
+AuthRoleRoute.defaultProps = {
   accessRole: PropTypes.string,
   component: PropTypes.func,
   rest: null,
 };
 
-PrivateRouterRole.propTypes = {
+AuthRoleRoute.propTypes = {
   accessRole: PropTypes.string,
   component: PropTypes.func,
   rest: PropTypes.shape({
@@ -61,7 +38,4 @@ PrivateRouterRole.propTypes = {
   }),
 };
 
-export default {
-  PrivateRouter,
-  PrivateRouterRole,
-};
+export default AuthRoleRoute;

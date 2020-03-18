@@ -1,105 +1,95 @@
-import React, { Component, Fragment } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 import { GlobalStyle, Page } from './styles';
-import { Authentication, Clients, Loans, Managers, Profile } from '../containers';
-import Private from '../routing';
+import {
+  Authentication, Clients, Loans, Managers, Profile,
+} from '../containers';
+import { AuthRoleRoute, AuthRoute } from '../routing';
 import { authentication } from '../api';
 import Sidebar from './Sidebar';
 import { NoMatch } from './ErrorPages';
 
-class App extends Component {
-  state = {
-    role: '',
-  };
+const App = () => {
+  const [role, setRole] = useState('');
+  const history = useHistory();
 
-  static propTypes = {
-    history: ReactRouterPropTypes.history.isRequired,
-  };
-
-  componentDidMount() {
-    authentication.currentUserSubject.subscribe(result => {
-      if (!result) {
-        this.setState({ role: '' });
-
-        return;
+  useEffect(() => {
+    authentication.currentUserSubject.subscribe((result) => {
+      if (result) {
+        setRole({ role: result.role });
       }
-
-      const { role } = result;
-      this.setState({ role });
     });
-  }
 
-  onLogOut = () => {
+    return function cleanup() {
+      authentication.currentUserSubject.unsubscribe();
+    };
+  });
+
+  const onLogOut = useCallback(() => {
     authentication.logOut().then(() => {
-      const { history } = this.props;
       history.push('/auth');
     });
-  };
+  }, []);
 
-  render() {
-    const { role } = this.state;
+  return (
+    <>
+      {role && <Sidebar onLogOut={onLogOut} role={role} />}
+      <Page>
+        <GlobalStyle />
+        <Switch>
+          <Route path="/auth" component={Authentication} />
+          <AuthRoute exact path="/" component={App} />
+          <AuthRoute exact path="/profile" component={Profile} />
+          <AuthRoleRoute
+            accessRole="admin"
+            exact
+            path="/managers"
+            component={Managers.List}
+          />
+          <AuthRoleRoute
+            accessRole="admin"
+            exact
+            path="/managers/add"
+            component={Managers.Editor}
+          />
+          <AuthRoleRoute
+            accessRole="admin"
+            exact
+            path="/managers/:id"
+            component={Managers.Editor}
+          />
+          <AuthRoute exact path="/clients" component={Clients.List} />
+          <AuthRoleRoute
+            accessRole="manager"
+            exact
+            path="/clients/add"
+            component={Clients.Editor}
+          />
+          <AuthRoute exact path="/clients/:id" component={Clients.Editor} />
+          <AuthRoleRoute
+            accessRole="admin"
+            exact
+            path="/loans"
+            component={Loans.List}
+          />
+          <AuthRoleRoute
+            accessRole="manager"
+            exact
+            path="/loans/add"
+            component={Loans.Add}
+          />
+          <AuthRoleRoute
+            accessRole="admin"
+            exact
+            path="/loans/:id"
+            component={Loans.Editor}
+          />
+          <Route component={NoMatch} />
+        </Switch>
+      </Page>
+    </>
+  );
+};
 
-    return (
-      <Fragment>
-        {role && <Sidebar onLogOut={this.onLogOut} role={role} />}
-        <Page>
-          <GlobalStyle />
-          <Switch>
-            <Route path="/auth" component={Authentication} />
-            <Private.PrivateRouter exact path="/" component={App} />
-            <Private.PrivateRouter exact path="/profile" component={Profile} />
-            <Private.PrivateRouterRole
-              accessRole="admin"
-              exact
-              path="/managers"
-              component={Managers.List}
-            />
-            <Private.PrivateRouterRole
-              accessRole="admin"
-              exact
-              path="/managers/add"
-              component={Managers.Editor}
-            />
-            <Private.PrivateRouterRole
-              accessRole="admin"
-              exact
-              path="/managers/:id"
-              component={Managers.Editor}
-            />
-            <Private.PrivateRouter exact path="/clients" component={Clients.List} />
-            <Private.PrivateRouterRole
-              accessRole="manager"
-              exact
-              path="/clients/add"
-              component={Clients.Editor}
-            />
-            <Private.PrivateRouter exact path="/clients/:id" component={Clients.Editor} />
-            <Private.PrivateRouterRole
-              accessRole="admin"
-              exact
-              path="/loans"
-              component={Loans.List}
-            />
-            <Private.PrivateRouterRole
-              accessRole="manager"
-              exact
-              path="/loans/add"
-              component={Loans.Add}
-            />
-            <Private.PrivateRouterRole
-              accessRole="admin"
-              exact
-              path="/loans/:id"
-              component={Loans.Editor}
-            />
-            <Route component={NoMatch} />
-          </Switch>
-        </Page>
-      </Fragment>
-    );
-  }
-}
-
-export default withRouter(App);
+export default App;
