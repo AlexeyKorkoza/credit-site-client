@@ -1,8 +1,8 @@
 import fetch from './fetch';
 
 const routes = {
-    'admin': '/admins',
-    'manager': '/managers',
+  admin: '/admins',
+  manager: '/managers',
 };
 
 /**
@@ -11,14 +11,13 @@ const routes = {
  * @return {Promise<any | Response>|null}
  */
 const getProfileUser = (role, id) => {
-    if (!role) {
-        return null;
-    }
+  if (!role) {
+    return null;
+  }
 
-    const route = routes[role];
+  const route = routes[role];
 
-    return fetch(`${API_URL}/api/v1${route}/${id}`, 'get')
-        .catch(err => console.error(err.message, 'getProfileUser'));
+  return fetch(`${API_URL}/api/v1${route}/${id}`, 'get');
 };
 
 /**
@@ -28,14 +27,13 @@ const getProfileUser = (role, id) => {
  * @return {Promise<any | Response>|null}
  */
 const updateProfileUser = (role, id, body) => {
-    if (!role) {
-        return null;
-    }
+  if (!role) {
+    return null;
+  }
 
-    const route = routes[role];
+  const route = routes[role];
 
-    return fetch(`${API_URL}/api/v1${route}/${id}`, 'put', body)
-        .catch(err => console.error(err.message, 'updateProfileUser'));
+  return fetch(`${API_URL}/api/v1${route}/${id}`, 'put', body);
 };
 
 /**
@@ -45,20 +43,17 @@ const updateProfileUser = (role, id, body) => {
  * @return {Promise<any | Response>|null}
  */
 const updatePasswordsProfileUser = (role, id, body) => {
-    if (!role) {
-        return null;
-    }
+  if (!role) {
+    return null;
+  }
 
-    const route = routes[role];
+  const route = routes[role];
 
-    return fetch(`${API_URL}/api/v1${route}/${id}/change-password`, 'put', body)
-        .catch(err => {
-            throw new Error(err.message);
-        });
+  return fetch(`${API_URL}/api/v1${route}/${id}/change-password`, 'put', body);
 };
 
 export default {
-    getProfileUser,
-    updateProfileUser,
-    updatePasswordsProfileUser,
-}
+  getProfileUser,
+  updateProfileUser,
+  updatePasswordsProfileUser,
+};

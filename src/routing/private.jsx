@@ -11,68 +11,57 @@ const PrivateRouter = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-            localDb.getDataAuthUser()
-                ? <Component {...props} />
-                : <Redirect to="/auth" />
-        }
+      localDb.getDataAuthUser() ? <Component {...props} /> : <Redirect to="/auth" />
+    }
   />
 );
 
 const PrivateRouterRole = ({ component: Component, accessRole, ...rest }) => {
-    const isAccess = accessRoles.includes(accessRole);
+  const isAccess = accessRoles.includes(accessRole);
 
-    if (!isAccess) {
-        return (
-          <Redirect to='/profile' />
-        );
-    }
+  if (!isAccess) {
+    return <Redirect to="/profile" />;
+  }
 
-    const { role: userRole } = localDb.getDataAuthUser();
-    const isCompare = accessRole === userRole;
+  const { role: userRole } = localDb.getDataAuthUser();
+  const isCompare = accessRole === userRole;
 
-    if (!isCompare) {
-        return (
-          <Forbidden />
-        );
-    }
+  if (!isCompare) {
+    return <Forbidden />;
+  }
 
-    return (
-      <Route
-        {...rest}
-        render={props => <Component {...props} />}
-      />
-    );
+  return <Route {...rest} render={props => <Component {...props} />} />;
 };
 
 PrivateRouter.defaultProps = {
-    component: PropTypes.func,
-    rest: null,
+  component: PropTypes.func,
+  rest: null,
 };
 
 PrivateRouter.propTypes = {
-    component: PropTypes.func,
-    rest: PropTypes.shape({
-        exact: PropTypes.bool,
-        path: PropTypes.string,
-    }),
+  component: PropTypes.func,
+  rest: PropTypes.shape({
+    exact: PropTypes.bool,
+    path: PropTypes.string,
+  }),
 };
 
 PrivateRouterRole.defaultProps = {
-    accessRole: PropTypes.string,
-    component: PropTypes.func,
-    rest: null,
+  accessRole: PropTypes.string,
+  component: PropTypes.func,
+  rest: null,
 };
 
 PrivateRouterRole.propTypes = {
-    accessRole: PropTypes.string,
-    component: PropTypes.func,
-    rest: PropTypes.shape({
-        exact: PropTypes.bool,
-        path: PropTypes.string,
-    }),
+  accessRole: PropTypes.string,
+  component: PropTypes.func,
+  rest: PropTypes.shape({
+    exact: PropTypes.bool,
+    path: PropTypes.string,
+  }),
 };
 
 export default {
-    PrivateRouter,
-    PrivateRouterRole,
-}
+  PrivateRouter,
+  PrivateRouterRole,
+};

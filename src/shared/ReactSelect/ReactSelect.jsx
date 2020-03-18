@@ -5,11 +5,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div``;
 
 const reactSelect = props => {
-    return (
-      <Wrapper>
-        <ReactSelect {...props} />
-      </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <ReactSelect {...props} />
+    </Wrapper>
+  );
 };
 
 export default reactSelect;

@@ -6,43 +6,36 @@ import { loans } from '../../api';
 import { List } from '../../components/Loans';
 import { localDb } from '../../services';
 
-class LoansList extends Component{
-    state = {
-        loans: [],
-        role: null,
-    };
+class LoansList extends Component {
+  state = {
+    loans: [],
+    role: null,
+  };
 
-    static propTypes = {
-        history: ReactRouterPropTypes.history.isRequired,
-    };
+  static propTypes = {
+    history: ReactRouterPropTypes.history.isRequired,
+  };
 
-    componentDidMount() {
-        const { role } = localDb.getDataAuthUser();
+  componentDidMount() {
+    const { role } = localDb.getDataAuthUser();
 
-        if (role === 'manager') {
-            const { history } = this.props;
-            history.push('/loans/add');
+    if (role === 'manager') {
+      const { history } = this.props;
+      history.push('/loans/add');
 
-            return;
-        }
-
-        loans.getAllLoans()
-            .then(result => {
-
-                this.setState({ loans: result.loans, role });
-            });
+      return;
     }
 
-    render() {
-        const { loans, role } = this.state;
+    loans.getAllLoans().then(result => {
+      this.setState({ loans: result.loans, role });
+    });
+  }
 
-        return (
-          <List
-            loans={loans}
-            role={role}
-          />
-        )
-    }
+  render() {
+    const { loans, role } = this.state;
+
+    return <List loans={loans} role={role} />;
+  }
 }
 
 export default withRouter(LoansList);

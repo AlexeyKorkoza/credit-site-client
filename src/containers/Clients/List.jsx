@@ -6,33 +6,25 @@ import { clients, managers } from '../../api';
 import { localDb } from '../../services';
 
 class ClientsList extends Component {
-    state = {
-        clients: [],
-        role: '',
-    };
+  state = {
+    clients: [],
+    role: '',
+  };
 
-    componentDidMount() {
-        const { role, id: managerId } = localDb.getDataAuthUser();
-        const func = role === 'manager'
-            ? managers.getManagerClients
-            : clients.getAllClients;
+  componentDidMount() {
+    const { role, id: managerId } = localDb.getDataAuthUser();
+    const func = role === 'manager' ? managers.getManagerClients : clients.getAllClients;
 
-        func(managerId)
-            .then(result => {
-                this.setState({ clients: result.clients, role });
-            });
-    }
+    func(managerId).then(result => {
+      this.setState({ clients: result.clients, role });
+    });
+  }
 
-    render() {
-        const { clients, role } = this.state;
+  render() {
+    const { clients, role } = this.state;
 
-        return (
-          <List
-            clients={clients}
-            role={role}
-          />
-        )
-    }
+    return <List clients={clients} role={role} />;
+  }
 }
 
 export default withRouter(ClientsList);
