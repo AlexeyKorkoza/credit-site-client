@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const rimraf = require('rimraf');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
@@ -14,11 +13,6 @@ const {
 
 const environment = config.app.env || 'development';
 const plugins = [
-    {
-        apply: compiler => {
-            rimraf.sync(compiler.options.output.path);
-        },
-    },
     new MiniCssExtractPlugin({
         filename: 'app.css',
         allChunks: true
@@ -31,7 +25,8 @@ const plugins = [
     new HtmlWebPackPlugin({
         template: path.resolve( __dirname, 'public/index.html'),
         filename: 'index.html'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin(),
 ];
 
 const optimization = {};
@@ -55,8 +50,7 @@ module.exports = [
         entry: "./src/index.jsx",
         output: {
             filename: 'app.js',
-            path: path.resolve(__dirname, 'dist'),
-            publicPath: '/',
+            path: path.resolve(__dirname, 'public'),
         },
         optimization,
         plugins,
@@ -67,7 +61,7 @@ module.exports = [
                     use: ["style-loader", "css-loader"],
                 },
                 {
-                    test: /\.jsx?$/,
+                    test: /\.(js|jsx)$/,
                     exclude: /(node_modules)/,
                     use: {
                         loader: 'babel-loader',
@@ -90,7 +84,7 @@ module.exports = [
                 {
                     test: /\.html$/,
                     use: {
-                        loader: 'raw-loader',
+                        loader: 'html-loader',
                     },
                     exclude: /node_modules/,
                 },
@@ -121,6 +115,10 @@ module.exports = [
         },
         devServer: {
             historyApiFallback: true,
+            contentBase: path.join(__dirname, 'public'),
+            hot: true,
+            port: 3000,
+            compress: true,
         },
     },
 ];

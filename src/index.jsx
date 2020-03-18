@@ -14,3 +14,5 @@ const Root = () => (
 );
 
 render(<Root />, document.getElementById('root'));
+
+module.hot.accept();
