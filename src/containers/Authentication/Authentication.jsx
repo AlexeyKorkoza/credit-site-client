@@ -10,6 +10,8 @@ import { localDb, notification } from '../../services';
 import { Validator } from '../../shared';
 
 class Authentication extends Component {
+    isMounted = false;
+
     notificationDOMRef = React.createRef();
     validator = new SimpleReactValidator({
         element: message => <Validator>{message}</Validator>
@@ -38,7 +40,14 @@ class Authentication extends Component {
     };
 
     componentDidMount() {
-        this.isAuthUser();
+        this.isMounted = true;
+        if (this.isMounted) {
+            this.isAuthUser();
+        }
+    }
+
+    componentWillUnmount() {
+        this.isMounted = false;
     }
 
     onInputChange = e => {
