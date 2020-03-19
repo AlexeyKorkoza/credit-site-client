@@ -19,23 +19,4 @@ Modal.Container = styled.div`
   height: 100%;
 `;
 
-Modal.Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  background-color: #212941;
-  margin: 0 auto;
-  padding: 20px;
-  width: 40%;
-  height: 300px;
-  border-radius: 5px;
-`;
-
-Modal.Item = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
 export default Modal;

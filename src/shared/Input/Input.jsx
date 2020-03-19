@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledInput = styled.input.attrs(({ type, name }) => ({
@@ -11,8 +12,25 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
   border: none;
 `;
 
-const Input = props => {
-  return <StyledInput {...props} />;
+const Input = ({ register, type, name, placeholder = '' }) => (
+  <StyledInput name={name} placeholder={placeholder} type={type} ref={register} />
+);
+
+Input.defaultProps = {
+  type: '',
+  name: '',
+  placeholder: '',
+  register: PropTypes.any,
+};
+
+Input.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  register: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType }),
+  ]),
 };
 
 export default Input;

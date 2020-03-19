@@ -46,6 +46,7 @@ if (environment === 'production') {
 
 module.exports = [
     {
+        devtool: 'inline-source-map',
         context: __dirname,
         entry: "./src/index.jsx",
         output: {

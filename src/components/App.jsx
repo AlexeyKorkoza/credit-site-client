@@ -1,44 +1,36 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
+import ReactNotification from 'react-notifications-component';
 
 import { GlobalStyle, Page } from './styles';
-import {
-  Authentication, Clients, Loans, Managers, Profile,
-} from '../containers';
-import { AuthRoleRoute, AuthRoute } from '../routing';
-import { authentication } from '../api';
+import { Clients, Loans, Managers, Profile } from '../containers';
+import { AuthRoleRoute, AuthRoute, routesScheme } from '../routing';
 import Sidebar from './Sidebar';
 import { NoMatch } from './ErrorPages';
+import { logOut } from '../features/authentication/api';
+import AuthenticationModule from '../features/authentication';
+import { UserContext } from '../core';
 
 const App = () => {
-  const [role, setRole] = useState('');
   const history = useHistory();
-
-  useEffect(() => {
-    authentication.currentUserSubject.subscribe((result) => {
-      if (result) {
-        setRole({ role: result.role });
-      }
-    });
-
-    return function cleanup() {
-      authentication.currentUserSubject.unsubscribe();
-    };
-  });
+  const context = useContext(UserContext);
+  const { role, updateUserRole } = context;
 
   const onLogOut = useCallback(() => {
-    authentication.logOut().then(() => {
-      history.push('/auth');
+    logOut().then(() => {
+      history.push(routesScheme.auth);
+      updateUserRole('');
     });
   }, []);
 
   return (
     <>
+      <ReactNotification />
       {role && <Sidebar onLogOut={onLogOut} role={role} />}
       <Page>
         <GlobalStyle />
         <Switch>
-          <Route path="/auth" component={Authentication} />
+          <AuthenticationModule />
           <AuthRoute exact path="/" component={App} />
           <AuthRoute exact path="/profile" component={Profile} />
           <AuthRoleRoute
