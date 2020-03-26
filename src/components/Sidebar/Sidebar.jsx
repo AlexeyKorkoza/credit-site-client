@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
 import Sidebar from './styles';
-import { Client, Loan, Logout, Manager, Profile } from './icons';
+import {
+  Client, Loan, Logout, Manager, Profile,
+} from './icons';
+import useSidebar from './hooks';
 
 const sidebarItems = [
   {
@@ -37,16 +39,16 @@ const sidebarItems = [
   },
 ];
 
-const SidebarComponent = props => {
-  const { onLogOut, role } = props;
+const SidebarComponent = () => {
+  const [role, onLogOut] = useSidebar();
 
   return (
     <Sidebar>
       <Sidebar.Container>
         <Sidebar.Navigation>
           {sidebarItems
-            .filter(e => e.roles.includes(role))
-            .map(item => {
+            .filter((e) => e.roles.includes(role))
+            .map((item) => {
               const { key, icon: Icon } = item;
 
               return (
@@ -64,16 +66,6 @@ const SidebarComponent = props => {
       </Sidebar.Container>
     </Sidebar>
   );
-};
-
-SidebarComponent.defaultProps = {
-  onLogOut: PropTypes.func,
-  role: PropTypes.string,
-};
-
-SidebarComponent.propTypes = {
-  onLogOut: PropTypes.func,
-  role: PropTypes.string,
 };
 
 export default SidebarComponent;
