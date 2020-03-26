@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { store } from 'react-notifications-component';
 
@@ -11,13 +11,8 @@ const NOTIFICATION_TYPE = 'Sign In';
 const useAuthentication = () => {
   const history = useHistory();
   const context = useContext(UserContext);
-  const { role, updateUserRole } = context;
-  const [isActiveModal, setIsActiveModal] = useState(false);
-  // const [selectedRole, setSelectedRole] = useState(null);
-
-  useEffect(() => {
-    setIsActiveModal(!(role));
-  }, [role]);
+  const { updateUserRole } = context;
+  const [selectedRoleInSelect, setSelectedRoleInSelect] = useState({});
 
   const onSubmit = useCallback((data) => {
     const {
@@ -48,9 +43,14 @@ const useAuthentication = () => {
       });
   });
 
+  const setSelectedRole = useCallback((role) => {
+    setSelectedRoleInSelect(role);
+  }, [selectedRoleInSelect]);
+
   return [
-    isActiveModal,
+    selectedRoleInSelect,
     onSubmit,
+    setSelectedRole,
   ];
 };
 

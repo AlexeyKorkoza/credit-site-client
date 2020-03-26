@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../core';
 import { routesScheme } from './routesScheme';
 
-const AuthRoute = ({ component: Component, ...rest }) => {
+const NoAuthRoute = ({ component: Component, ...rest }) => {
   const context = useContext(UserContext);
   const { role } = context;
 
-  if (!role) {
-    return <Redirect to={routesScheme.auth} />;
+  if (role) {
+    return <Redirect to={routesScheme.profile} />;
   }
 
   return (
@@ -21,12 +21,12 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-AuthRoute.defaultProps = {
+NoAuthRoute.defaultProps = {
   component: PropTypes.func,
   rest: null,
 };
 
-AuthRoute.propTypes = {
+NoAuthRoute.propTypes = {
   component: PropTypes.func,
   rest: PropTypes.shape({
     exact: PropTypes.bool,
@@ -34,4 +34,4 @@ AuthRoute.propTypes = {
   }),
 };
 
-export default AuthRoute;
+export default NoAuthRoute;

@@ -3,13 +3,13 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import ReactNotification from 'react-notifications-component';
 
 import { GlobalStyle, Page } from './styles';
-import { Clients, Loans, Managers, Profile } from '../containers';
-import { AuthRoleRoute, AuthRoute, routesScheme } from '../routing';
-import Sidebar from './Sidebar';
-import { NoMatch } from './ErrorPages';
-import { logOut } from '../features/authentication/api';
-import AuthenticationModule from '../features/authentication';
-import { UserContext } from '../core';
+import { Clients, Loans, Managers, Profile } from './containers';
+import { AuthRoleRoute, AuthRoute, NoAuthRoute, routesScheme } from './routing';
+import Sidebar from './components/Sidebar';
+import { NoMatch } from './components/ErrorPages';
+import { logOut } from './features/authentication/api';
+import { UserContext } from './core';
+import Authentication from './features/authentication';
 
 const App = () => {
   const history = useHistory();
@@ -30,7 +30,7 @@ const App = () => {
       <Page>
         <GlobalStyle />
         <Switch>
-          <AuthenticationModule />
+          <NoAuthRoute exact path={routesScheme.auth} component={Authentication} />
           <AuthRoute exact path="/" component={App} />
           <AuthRoute exact path="/profile" component={Profile} />
           <AuthRoleRoute

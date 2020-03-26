@@ -21,20 +21,24 @@ const ROLES = [
 ];
 
 const Authentication = () => {
-  const { errors, handleSubmit, register, setValue } = useForm();
-  const [isActiveModal, onSubmit] = useAuthentication();
-  console.log(authenticationScheme);
+  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm();
+  const [selectedRole, onSubmit, setSelectedRole] = useAuthentication();
 
   useEffect(() => {
     register({ name: 'selectedRole' });
+
+    return () => {
+      unregister('selectedRole');
+    };
   });
 
-  const handleSelectedRole = (selectedRole) => {
-    setValue('selectedRole', selectedRole);
+  const handleSelectedRole = (role) => {
+    setValue('selectedRole', role);
+    setSelectedRole(role);
   };
 
   return (
-    <Modal isActiveModal={isActiveModal}>
+    <Modal isActiveModal>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Item>
           <H1>Log in credit site system</H1>
@@ -45,7 +49,7 @@ const Authentication = () => {
             placeholder="Login ..."
             register={register}
           />
-          {errors.login && <p>{errors.login.message}</p>}
+          {errors.login && <p>Please, enter your login</p>}
         </Form.Item>
         <Form.Item>
           <Input
@@ -54,16 +58,16 @@ const Authentication = () => {
             placeholder="Password ..."
             register={register}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <p>Please, enter your password</p>}
         </Form.Item>
         <Form.Item>
           <ReactSelect
-            // value={selectedRole}
+            value={selectedRole}
             options={ROLES}
             placeholder="Select Role ..."
             onChange={handleSelectedRole}
           />
-          {/*{errors.firstName && <p>{errors.firstName.message}</p>}*/}
+          {errors.selectedRole && <p>Please, select your role</p>}
         </Form.Item>
         <Form.Item>
           <Button>Log In</Button>
