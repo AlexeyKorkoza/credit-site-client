@@ -3,12 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import ReactNotification from 'react-notifications-component';
 
 import { GlobalStyle, Page } from './styles';
-import { Clients, Loans, Managers, Profile } from './containers';
+import { Clients, Loans, Managers } from './containers';
 import { AuthRoleRoute, AuthRoute, NoAuthRoute, routesScheme } from './routing';
 import Sidebar from './components/Sidebar';
 import { NoMatch } from './components/ErrorPages';
 import { UserContext } from './core';
 import Authentication from './features/authentication';
+import Profile from './features/profile';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -23,7 +24,7 @@ const App = () => {
         <Switch>
           <NoAuthRoute exact path={routesScheme.auth} component={Authentication} />
           <AuthRoute exact path="/" component={App} />
-          <AuthRoute exact path="/profile" component={Profile} />
+          <AuthRoute exact path={routesScheme.profile} component={Profile} />
           <AuthRoleRoute
             accessRole="admin"
             exact

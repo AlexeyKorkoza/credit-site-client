@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Card, Input, ReactSelect } from '../../shared';
-import { Login, Passwords } from '../Profile';
+import { Login, Passwords } from '../../features/profile/components';
 
 const customReactSelectStyles = {
   valueContainer: () => ({

@@ -1,10 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 
-import { Button, Card, Input } from '../../shared';
+import { Button, Card, Input } from '../../../shared';
+import useProfile from '../hooks';
+import { passwordsValidation } from '../validations';
 
-const Passwords = props => {
-  const { onChangeInput, onChangePassword, oldPassword, newPassword, confirmNewPassword } = props;
+const Passwords = () => {
+  const {
+    errors, handleSubmit, register, unregister, setValue, watch,
+  } = useForm({
+    validationSchema: passwordsValidation,
+  });
+  const [changePassword] = useProfile();
 
   return (
     <Card.List.Item>
@@ -15,8 +22,7 @@ const Passwords = props => {
             <Input
               type="password"
               name="oldPassword"
-              value={oldPassword}
-              onChange={onChangeInput}
+              register={register}
             />
           </Card.Form.Item>
           <Card.Form.Item>
@@ -24,8 +30,7 @@ const Passwords = props => {
             <Input
               type="password"
               name="newPassword"
-              value={newPassword}
-              onChange={onChangeInput}
+              register={register}
             />
           </Card.Form.Item>
           <Card.Form.Item>
@@ -33,33 +38,16 @@ const Passwords = props => {
             <Input
               type="password"
               name="confirmNewPassword"
-              value={confirmNewPassword}
-              onChange={onChangeInput}
+              register={register}
             />
           </Card.Form.Item>
           <Card.Form.Item>
-            <Button onClick={onChangePassword}>Change Password</Button>
+            <Button onClick={handleSubmit(changePassword)}>Change Password</Button>
           </Card.Form.Item>
         </Card.List>
       </Card.Form>
     </Card.List.Item>
   );
-};
-
-Passwords.defaultProps = {
-  onChangeInput: PropTypes.func,
-  onChangePassword: PropTypes.func,
-  oldPassword: '',
-  newPassword: '',
-  confirmNewPassword: '',
-};
-
-Passwords.propTypes = {
-  onChangeInput: PropTypes.func,
-  onChangePassword: PropTypes.func,
-  oldPassword: PropTypes.string,
-  newPassword: PropTypes.string,
-  confirmNewPassword: PropTypes.string,
 };
 
 export default Passwords;
