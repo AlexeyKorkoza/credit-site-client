@@ -1,32 +1,24 @@
-import fetch from './fetch';
+import fetch from '../../../api/fetch';
 
 /**
  * @param id {Number}
  * @return {Promise<any | void>}
  */
-const blockManager = id => {
-  return fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', {});
-};
+const blockManager = (id) => fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', {});
 
 /**
  * @param id {Number}
  * @return {Promise<any | void>}
  */
-const getManager = id => {
-  return fetch(`${API_URL}/api/v1/managers/${id}`, 'get');
-};
+const getManager = (id) => fetch(`${API_URL}/api/v1/managers/${id}`, 'get');
 
 /**
  * @param id {Number}
  * @return {Promise<any | void>}
  */
-const getManagerClients = id => {
-  return fetch(`${API_URL}/api/v1/managers/${id}/clients`, 'get');
-};
+const getManagerClients = (id) => fetch(`${API_URL}/api/v1/managers/${id}/clients`, 'get');
 
-const getManagers = () => {
-  return fetch(`${API_URL}/api/v1/managers`, 'get');
-};
+const getManagers = () => fetch(`${API_URL}/api/v1/managers`, 'get');
 
 /**
  * @param body {Object}
@@ -41,7 +33,7 @@ const saveManager = (body, id = null) => {
   return fetch(`${API_URL}/api/v1/managers`, 'post', body);
 };
 
-export default {
+export {
   blockManager,
   getManager,
   getManagerClients,
