@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import ReactNotification from 'react-notifications-component';
 
 import { GlobalStyle, Page } from './styles';
-import { Clients, Loans } from './containers';
+import { Loans } from './containers';
 import { AuthRoleRoute, AuthRoute, NoAuthRoute, routesScheme } from './routing';
 import Sidebar from './components/Sidebar';
 import { NoMatch } from './components/ErrorPages';
@@ -11,6 +11,7 @@ import { UserContext } from './core';
 import Authentication from './features/authentication';
 import Profile from './features/profile';
 import { ManagersList, ManagersEditor } from './features/managers';
+import { ClientEditor, ClientList } from './features/clients';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -44,14 +45,14 @@ const App = () => {
             path={routesScheme.managersId}
             component={ManagersEditor}
           />
-          <AuthRoute exact path="/clients" component={Clients.List} />
+          <AuthRoute exact path={routesScheme.clients} component={ClientList} />
           <AuthRoleRoute
             accessRole="manager"
             exact
-            path="/clients/add"
-            component={Clients.Editor}
+            path={routesScheme.clientsAdd}
+            component={ClientEditor}
           />
-          <AuthRoute exact path="/clients/:id" component={Clients.Editor} />
+          <AuthRoute exact path={routesScheme.clientsIdRoute} component={ClientEditor} />
           <AuthRoleRoute
             accessRole="admin"
             exact
