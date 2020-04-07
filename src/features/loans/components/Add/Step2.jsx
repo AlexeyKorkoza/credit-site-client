@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import LoansTable from '../Table';
-import { Button, Card, H1, Input, ReactSelect, SingleDatePicker } from '../../../shared';
+import { Button, Card, H1, Input, ReactSelect, SingleDatePicker } from '../../../../shared';
 
 const customReactSelectStyles = {
   valueContainer: () => ({

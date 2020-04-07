@@ -4,7 +4,7 @@ import SimpleReactValidator from 'simple-react-validator';
 import ReactNotification from 'react-notifications-component';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import { Add as Steps } from '../../components/Loans';
+import { Add as Steps } from '../../features/loans/components';
 import { calculation, localDb, notification } from '../../services';
 import { client_card, clients, loans } from '../../api';
 import { Validator } from '../../shared';

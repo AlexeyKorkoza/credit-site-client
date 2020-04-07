@@ -24,12 +24,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const singleDatePicker = props => {
-  return (
-    <Wrapper>
-      <SingleDatePicker {...props} />
-    </Wrapper>
-  );
-};
+const singleDatePicker = (props) => (
+  <Wrapper>
+    <SingleDatePicker {...props} />
+  </Wrapper>
+);
 
 export default singleDatePicker;

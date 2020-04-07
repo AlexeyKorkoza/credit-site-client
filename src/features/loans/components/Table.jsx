@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 
-import { H1, Table } from '../../shared';
+import { H1, Table } from '../../../shared';
 import List from './styles';
 
 const headers = [

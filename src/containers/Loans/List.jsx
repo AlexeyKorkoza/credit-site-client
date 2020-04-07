@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { loans } from '../../api';
-import { List } from '../../components/Loans';
+import { List } from '../../features/loans/components';
 import { localDb } from '../../services';
 
 class LoansList extends Component {
