@@ -3,15 +3,15 @@ import { Switch, Route } from 'react-router-dom';
 import ReactNotification from 'react-notifications-component';
 
 import { GlobalStyle, Page } from './styles';
-import { Loans } from './containers';
 import { AuthRoleRoute, AuthRoute, NoAuthRoute, routesScheme } from './routing';
-import Sidebar from './components/Sidebar';
-import { NoMatch } from './components/ErrorPages';
+import Sidebar from './shared/Sidebar';
+import { NoMatch } from './shared/ErrorPages';
 import { UserContext } from './core';
 import Authentication from './features/authentication';
 import Profile from './features/profile';
 import { ManagersList, ManagersEditor } from './features/managers';
 import { ClientEditor, ClientList } from './features/clients';
+import { LoansList, LoansEditor, LoansAdd } from './features/loans';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -56,20 +56,20 @@ const App = () => {
           <AuthRoleRoute
             accessRole="admin"
             exact
-            path="/loans"
-            component={Loans.List}
+            path={routesScheme.loans}
+            component={LoansList}
           />
           <AuthRoleRoute
             accessRole="manager"
             exact
-            path="/loans/add"
-            component={Loans.Add}
+            path={routesScheme.loansAdd}
+            component={LoansAdd}
           />
           <AuthRoleRoute
             accessRole="admin"
             exact
-            path="/loans/:id"
-            component={Loans.Editor}
+            path={routesScheme.loansIdRoute}
+            component={LoansEditor}
           />
           <Route component={NoMatch} />
         </Switch>

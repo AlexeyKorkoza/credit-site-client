@@ -12,11 +12,12 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
   border: none;
 `;
 
-const Input = ({ register, type, name, placeholder = '' }) => (
-  <StyledInput name={name} placeholder={placeholder} type={type} ref={register} />
+const Input = ({ disabled, register, type, name, placeholder = '' }) => (
+  <StyledInput disabled={disabled} name={name} placeholder={placeholder} type={type} ref={register} />
 );
 
 Input.defaultProps = {
+  disabled: false,
   type: '',
   name: '',
   placeholder: '',
@@ -24,6 +25,7 @@ Input.defaultProps = {
 };
 
 Input.propTypes = {
+  disabled: PropTypes.bool,
   type: PropTypes.string,
   name: PropTypes.string,
   placeholder: PropTypes.string,

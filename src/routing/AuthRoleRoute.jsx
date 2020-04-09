@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { localDb } from '../services';
-import { Forbidden } from '../components/ErrorPages';
+import { Forbidden } from '../shared/ErrorPages';
 
 const accessRoles = ['admin', 'manager'];
 
