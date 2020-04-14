@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../core';
 import { routesScheme } from './routesScheme';
+import { localDb } from '../services';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
-  const context = useContext(UserContext);
-  const { role } = context;
+  const userData = localDb.getDataAuthUser();
 
-  if (!role) {
+  if (!userData) {
     return <Redirect to={routesScheme.auth} />;
   }
 

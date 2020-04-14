@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Admin, Manager } from './components';
-import useProfile from './hooks';
+import { UserContext } from '../../core';
 
 const rolesComponents = {
   admin: Admin,
@@ -9,7 +9,9 @@ const rolesComponents = {
 };
 
 const Profile = () => {
-  const [, , role] = useProfile();
+  const context = useContext(UserContext);
+  const { role } = context;
+  console.log(context);
 
   if (!role) {
     return null;

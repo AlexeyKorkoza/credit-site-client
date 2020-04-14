@@ -2,6 +2,7 @@ import {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import { store } from 'react-notifications-component';
+import { useForm } from 'react-hook-form';
 
 import {
   getProfileUser,
@@ -9,38 +10,45 @@ import {
   updatePasswordsProfileUser,
 } from '../api';
 import { localDb, notification, passwords } from '../../../services';
-import { UserContext } from '../../../core/hooks';
+import { UserContext } from '../../../core';
 import TERRITORIES from '../../../constants';
+import { adminValidation, managerValidation } from '../validations';
 
 const successfulNotification = 'SuccessfulChangingPassword';
 const failureNotification = 'FailureChangingPassword';
 
 const useProfile = () => {
   const [userId, setUserId] = useState(null);
-  const [profileData, setProfileData] = useState({});
   const [selectedTerritory, setSelectedTerritory] = useState({});
   const context = useContext(UserContext);
-  const { role, updateUserRole } = context;
+  const { role } = context;
+
+  const useFormProps = useForm({
+    validationSchema: role === 'admin' ? adminValidation : managerValidation,
+    mode: 'onBlur',
+  });
+  const { setValue } = useFormProps;
 
   useEffect(() => {
     const { id } = localDb.getDataAuthUser();
 
-    updateUserRole(role);
     setUserId(id);
 
     getProfileUser(role, id).then((result) => {
       const { data } = result;
       if (data.territory) {
-        setProfileData({
-          ...data,
+        const profileData = {
+          data,
           selectedTerritory: TERRITORIES
             .find((territory) => +territory.value === data.territory),
-        });
+        };
+
+        setValue(profileData);
       } else {
-        setProfileData({ ...data });
+        setValue(data);
       }
     });
-  });
+  }, [userId]);
 
   const saveData = useCallback((data) => {
     // if (!this.validatorProfile.allValid()) {
@@ -117,11 +125,10 @@ const useProfile = () => {
 
   return [
     changePassword,
-    profileData,
-    role,
     saveData,
     selectedTerritory,
     changeSelectedTerritory,
+    useFormProps,
   ];
 };
 

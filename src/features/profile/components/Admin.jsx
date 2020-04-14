@@ -1,29 +1,26 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 
 import Login from './Login';
 import Passwords from './Passwords';
-import { Button, Card } from '../../../shared';
+import { Button, Error, Card } from '../../../shared';
 import useProfile from '../hooks';
-import { adminValidation } from '../validations';
 
 const Admin = () => {
-  const [,, , saveData] = useProfile();
+  const [,saveData, , ,useFormProps] = useProfile();
   const {
-    errors, handleSubmit, register, unregister, setValue, watch,
-  } = useForm({
-    validationSchema: adminValidation,
-  });
+    errors, handleSubmit, register,
+  } = useFormProps;
 
   return (
     <Card.List>
       <Card.List.Item>
-        <Card.Form noValidate>
+        <Card.Form>
           <Card.List>
             <Login
               register={register}
               name="login"
             />
+            {errors?.login?.message && <Error>{errors.login.message}</Error>}
             <Card.Form.Item>
               <Button onClick={handleSubmit(saveData)}>Save</Button>
             </Card.Form.Item>

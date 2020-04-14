@@ -7,6 +7,7 @@ import { logIn } from '../api';
 import { localDb, notification } from '../../../services';
 import { UserContext } from '../../../core';
 import authenticationSchema from '../validation';
+import { routesScheme } from '../../../routing';
 
 const NOTIFICATION_TYPE = 'Sign In';
 
@@ -49,7 +50,7 @@ const useAuthentication = () => {
 
         updateUserRole(value);
 
-        history.push('/profile');
+        history.push(routesScheme.profile);
       })
       .catch((error) => {
         const { message } = error;

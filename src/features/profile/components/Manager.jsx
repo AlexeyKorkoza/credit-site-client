@@ -26,10 +26,10 @@ const Manager = () => {
   });
   const [,
     ,
-    ,
     saveData,
     selectedTerritory,
     changeSelectedTerritory
+    ,
   ] = useProfile();
 
   useEffect(() => {
