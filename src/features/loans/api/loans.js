@@ -1,4 +1,4 @@
-import fetch from './fetch';
+import fetch from '../../../api/fetch';
 
 /**
  * @return {Promise|Q.Promise<void>|*|Promise<T | void>}

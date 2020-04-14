@@ -1,10 +1,12 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { store } from 'react-notifications-component';
+import { useForm } from 'react-hook-form';
 
 import { logIn } from '../api';
 import { localDb, notification } from '../../../services';
 import { UserContext } from '../../../core';
+import authenticationSchema from '../validation';
 
 const NOTIFICATION_TYPE = 'Sign In';
 
@@ -12,7 +14,22 @@ const useAuthentication = () => {
   const history = useHistory();
   const context = useContext(UserContext);
   const { updateUserRole } = context;
-  const [selectedRoleInSelect, setSelectedRoleInSelect] = useState({});
+
+  const useFormProps = useForm({
+    validationSchema: authenticationSchema,
+    mode: 'onBlur',
+  });
+  const { register, unregister, setValue, triggerValidation } = useFormProps;
+
+  useEffect(() => {
+    register({ name: 'selectedRole' });
+
+    return () => {
+      unregister('selectedRole');
+    };
+  }, [register, unregister]);
+
+  const [selectedRoleInSelect, setSelectedRoleInSelect] = useState(null);
 
   const onSubmit = useCallback((data) => {
     const {
@@ -41,16 +58,25 @@ const useAuthentication = () => {
           store.addNotification(builtNotification);
         }
       });
-  });
-
-  const setSelectedRole = useCallback((role) => {
-    setSelectedRoleInSelect(role);
   }, [selectedRoleInSelect]);
+
+  const handleSelectedRole = async (role) => {
+    setValue('selectedRole', role);
+    setSelectedRoleInSelect(role);
+  };
+
+  const handleSelectBlur = async () => {
+    if (!selectedRoleInSelect) {
+      await triggerValidation('selectedRole');
+    }
+  };
 
   return [
     selectedRoleInSelect,
     onSubmit,
-    setSelectedRole,
+    handleSelectedRole,
+    useFormProps,
+    handleSelectBlur,
   ];
 };
 
