@@ -19,7 +19,10 @@ const useList = () => {
     }
 
     getAllLoans().then((result) => {
-      setLoans(result);
+      const { loans: savedLoans } = result;
+      if (savedLoans) {
+        setLoans(savedLoans);
+      }
     });
   });
 

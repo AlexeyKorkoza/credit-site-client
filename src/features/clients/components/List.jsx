@@ -30,7 +30,7 @@ const ListComponent = () => {
                 {role === 'manager' && (
                 <List.Link
                   to={{
-                    pathname: '/loans/add',
+                    pathname: routesScheme.loansAdd,
                     state: { clientId: client.id },
                   }}
                 >

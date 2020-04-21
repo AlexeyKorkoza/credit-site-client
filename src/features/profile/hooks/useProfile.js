@@ -9,7 +9,7 @@ import {
   updateProfileUser,
   updatePasswordsProfileUser,
 } from '../api';
-import { localDb, notification, passwords } from '../../../services';
+import { localDb, notification } from '../../../services';
 import { UserContext } from '../../../core';
 import TERRITORIES from '../../../constants';
 import { adminValidation, managerValidation } from '../validations';
@@ -83,17 +83,6 @@ const useProfile = () => {
       newPassword,
       confirmNewPassword,
     } = data;
-
-    // const builtNotification = passwords.validatePasswords(
-    //   oldPassword,
-    //   newPassword,
-    //   confirmNewPassword,
-    // );
-    // if (builtNotification) {
-    //   this.notificationDOMRef.current.addNotification(builtNotification);
-    //
-    //   return;
-    // }
 
     const body = {
       oldPassword,

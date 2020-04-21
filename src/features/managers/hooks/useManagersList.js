@@ -7,7 +7,10 @@ const useManagersList = () => {
 
   useEffect(() => {
     getManagers().then((result) => {
-      setManagers(result);
+      const { managers: savedManagers } = result;
+      if (savedManagers) {
+        setManagers(savedManagers);
+      }
     });
   });
 

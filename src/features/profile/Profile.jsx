@@ -11,7 +11,6 @@ const rolesComponents = {
 const Profile = () => {
   const context = useContext(UserContext);
   const { role } = context;
-  console.log(context);
 
   if (!role) {
     return null;

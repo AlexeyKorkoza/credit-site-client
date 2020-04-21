@@ -1,9 +1,11 @@
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
-export default Yup.object({
-  oldPassword: Yup.string().required(),
-  newPassword: Yup.string().required(),
-  confirmNewPassword: Yup.string().required().test('passwords-match', 'Passwords don\'t match', function (value) {
-    return this.parent.password === value;
-  }),
+export default object({
+  oldPassword: string().required('Enter your old password'),
+  newPassword: string().required('Enter your new password'),
+  confirmNewPassword: string()
+    .required('Confirm your new password')
+    .test('passwords-match', 'Passwords don\'t match', function (value) {
+      return this.parent.newPassword === value;
+    }),
 });

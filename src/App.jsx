@@ -42,7 +42,7 @@ const App = () => {
           <AuthRoleRoute
             accessRole="admin"
             exact
-            path={routesScheme.managersId}
+            path={routesScheme.managersIdRoute}
             component={ManagersEditor}
           />
           <AuthRoute exact path={routesScheme.clients} component={ClientList} />

@@ -8,8 +8,10 @@ export const routesScheme = {
   loansAdd: '/loans/add',
   loansId: (id) => `/loans/${id}`,
   loansIdRoute: '/loans/:id',
+
+  buildManagersId: (id) => `/managers/${id}`,
   managers: '/managers',
-  managersId: '/managers/:id',
+  managersIdRoute: '/managers/:id',
   managersAdd: '/managers/add',
   profile: '/profile',
 };
