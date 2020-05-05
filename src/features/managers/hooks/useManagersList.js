@@ -12,7 +12,7 @@ const useManagersList = () => {
         setManagers(savedManagers);
       }
     });
-  });
+  }, []);
 
   return [managers];
 };

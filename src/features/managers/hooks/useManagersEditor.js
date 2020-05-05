@@ -12,7 +12,7 @@ const successfulNotificationType = 'SuccessfulEditingManager';
 const useManagersEditor = () => {
   const [selectedTerritory, setSelectedTerritory] = useState({});
   const [managerData, setManagerData] = useState({
-    action: '',
+    action: 'add',
     email: '',
     fullName: '',
     login: '',
@@ -31,19 +31,16 @@ const useManagersEditor = () => {
       getManager(managerId).then((result) => {
         const { territory } = result.data;
 
-        setManagerData({
+        setManagerData((state) => ({
+          ...state,
           ...result.data,
           action: 'edit',
           managerId,
           selectedTerritory: TERRITORIES.find((e) => +e.value === territory),
-        });
-      });
-    } else {
-      setManagerData({
-        action: 'add',
+        }));
       });
     }
-  });
+  }, []);
 
   const updateSelectedTerritory = useCallback(
     (territory) => {
@@ -57,6 +54,7 @@ const useManagersEditor = () => {
   }, []);
 
   const saveManagerData = useCallback((data) => {
+    console.log(data);
     // if (!this.validator.allValid()) {
     //   return;
     // }

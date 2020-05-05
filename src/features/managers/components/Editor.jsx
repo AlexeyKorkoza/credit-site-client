@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
-  Button, Card, Input, ReactSelect,
+  Button, Card, Error, Input, ReactSelect,
 } from '../../../shared';
 import { Login, Passwords } from '../../profile/components';
 import TERRITORIES from '../../../constants';
@@ -19,8 +19,12 @@ const customReactSelectStyles = {
 };
 
 const Editor = () => {
-  const [managerData, selectedTerritory, updateSelectedTerritory, , saveManager] = useManagersEditor();
-  const [handleSubmit, setValue, register, unregister, watch] = useForm({
+  const [
+    managerData, selectedTerritory, updateSelectedTerritory, , saveManager,
+  ] = useManagersEditor();
+  const {
+    handleSubmit, setValue, register, unregister, watch, errors, getValues,
+  } = useForm({
     defaultValues: {
       ...managerData,
     },
@@ -42,6 +46,8 @@ const Editor = () => {
 
   const action = watch('action');
   const isBlocked = watch('isBlocked');
+  console.log(watch());
+  console.log(getValues());
 
   return (
     <Card.List>
@@ -54,6 +60,7 @@ const Editor = () => {
               placeholder="Full name..."
               register={register}
             />
+            {errors?.fullName?.message && <Error>{errors.fullName.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -73,18 +80,22 @@ const Editor = () => {
               placeholder="Phone..."
               register={register}
             />
+            {errors?.phone?.message && <Error>{errors.phone.message}</Error>}
           </Card.Form.Item>
           <Login name="login" register={register} />
           {action === 'add' && (
-            <Card.Form.Item>
-              <Card.Form.Label htmlFor="password">Password</Card.Form.Label>
-              <Input
-                type="password"
-                name="password"
-                placeholder="Password ..."
-                register={register}
-              />
-            </Card.Form.Item>
+            <>
+              <Card.Form.Item>
+                <Card.Form.Label htmlFor="password">Password</Card.Form.Label>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password ..."
+                  register={register}
+                />
+              </Card.Form.Item>
+              {errors?.password?.message && <Error>{errors.password.message}</Error>}
+            </>
           )}
           <Card.Form.Item>
             <Card.Form.Label htmlFor="email">Email</Card.Form.Label>
@@ -103,9 +114,11 @@ const Editor = () => {
       {action === 'edit' && (
         <Passwords />
       )}
-      <Card.List.Item>
-        <BlockManager isBlocked={isBlocked} />
-      </Card.List.Item>
+      {action === 'edit' && (
+        <Card.List.Item>
+          <BlockManager isBlocked={isBlocked} />
+        </Card.List.Item>
+      )}
     </Card.List>
   );
 };
