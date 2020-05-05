@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  Button, Card, Error, Input, ReactSelect,
-} from '../../../shared';
+import { Button, Card, Error, Input, ReactSelect } from '../../../shared';
 import { Login, Passwords } from '../../profile/components';
 import TERRITORIES from '../../../constants';
 import { useManagersEditor } from '../hooks';
@@ -20,11 +18,13 @@ const customReactSelectStyles = {
 
 const Editor = () => {
   const [
-    managerData, selectedTerritory, updateSelectedTerritory, , saveManager,
+    managerData,
+    selectedTerritory,
+    updateSelectedTerritory,
+    ,
+    saveManager,
   ] = useManagersEditor();
-  const {
-    handleSubmit, setValue, register, unregister, watch, errors, getValues,
-  } = useForm({
+  const { handleSubmit, setValue, register, unregister, watch, errors, getValues } = useForm({
     defaultValues: {
       ...managerData,
     },
@@ -39,15 +39,13 @@ const Editor = () => {
     };
   }, [register]);
 
-  const handleSelectedTerritory = (territory) => {
+  const handleSelectedTerritory = territory => {
     setValue('selectedTerritory', territory);
     updateSelectedTerritory(territory);
   };
 
   const action = watch('action');
   const isBlocked = watch('isBlocked');
-  console.log(watch());
-  console.log(getValues());
 
   return (
     <Card.List>
@@ -55,11 +53,7 @@ const Editor = () => {
         <Card.Form>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="fullName">Full name</Card.Form.Label>
-            <Input
-              name="fullName"
-              placeholder="Full name..."
-              register={register}
-            />
+            <Input name="fullName" placeholder="Full name..." register={register} />
             {errors?.fullName?.message && <Error>{errors.fullName.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
@@ -74,12 +68,7 @@ const Editor = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="phone">Phone</Card.Form.Label>
-            <Input
-              type="phone"
-              name="phone"
-              placeholder="Phone..."
-              register={register}
-            />
+            <Input type="phone" name="phone" placeholder="Phone..." register={register} />
             {errors?.phone?.message && <Error>{errors.phone.message}</Error>}
           </Card.Form.Item>
           <Login name="login" register={register} />
@@ -99,21 +88,14 @@ const Editor = () => {
           )}
           <Card.Form.Item>
             <Card.Form.Label htmlFor="email">Email</Card.Form.Label>
-            <Input
-              type="email"
-              name="email"
-              register={register}
-              placeholder="Email..."
-            />
+            <Input type="email" name="email" register={register} placeholder="Email..." />
           </Card.Form.Item>
           <Card.Form.Item>
             <Button onClick={handleSubmit(saveManager)}>Save</Button>
           </Card.Form.Item>
         </Card.Form>
       </Card.List.Item>
-      {action === 'edit' && (
-        <Passwords />
-      )}
+      {action === 'edit' && <Passwords />}
       {action === 'edit' && (
         <Card.List.Item>
           <BlockManager isBlocked={isBlocked} />
