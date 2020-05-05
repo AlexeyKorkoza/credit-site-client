@@ -54,11 +54,6 @@ const useManagersEditor = () => {
   }, []);
 
   const saveManagerData = useCallback((data) => {
-    console.log(data);
-    // if (!this.validator.allValid()) {
-    //   return;
-    // }
-
     const {
       action,
       email,
