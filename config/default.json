@@ -3,6 +3,8 @@
     "url": "http://localhost:9000"
   },
   "app": {
-    "env": "development"
+    "env": "development",
+    "port": 3000,
+    "analyzeBundle": false
   }
 }
