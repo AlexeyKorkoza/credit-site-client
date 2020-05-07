@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 
 import Modal from './styles';
 
-const component = (props) => {
+const component = props => {
   const { children, isActiveModal } = props;
 
   return (
     <Modal isActiveModal={isActiveModal}>
-      <Modal.Container>
-        {children}
-      </Modal.Container>
+      <Modal.Container>{children}</Modal.Container>
     </Modal>
   );
 };

@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const singleDatePicker = (props) => (
+const singleDatePicker = props => (
   <Wrapper>
     <SingleDatePicker {...props} />
   </Wrapper>

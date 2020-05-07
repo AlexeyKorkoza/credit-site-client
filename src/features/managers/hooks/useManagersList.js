@@ -6,7 +6,7 @@ const useManagersList = () => {
   const [managers, setManagers] = useState([]);
 
   useEffect(() => {
-    getManagers().then((result) => {
+    getManagers().then(result => {
       const { managers: savedManagers } = result;
       if (savedManagers) {
         setManagers(savedManagers);

@@ -4,12 +4,7 @@ import { useParams, useHistory } from 'react-router';
 
 import TERRITORIES from '../../../constants';
 import { notification } from '../../../services';
-import {
-  deleteClient,
-  getClient,
-  markClientForDeletion,
-  saveClient,
-} from '../api';
+import { deleteClient, getClient, markClientForDeletion, saveClient } from '../api';
 import { UserContext } from '../../../core';
 import { routesScheme } from '../../../routing';
 
@@ -28,14 +23,14 @@ const useClientEditor = () => {
     if (Object.keys(params).length > 0) {
       const { id: clientId } = params;
 
-      getClient(clientId).then((result) => {
+      getClient(clientId).then(result => {
         const { client } = result;
 
         setClientData({
           ...client,
           action: 'edit',
           clientId,
-          selectedTerritory: TERRITORIES.find((e) => +e.value === +client.territory),
+          selectedTerritory: TERRITORIES.find(e => +e.value === +client.territory),
         });
       });
     } else {
@@ -45,7 +40,7 @@ const useClientEditor = () => {
     }
   });
 
-  const changeSelectedTerritory = useCallback((territory) => {
+  const changeSelectedTerritory = useCallback(territory => {
     setSelectedTerritory(territory);
   }, []);
 
@@ -65,7 +60,7 @@ const useClientEditor = () => {
 
         history.push(routesScheme.clients);
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const builtNotification = notification.buildNotification(message, failureNotificationType);
         if (builtNotification) {
@@ -88,7 +83,7 @@ const useClientEditor = () => {
           store.addNotification(buildNotification);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const buildNotification = notification.buildNotification(message, failureNotificationType);
         if (buildNotification) {
@@ -97,19 +92,12 @@ const useClientEditor = () => {
       });
   });
 
-  const handleSaveClient = useCallback((data) => {
+  const handleSaveClient = useCallback(data => {
     // if (!this.validator.allValid()) {
     //   return;
     // }
 
-    const {
-      action,
-      email,
-      name,
-      clientId,
-      passportData,
-      phone,
-    } = data;
+    const { action, email, name, clientId, passportData, phone } = data;
 
     const body = {
       name,
@@ -134,7 +122,8 @@ const useClientEditor = () => {
 
     return func
       .then(() => {
-        const message = action === 'edit' ? 'Client was updated successfully' : 'Client was created successfully';
+        const message =
+          action === 'edit' ? 'Client was updated successfully' : 'Client was created successfully';
         const builtNotification = notification.buildNotification(
           message,
           successfulNotificationType,
@@ -144,7 +133,7 @@ const useClientEditor = () => {
         }
         history.push(routesScheme.clients);
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const builtNotification = notification.buildNotification(message, failureNotificationType);
         if (builtNotification) {

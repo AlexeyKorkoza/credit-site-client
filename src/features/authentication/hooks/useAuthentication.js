@@ -32,36 +32,37 @@ const useAuthentication = () => {
 
   const [selectedRoleInSelect, setSelectedRoleInSelect] = useState(null);
 
-  const onSubmit = useCallback((data) => {
-    const {
-      login, password, selectedRole,
-    } = data;
-    const { value } = selectedRole;
+  const onSubmit = useCallback(
+    data => {
+      const { login, password, selectedRole } = data;
+      const { value } = selectedRole;
 
-    const body = {
-      login,
-      password,
-      role: value,
-    };
+      const body = {
+        login,
+        password,
+        role: value,
+      };
 
-    logIn(body)
-      .then((result) => {
-        localDb.authUser(result);
+      logIn(body)
+        .then(result => {
+          localDb.authUser(result);
 
-        updateUserRole(value);
+          updateUserRole(value);
 
-        history.push(routesScheme.profile);
-      })
-      .catch((error) => {
-        const { message } = error;
-        const builtNotification = notification.buildNotification(message, NOTIFICATION_TYPE);
-        if (builtNotification) {
-          store.addNotification(builtNotification);
-        }
-      });
-  }, [selectedRoleInSelect]);
+          history.push(routesScheme.profile);
+        })
+        .catch(error => {
+          const { message } = error;
+          const builtNotification = notification.buildNotification(message, NOTIFICATION_TYPE);
+          if (builtNotification) {
+            store.addNotification(builtNotification);
+          }
+        });
+    },
+    [selectedRoleInSelect],
+  );
 
-  const handleSelectedRole = async (role) => {
+  const handleSelectedRole = async role => {
     setValue('selectedRole', role);
     setSelectedRoleInSelect(role);
   };
@@ -72,13 +73,7 @@ const useAuthentication = () => {
     }
   };
 
-  return [
-    selectedRoleInSelect,
-    onSubmit,
-    handleSelectedRole,
-    useFormProps,
-    handleSelectBlur,
-  ];
+  return [selectedRoleInSelect, onSubmit, handleSelectedRole, useFormProps, handleSelectBlur];
 };
 
 export default useAuthentication;

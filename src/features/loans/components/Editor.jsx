@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
 
-import {
-  Button, Card, Input, ReactSelect, SingleDatePicker,
-} from '../../../shared';
+import { Button, Card, Input, ReactSelect, SingleDatePicker } from '../../../shared';
 import { useEditor } from '../hooks';
 import TERRITORIES from '../../../constants';
 import { loanEditorSchema } from '../validation';
@@ -46,7 +44,7 @@ const Editor = () => {
     };
   }, [register, unregister]);
 
-  const handleSelectedTerritory = (territory) => {
+  const handleSelectedTerritory = territory => {
     setValue(territory);
     changeSelectedTerritory(territory);
   };
@@ -60,11 +58,7 @@ const Editor = () => {
         <Card.Form>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="amount">Amount</Card.Form.Label>
-            <Input
-              name="amount"
-              placeholder="Amount ..."
-              register={register}
-            />
+            <Input name="amount" placeholder="Amount ..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -78,11 +72,7 @@ const Editor = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Coefficient</Card.Form.Label>
-            <Input
-              name="coefficient"
-              placeholder="Coefficient..."
-              register={register}
-            />
+            <Input name="coefficient" placeholder="Coefficient..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>

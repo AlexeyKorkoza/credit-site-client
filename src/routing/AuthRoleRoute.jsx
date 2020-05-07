@@ -21,7 +21,7 @@ const AuthRoleRoute = ({ component: Component, accessRole, ...rest }) => {
     return <Forbidden />;
   }
 
-  return <Route {...rest} render={(props) => <Component {...props} />} />;
+  return <Route {...rest} render={props => <Component {...props} />} />;
 };
 AuthRoleRoute.defaultProps = {
   accessRole: PropTypes.string,

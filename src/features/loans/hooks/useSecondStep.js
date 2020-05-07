@@ -23,7 +23,7 @@ const useSecondStep = () => {
     setFocusedDateMaturity(focused);
   });
 
-  const changeDateIssue = useCallback((dateIssue) => {
+  const changeDateIssue = useCallback(dateIssue => {
     // const { dateMaturity } = loanData;
     //
     // const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
@@ -31,7 +31,7 @@ const useSecondStep = () => {
     // setLoanData(result);
   });
 
-  const changeDateMaturity = useCallback((dateMaturity) => {
+  const changeDateMaturity = useCallback(dateMaturity => {
     // const { dateIssue } = loanData;
     //
     // const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
@@ -39,7 +39,7 @@ const useSecondStep = () => {
     // setLoanData(result);
   });
 
-  const handleCreatingLoan = useCallback((data) => {
+  const handleCreatingLoan = useCallback(data => {
     const {
       amount,
       selectedTerritory,
@@ -49,7 +49,7 @@ const useSecondStep = () => {
       totalRepaymentAmount,
     } = data;
 
-    const territory = TERRITORIES.find((e) => +e.value === +selectedTerritory.value);
+    const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value);
 
     const body = {
       amount,
@@ -73,7 +73,7 @@ const useSecondStep = () => {
 
         history.push(routesScheme.clients);
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const builtNotification = notification.buildNotification(message, failureNotificationType);
         if (builtNotification) {

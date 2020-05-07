@@ -5,7 +5,7 @@ import { localDb } from '../../../services';
  * @param body {Object}
  * @return {Promise<any | void | never>}
  */
-const logIn = (body) => {
+const logIn = body => {
   const url = `${API_URL}/auth/login`;
 
   return fetch(url, 'post', body);
@@ -23,7 +23,4 @@ const logOut = () => {
   });
 };
 
-export {
-  logIn,
-  logOut,
-};
+export { logIn, logOut };

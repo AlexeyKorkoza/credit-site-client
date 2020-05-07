@@ -12,9 +12,7 @@ const Add = () => {
   const [currentStep, ,] = useStepper();
   const CurrentComponent = components[currentStep];
 
-  return (
-    <CurrentComponent />
-  );
+  return <CurrentComponent />;
 };
 
 export default Add;

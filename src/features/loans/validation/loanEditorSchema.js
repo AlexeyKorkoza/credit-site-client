@@ -6,10 +6,12 @@ const loanEditorSchema = yup.object().shape({
   dateIssue: yup.date(),
   dateMaturity: yup.date(),
   totalRepaymentAmount: yup.number(),
-  selectedTerritory: yup.object({
-    label: yup.string(),
-    value: yup.string(),
-  }).required(),
+  selectedTerritory: yup
+    .object({
+      label: yup.string(),
+      value: yup.string(),
+    })
+    .required(),
 });
 
 export default loanEditorSchema;

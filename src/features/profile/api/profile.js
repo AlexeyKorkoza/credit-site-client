@@ -52,8 +52,4 @@ const updatePasswordsProfileUser = (role, id, body) => {
   return fetch(`${API_URL}/api/v1${route}/${id}/change-password`, 'put', body);
 };
 
-export {
-  getProfileUser,
-  updateProfileUser,
-  updatePasswordsProfileUser,
-};
+export { getProfileUser, updateProfileUser, updatePasswordsProfileUser };

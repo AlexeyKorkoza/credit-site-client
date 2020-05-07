@@ -14,7 +14,7 @@ const useClientList = () => {
     const { id: managerId } = localDb.getDataAuthUser();
     const func = role === 'manager' ? getManagerClients : getAllClients;
 
-    func(managerId).then((result) => {
+    func(managerId).then(result => {
       setClients(result.clients);
     });
   });

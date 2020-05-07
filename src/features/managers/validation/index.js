@@ -1,4 +1,1 @@
-export {
-  blockManagerSchema,
-  managerSchema,
-} from './manager';
+export { blockManagerSchema, managerSchema } from './manager';

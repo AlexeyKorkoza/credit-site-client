@@ -6,16 +6,14 @@ import { Button, Card, Input } from '../../../shared';
 import { useManagersEditor } from '../hooks';
 import { blockManagerSchema } from '../validation';
 
-const BlockManager = ({
-  isBlocked,
-}) => {
+const BlockManager = ({ isBlocked }) => {
   const { handleSubmit, register } = useForm({
     defaultValues: {
       isBlocked,
     },
     validationSchema: blockManagerSchema,
   });
-  const [,,, blockManager,] = useManagersEditor();
+  const [, , , blockManager] = useManagersEditor();
 
   return (
     <Card.Form>

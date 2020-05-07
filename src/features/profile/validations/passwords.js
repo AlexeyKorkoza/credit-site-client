@@ -5,7 +5,7 @@ export default object({
   newPassword: string().required('Enter your new password'),
   confirmNewPassword: string()
     .required('Confirm your new password')
-    .test('passwords-match', 'Passwords don\'t match', function (value) {
+    .test('passwords-match', "Passwords don't match", function(value) {
       return this.parent.newPassword === value;
     }),
 });

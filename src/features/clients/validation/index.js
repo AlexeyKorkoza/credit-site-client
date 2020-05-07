@@ -1,4 +1,1 @@
-export {
-  removeClientSchema,
-  clientSchema,
-} from './clientSchema';
+export { removeClientSchema, clientSchema } from './clientSchema';

@@ -21,21 +21,21 @@ const ListComponent = () => {
           <Table.List.Row.Column />
         </Table.Header>
         <Table.List>
-          {clients.map((client) => (
+          {clients.map(client => (
             <Table.List.Row key={client.id}>
               <Table.List.Row.Column>{client.name}</Table.List.Row.Column>
               <Table.List.Row.Column>{client.email}</Table.List.Row.Column>
               <Table.List.Row.LastColumn flex-direction="column">
                 <List.Link to={routesScheme.clientsId(client.id)}>Edit</List.Link>
                 {role === 'manager' && (
-                <List.Link
-                  to={{
-                    pathname: routesScheme.loansAdd,
-                    state: { clientId: client.id },
-                  }}
-                >
-                  Add new loan
-                </List.Link>
+                  <List.Link
+                    to={{
+                      pathname: routesScheme.loansAdd,
+                      state: { clientId: client.id },
+                    }}
+                  >
+                    Add new loan
+                  </List.Link>
                 )}
               </Table.List.Row.LastColumn>
             </Table.List.Row>

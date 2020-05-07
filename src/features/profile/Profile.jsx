@@ -18,9 +18,7 @@ const Profile = () => {
 
   const Component = rolesComponents[role];
 
-  return (
-    <Component />
-  );
+  return <Component />;
 };
 
 export default Profile;

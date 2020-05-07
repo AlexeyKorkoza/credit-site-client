@@ -18,7 +18,7 @@ const ListComponent = () => {
           <Table.List.Row.Column />
         </Table.Header>
         <Table.List>
-          {managers.map((manager) => (
+          {managers.map(manager => (
             <Table.List.Row key={manager.id}>
               <Table.List.Row.Column>{manager.login}</Table.List.Row.Column>
               <Table.List.Row.Column>{manager.email}</Table.List.Row.Column>

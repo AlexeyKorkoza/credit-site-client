@@ -53,12 +53,7 @@ const App = () => {
             component={ClientEditor}
           />
           <AuthRoute exact path={routesScheme.clientsIdRoute} component={ClientEditor} />
-          <AuthRoleRoute
-            accessRole="admin"
-            exact
-            path={routesScheme.loans}
-            component={LoansList}
-          />
+          <AuthRoleRoute accessRole="admin" exact path={routesScheme.loans} component={LoansList} />
           <AuthRoleRoute
             accessRole="manager"
             exact

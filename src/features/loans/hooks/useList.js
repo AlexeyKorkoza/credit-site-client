@@ -18,7 +18,7 @@ const useList = () => {
       return;
     }
 
-    getAllLoans().then((result) => {
+    getAllLoans().then(result => {
       const { loans: savedLoans } = result;
       if (savedLoans) {
         setLoans(savedLoans);

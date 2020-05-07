@@ -14,7 +14,7 @@ const UserProvider = ({ children = '' }) => {
     setRole(result ? result.role : '');
   });
 
-  const updateUserRole = (newRole) => {
+  const updateUserRole = newRole => {
     setRole(newRole);
   };
 

@@ -1,5 +1,1 @@
-export {
-  getProfileUser,
-  updateProfileUser,
-  updatePasswordsProfileUser,
-} from './profile';
+export { getProfileUser, updateProfileUser, updatePasswordsProfileUser } from './profile';

@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -12,12 +12,7 @@ const NoAuthRoute = ({ component: Component, ...rest }) => {
     return <Redirect to={routesScheme.profile} />;
   }
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => <Component {...props} />}
-    />
-  );
+  return <Route {...rest} render={props => <Component {...props} />} />;
 };
 
 NoAuthRoute.defaultProps = {

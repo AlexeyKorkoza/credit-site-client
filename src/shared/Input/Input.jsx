@@ -13,7 +13,13 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
 `;
 
 const Input = ({ disabled, register, type, name, placeholder = '' }) => (
-  <StyledInput disabled={disabled} name={name} placeholder={placeholder} type={type} ref={register} />
+  <StyledInput
+    disabled={disabled}
+    name={name}
+    placeholder={placeholder}
+    type={type}
+    ref={register}
+  />
 );
 
 Input.defaultProps = {

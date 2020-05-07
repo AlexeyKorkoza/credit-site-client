@@ -1,14 +1,8 @@
-import {
-  useCallback, useContext, useEffect, useState,
-} from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { store } from 'react-notifications-component';
 import { useForm } from 'react-hook-form';
 
-import {
-  getProfileUser,
-  updateProfileUser,
-  updatePasswordsProfileUser,
-} from '../api';
+import { getProfileUser, updateProfileUser, updatePasswordsProfileUser } from '../api';
 import { localDb, notification } from '../../../services';
 import { UserContext } from '../../../core';
 import TERRITORIES from '../../../constants';
@@ -34,13 +28,12 @@ const useProfile = () => {
 
     setUserId(id);
 
-    getProfileUser(role, id).then((result) => {
+    getProfileUser(role, id).then(result => {
       const { data } = result;
       if (data.territory) {
         const profileData = {
           data,
-          selectedTerritory: TERRITORIES
-            .find((territory) => +territory.value === data.territory),
+          selectedTerritory: TERRITORIES.find(territory => +territory.value === data.territory),
         };
 
         setValue(profileData);
@@ -50,7 +43,7 @@ const useProfile = () => {
     });
   }, [userId]);
 
-  const saveData = useCallback((data) => {
+  const saveData = useCallback(data => {
     // if (!this.validatorProfile.allValid()) {
     //   return;
     // }
@@ -61,9 +54,7 @@ const useProfile = () => {
       login,
     };
     if (role === 'manager') {
-      const {
-        fullName, phone, email,
-      } = data;
+      const { fullName, phone, email } = data;
       const { value: territory } = selectedTerritory;
       body = {
         ...body,
@@ -77,12 +68,8 @@ const useProfile = () => {
     updateProfileUser(role, userId, body);
   });
 
-  const changePassword = useCallback((data) => {
-    const {
-      oldPassword,
-      newPassword,
-      confirmNewPassword,
-    } = data;
+  const changePassword = useCallback(data => {
+    const { oldPassword, newPassword, confirmNewPassword } = data;
 
     const body = {
       oldPassword,
@@ -91,16 +78,16 @@ const useProfile = () => {
     };
 
     updatePasswordsProfileUser(role, userId, body)
-      .then((result) => {
+      .then(result => {
         const builtNotification = notification.buildNotification(
           result.message,
           successfulNotification,
         );
         store.addNotification(builtNotification);
       })
-      .catch((err) => {
+      .catch(err => {
         const { errors } = JSON.parse(err.message);
-        errors.forEach((error) => {
+        errors.forEach(error => {
           const { msg: message } = error;
           const builtNotification = notification.buildNotification(message, failureNotification);
           store.addNotification(builtNotification);
@@ -108,17 +95,14 @@ const useProfile = () => {
       });
   });
 
-  const changeSelectedTerritory = useCallback((territory) => {
-    setSelectedTerritory(territory);
-  }, [selectedTerritory]);
+  const changeSelectedTerritory = useCallback(
+    territory => {
+      setSelectedTerritory(territory);
+    },
+    [selectedTerritory],
+  );
 
-  return [
-    changePassword,
-    saveData,
-    selectedTerritory,
-    changeSelectedTerritory,
-    useFormProps,
-  ];
+  return [changePassword, saveData, selectedTerritory, changeSelectedTerritory, useFormProps];
 };
 
 export default useProfile;

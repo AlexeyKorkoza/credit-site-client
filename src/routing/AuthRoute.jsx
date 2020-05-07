@@ -12,12 +12,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
     return <Redirect to={routesScheme.auth} />;
   }
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => <Component {...props} />}
-    />
-  );
+  return <Route {...rest} render={props => <Component {...props} />} />;
 };
 
 AuthRoute.defaultProps = {

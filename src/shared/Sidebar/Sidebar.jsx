@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import Sidebar from './styles';
-import {
-  Client, Loan, Logout, Manager, Profile,
-} from './icons';
+import { Client, Loan, Logout, Manager, Profile } from './icons';
 import useSidebar from './hooks';
 
 const sidebarItems = [
@@ -47,8 +45,8 @@ const SidebarComponent = () => {
       <Sidebar.Container>
         <Sidebar.Navigation>
           {sidebarItems
-            .filter((e) => e.roles.includes(role))
-            .map((item) => {
+            .filter(e => e.roles.includes(role))
+            .map(item => {
               const { key, icon: Icon } = item;
 
               return (

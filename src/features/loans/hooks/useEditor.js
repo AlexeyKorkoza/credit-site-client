@@ -21,17 +21,15 @@ const useEditor = () => {
     if (Object.keys(params).length > 0) {
       const { id: loanId } = params;
 
-      getLoan(loanId).then((result) => {
-        const {
-          dateIssue, dateMaturity, territory, ...rest
-        } = result.loan;
+      getLoan(loanId).then(result => {
+        const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
 
         setLoanData({
           action: 'edit',
           dateIssue: moment(dateIssue),
           dateMaturity: moment(dateMaturity),
           loanId,
-          selectedTerritory: TERRITORIES.find((e) => +e.value === +territory),
+          selectedTerritory: TERRITORIES.find(e => +e.value === +territory),
           ...rest,
         });
       });
@@ -42,7 +40,7 @@ const useEditor = () => {
     }
   });
 
-  const changeSelectedTerritory = useCallback((territory) => {
+  const changeSelectedTerritory = useCallback(territory => {
     setSelectedTerritory(territory);
   }, []);
 
@@ -54,7 +52,7 @@ const useEditor = () => {
     setFocusedDateMaturity(focused);
   });
 
-  const changeDateIssue = useCallback((dateIssue) => {
+  const changeDateIssue = useCallback(dateIssue => {
     const { dateMaturity } = loanData;
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
@@ -62,7 +60,7 @@ const useEditor = () => {
     setLoanData(result);
   });
 
-  const changeDateMaturity = useCallback((dateMaturity) => {
+  const changeDateMaturity = useCallback(dateMaturity => {
     const { dateIssue } = loanData;
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
@@ -70,14 +68,8 @@ const useEditor = () => {
     setLoanData(result);
   });
 
-  const saveLoanData = useCallback((data) => {
-    const {
-      amount,
-      coefficient,
-      dateIssue,
-      dateMaturity,
-      totalRepaymentAmount,
-    } = data;
+  const saveLoanData = useCallback(data => {
+    const { amount, coefficient, dateIssue, dateMaturity, totalRepaymentAmount } = data;
     const { loanId } = params;
     const { value: territory } = selectedTerritory;
 
@@ -101,7 +93,7 @@ const useEditor = () => {
           store.addNotification(builtNotification);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const builtNotification = notification.buildNotification(message, failureNotificationType);
         if (builtNotification) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Card, Input } from '../../../shared';
 
-const Login = (props) => {
+const Login = props => {
   const { name, register } = props;
 
   return (

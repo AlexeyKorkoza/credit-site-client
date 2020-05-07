@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  Button, Card, Input, ReactSelect,
-} from '../../../../shared';
+import { Button, Card, Input, ReactSelect } from '../../../../shared';
 import { useFirstStep, useStepper } from '../../hooks';
 import TERRITORIES from '../../../../constants';
 import { loanFirstStepSchema } from '../../validation';
@@ -17,14 +15,9 @@ const customReactSelectStyles = {
 };
 
 const Step1 = () => {
-  const [handleCreatingClientCard,
-    loanData,
-    modifySelectedTerritory] = useFirstStep();
-  const [currentStep,
-    handleBackClick] = useStepper();
-  const {
-    errors, handleSubmit, register, unregister, setValue, watch,
-  } = useForm({
+  const [handleCreatingClientCard, loanData, modifySelectedTerritory] = useFirstStep();
+  const [currentStep, handleBackClick] = useStepper();
+  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
     defaultValues: loanData,
     validationSchema: loanFirstStepSchema,
   });
@@ -37,7 +30,7 @@ const Step1 = () => {
     };
   });
 
-  const handleSelectedTerritory = useCallback((territory) => {
+  const handleSelectedTerritory = useCallback(territory => {
     setValue('selectedTerritory', territory);
     modifySelectedTerritory(territory);
   }, []);
@@ -48,11 +41,7 @@ const Step1 = () => {
         <Card.Form>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="fullName">Full Name</Card.Form.Label>
-            <Input
-              name="fullName"
-              placeholder="Full Name..."
-              register={register}
-            />
+            <Input name="fullName" placeholder="Full Name..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -66,29 +55,15 @@ const Step1 = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="phone">Phone</Card.Form.Label>
-            <Input
-              type="phone"
-              name="phone"
-              placeholder="Phone..."
-              register={register}
-            />
+            <Input type="phone" name="phone" placeholder="Phone..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="email">Email</Card.Form.Label>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Email..."
-              register={register}
-            />
+            <Input type="email" name="email" placeholder="Email..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="passportData">Passport Data</Card.Form.Label>
-            <Input
-              name="passportData"
-              placeholder="Passport Data..."
-              register={register}
-            />
+            <Input name="passportData" placeholder="Passport Data..." register={register} />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="surchargeFactor">Surcharge Factor</Card.Form.Label>

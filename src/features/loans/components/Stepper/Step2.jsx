@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import LoansTable from '../Table';
-import {
-  Button, Card, H1, Input, ReactSelect, SingleDatePicker,
-} from '../../../../shared';
+import { Button, Card, H1, Input, ReactSelect, SingleDatePicker } from '../../../../shared';
 import { useSecondStep } from '../../hooks';
 import TERRITORIES from '../../../../constants';
 import { loanSecondStepSchema } from '../../validation';
@@ -29,9 +27,7 @@ const Step2 = () => {
     changeDateMaturity,
     handleCreatingLoan,
   ] = useSecondStep();
-  const {
-    errors, handleSubmit, register, unregister, setValue, watch,
-  } = useForm({
+  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
     // defaultValues: loanData,
     validationSchema: loanSecondStepSchema,
   });
@@ -43,7 +39,7 @@ const Step2 = () => {
     return () => {
       unregister('dateIssue');
       unregister('dateMaturity');
-    }
+    };
   }, [register, unregister]);
 
   return (
@@ -58,12 +54,7 @@ const Step2 = () => {
           <Card.Form noValidate>
             <Card.Form.Item>
               <Card.Form.Label htmlFor="amount">Amount</Card.Form.Label>
-              <Input
-                name="amount"
-                placeholder="Amount ..."
-                register={register}
-                disabled
-              />
+              <Input name="amount" placeholder="Amount ..." register={register} disabled />
             </Card.Form.Item>
             <Card.Form.Item>
               <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>

@@ -3,9 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Login from './Login';
 import Passwords from './Passwords';
-import {
-  Button, Card, Input, ReactSelect,
-} from '../../../shared';
+import { Button, Card, Input, ReactSelect } from '../../../shared';
 import useProfile from '../hooks';
 import TERRITORIES from '../../../constants';
 import { managerValidation } from '../validations';
@@ -19,18 +17,10 @@ const customReactSelectStyles = {
 };
 
 const Manager = () => {
-  const {
-    errors, handleSubmit, register, unregister, setValue, watch,
-  } = useForm({
+  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
     validationSchema: managerValidation,
   });
-  const [,
-    ,
-    saveData,
-    selectedTerritory,
-    changeSelectedTerritory
-    ,
-  ] = useProfile();
+  const [, , saveData, selectedTerritory, changeSelectedTerritory] = useProfile();
 
   useEffect(() => {
     register({ name: 'selectedTerritory' });
@@ -40,7 +30,7 @@ const Manager = () => {
     };
   });
 
-  const handleSelectedTerritory = (territory) => {
+  const handleSelectedTerritory = territory => {
     setValue('selectedTerritory', territory);
     changeSelectedTerritory(territory);
   };
@@ -51,11 +41,7 @@ const Manager = () => {
         <Card.Form noValidate>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="fullName">Full name</Card.Form.Label>
-            <Input
-              name="fullName"
-              register={register}
-              placeholder="Full name..."
-            />
+            <Input name="fullName" register={register} placeholder="Full name..." />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -69,23 +55,12 @@ const Manager = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="phone">Phone</Card.Form.Label>
-            <Input
-              register={register}
-              type="phone"
-              name="phone"
-              placeholder="Phone..."
-            />
+            <Input register={register} type="phone" name="phone" placeholder="Phone..." />
           </Card.Form.Item>
           <Login name="login" register={register} />
           <Card.Form.Item>
             <Card.Form.Label htmlFor="email">Email</Card.Form.Label>
-            <Input
-              register={register}
-              type="email"
-              name="email"
-              placeholder="Email..."
-              required
-            />
+            <Input register={register} type="email" name="email" placeholder="Email..." required />
           </Card.Form.Item>
           <Card.Form.Item>
             <Button onClick={handleSubmit(saveData)}>Save</Button>

@@ -5,10 +5,12 @@ const loanFirstStepSchema = yup.object().shape({
   phone: yup.string().required(),
   email: yup.string().required(),
   surchargeFactor: yup.number().required(),
-  selectedTerritory: yup.object({
-    label: yup.string(),
-    value: yup.string(),
-  }).required(),
+  selectedTerritory: yup
+    .object({
+      label: yup.string(),
+      value: yup.string(),
+    })
+    .required(),
 });
 
 export default loanFirstStepSchema;

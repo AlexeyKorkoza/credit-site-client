@@ -1,7 +1,1 @@
-export {
-  blockManager,
-  getManager,
-  getManagerClients,
-  getManagers,
-  saveManager,
-} from './managers';
+export { blockManager, getManager, getManagerClients, getManagers, saveManager } from './managers';

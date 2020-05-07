@@ -9,7 +9,7 @@ const getAllLoans = () => fetch(`${API_URL}/api/v1/loans`, 'get');
  * @param id {Number}
  * @return {Promise|Q.Promise<void>|*|Promise<T | void>}
  */
-const getLoan = (id) => fetch(`${API_URL}/api/v1/loans/${id}`, 'get');
+const getLoan = id => fetch(`${API_URL}/api/v1/loans/${id}`, 'get');
 
 /**
  * @param body {Object}
@@ -24,8 +24,4 @@ const saveLoan = (body, id = null) => {
   return fetch(`${API_URL}/api/v1/loans`, 'post', body);
 };
 
-export {
-  getAllLoans,
-  getLoan,
-  saveLoan,
-};
+export { getAllLoans, getLoan, saveLoan };

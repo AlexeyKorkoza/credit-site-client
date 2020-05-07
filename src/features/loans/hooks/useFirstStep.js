@@ -1,6 +1,4 @@
-import {
-  useCallback, useEffect, useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { getClient, getClientLoans } from '../../clients/api';
@@ -18,7 +16,7 @@ const useFirstStep = () => {
     if (state) {
       const { clientId } = state;
 
-      getClient(clientId).then((result) => {
+      getClient(clientId).then(result => {
         const { client } = result;
         const { name: clientName } = client;
 
@@ -26,26 +24,20 @@ const useFirstStep = () => {
           ...client,
           clientId,
           clientName,
-          selectedTerritory: TERRITORIES.find((e) => +e.value === +client.territory),
+          selectedTerritory: TERRITORIES.find(e => +e.value === +client.territory),
         });
       });
     }
   });
 
-  const handleCreatingClientCard = useCallback((data) => {
-    const {
-      email,
-      fullName,
-      phone,
-      passportData,
-      surchargeFactor,
-    } = data;
+  const handleCreatingClientCard = useCallback(data => {
+    const { email, fullName, phone, passportData, surchargeFactor } = data;
 
     if (surchargeFactor === 0) {
       return;
     }
 
-    const territory = TERRITORIES.find((e) => +e.value === +selectedTerritory.value).value;
+    const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value).value;
     const { clientId } = loanData;
 
     const body = {
@@ -60,7 +52,7 @@ const useFirstStep = () => {
 
     createClientCard(body)
       .then(() => getClientLoans(clientId))
-      .then((result) => {
+      .then(result => {
         const { loans } = result;
 
         // this.setState({
@@ -75,11 +67,7 @@ const useFirstStep = () => {
     setSelectedTerritory(territory);
   });
 
-  return [
-    handleCreatingClientCard,
-    loanData,
-    modifySelectedTerritory,
-  ];
+  return [handleCreatingClientCard, loanData, modifySelectedTerritory];
 };
 
 export default useFirstStep;

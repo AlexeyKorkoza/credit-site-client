@@ -1,4 +1,1 @@
-export {
-  ClientEditor,
-  ClientList,
-} from './components';
+export { ClientEditor, ClientList } from './components';

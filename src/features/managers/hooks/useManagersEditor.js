@@ -28,40 +28,30 @@ const useManagersEditor = () => {
 
   useEffect(() => {
     if (managerId) {
-      getManager(managerId).then((result) => {
+      getManager(managerId).then(result => {
         const { territory } = result.data;
 
-        setManagerData((state) => ({
+        setManagerData(state => ({
           ...state,
           ...result.data,
           action: 'edit',
           managerId,
-          selectedTerritory: TERRITORIES.find((e) => +e.value === territory),
+          selectedTerritory: TERRITORIES.find(e => +e.value === territory),
         }));
       });
     }
   }, []);
 
-  const updateSelectedTerritory = useCallback(
-    (territory) => {
-      setSelectedTerritory(territory);
-    },
-    [],
-  );
+  const updateSelectedTerritory = useCallback(territory => {
+    setSelectedTerritory(territory);
+  }, []);
 
   const blockManager = useCallback(() => {
     blockManager(managerId);
   }, []);
 
-  const saveManagerData = useCallback((data) => {
-    const {
-      action,
-      email,
-      fullName,
-      login,
-      password,
-      phone,
-    } = data;
+  const saveManagerData = useCallback(data => {
+    const { action, email, fullName, login, password, phone } = data;
     const { value: territory } = selectedTerritory;
 
     const body = {
@@ -77,9 +67,10 @@ const useManagersEditor = () => {
 
     return func
       .then(() => {
-        const message = action === 'edit'
-          ? 'Manager was updated successfully'
-          : 'Manager was created successfully';
+        const message =
+          action === 'edit'
+            ? 'Manager was updated successfully'
+            : 'Manager was created successfully';
         const builtNotification = notification.buildNotification(
           message,
           successfulNotificationType,
@@ -88,7 +79,7 @@ const useManagersEditor = () => {
           store.addNotification(builtNotification);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         const { message } = error;
         const builtNotification = notification.buildNotification(message, failureNotificationType);
         if (builtNotification) {

@@ -17,10 +17,7 @@ const useSidebar = () => {
     });
   }, []);
 
-  return [
-    role,
-    onLogOut,
-  ];
+  return [role, onLogOut];
 };
 
 export default useSidebar;
