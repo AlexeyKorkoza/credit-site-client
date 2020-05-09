@@ -1,8 +1,8 @@
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('config');
 const path = require('path');
 
@@ -13,10 +13,7 @@ const {
 
 const environment = env || 'development';
 const plugins = [
-  new MiniCssExtractPlugin({
-    filename: 'app.css',
-    allChunks: true,
-  }),
+  new HtmlWebpackPlugin({ template: './public/index.html' }),
   new webpack.DefinePlugin({
     NODE_ENV: JSON.stringify(environment),
     API_URL: JSON.stringify(`${apiUrl}`),
@@ -64,11 +61,10 @@ if (environment === 'production') {
 module.exports = [
   {
     devtool: 'source-map',
-    context: __dirname,
     entry: './src/index.jsx',
     output: {
-      filename: 'app.js',
-      path: path.resolve(__dirname, 'public'),
+      filename: '[name].[hash].js',
+      path: path.join(__dirname, 'dist'),
       publicPath: '/',
     },
     optimization,
@@ -82,12 +78,18 @@ module.exports = [
         {
           test: /\.(js|jsx)$/,
           exclude: /(node_modules)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env', '@babel/preset-react'],
+              },
             },
-          },
+            {
+              loader: 'source-map-loader',
+            },
+          ],
+          enforce: 'pre',
         },
         {
           test: /\.html$/,
@@ -116,11 +118,6 @@ module.exports = [
             },
           ],
         },
-        {
-          test: /\.(js|jsx)$/,
-          use: ['source-map-loader'],
-          enforce: 'pre',
-        },
       ],
     },
     resolve: {
@@ -128,9 +125,8 @@ module.exports = [
     },
     devServer: {
       historyApiFallback: true,
-      contentBase: path.join(__dirname, 'public'),
       hot: true,
-      port: port || 3000,
+      port: port || 8080,
     },
   },
 ];

@@ -31,5 +31,4 @@ Desktop.ini
 # Optional eslint cache
 .eslintcache
 
-public/app.js
-public/app.css
+dist
