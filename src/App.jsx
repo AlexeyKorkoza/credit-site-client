@@ -10,13 +10,13 @@ import { UserContext } from './core';
 const NoMatch = lazy(() => import('./shared/ErrorPages'));
 const Authentication = lazy(() => import('./features/authentication'));
 const Profile = lazy(() => import('./features/profile'));
-const ManagersList = lazy(() => import('./features/managers').then(m => m.ManagersList));
-const ManagersEditor = lazy(() => import('./features/managers').then(m => m.ManagersEditor));
-const ClientEditor = lazy(() => import('./features/clients').then(m => m.ClientEditor));
-const ClientList = lazy(() => import('./features/clients').then(m => m.ClientList));
-const LoansList = lazy(() => import('./features/loans').then(m => m.LoansList));
-const LoansEditor = lazy(() => import('./features/loans').then(m => m.LoansEditor));
-const LoansAdd = lazy(() => import('./features/loans').then(m => m.LoansAdd));
+const ManagersList = lazy(() => import('./features/managers/components/List'));
+const ManagersEditor = lazy(() => import('./features/managers/components/Editor'));
+const ClientEditor = lazy(() => import('./features/clients/components/Editor'));
+const ClientList = lazy(() => import('./features/clients/components/List'));
+const LoansList = lazy(() => import('./features/loans/components/List'));
+const LoansEditor = lazy(() => import('./features/loans/components/Editor'));
+const LoansAdd = lazy(() => import('./features/loans/components/Add'));
 
 const App = () => {
   const context = useContext(UserContext);

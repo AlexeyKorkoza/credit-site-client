@@ -64,6 +64,7 @@ module.exports = [
     entry: './src/index.jsx',
     output: {
       filename: '[name].[hash].js',
+      chunkFilename: '[name].[hash].js',
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
     },
@@ -126,7 +127,7 @@ module.exports = [
     devServer: {
       historyApiFallback: true,
       hot: true,
-      port: port || 8080,
+      // port: port || 8080,
     },
   },
 ];
