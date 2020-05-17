@@ -1,15 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Table } from '../../../shared';
 import List from './styles';
-import { UserContext } from '../../../core';
 import { useClientList } from '../hooks';
 import { routesScheme } from '../../../routing';
 
 const ListComponent = () => {
-  const [clients] = useClientList();
-  const context = useContext(UserContext);
-  const { role } = context;
+  const [clients, role] = useClientList();
 
   return (
     <List>

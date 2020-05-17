@@ -17,9 +17,9 @@ const useClientList = () => {
     func(managerId).then(result => {
       setClients(result.clients);
     });
-  });
+  }, []);
 
-  return [clients];
+  return [clients, role];
 };
 
 export default useClientList;

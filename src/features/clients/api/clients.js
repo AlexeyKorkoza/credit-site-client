@@ -23,7 +23,13 @@ const getClient = id => fetch(`${API_URL}/api/v1/clients/${id}`, 'get');
  */
 const getClientLoans = id => fetch(`${API_URL}/api/v1/clients/${id}/loans`, 'get');
 
-const markClientForDeletion = id => fetch(`${API_URL}/api/v1/clients/${id}/deletion`, 'put', {});
+/**
+ * @param id {Number}
+ * @param isRemoved {Boolean}
+ * @returns {Promise<*|void>}
+ */
+const markClientForDeletion = (id, isRemoved) =>
+  fetch(`${API_URL}/api/v1/clients/${id}/deletion`, 'put', { is_removed: isRemoved });
 
 /**
  * @param body {Object}

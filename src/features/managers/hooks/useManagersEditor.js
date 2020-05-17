@@ -42,6 +42,8 @@ const useManagersEditor = () => {
         setValue([...values]);
         setSelectedTerritory(TERRITORIES.find(e => +e.value === territory));
       });
+    } else {
+      setAction('add');
     }
   }, [managerId]);
 

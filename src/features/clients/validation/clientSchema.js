@@ -15,8 +15,4 @@ const clientSchema = yup.object().shape({
   isRemoved: yup.bool(),
 });
 
-const removeClientSchema = yup.object().shape({
-  isRemoved: yup.bool(),
-});
-
-export { removeClientSchema, clientSchema };
+export { clientSchema };
