@@ -28,6 +28,7 @@ Input.defaultProps = {
   name: '',
   placeholder: '',
   register: PropTypes.any,
+  value: '',
 };
 
 Input.propTypes = {
@@ -39,6 +40,7 @@ Input.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
+  value: PropTypes.string,
 };
 
 export default Input;

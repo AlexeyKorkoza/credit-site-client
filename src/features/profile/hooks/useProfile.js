@@ -1,34 +1,32 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { store } from 'react-notifications-component';
-import { useForm } from 'react-hook-form';
 
-import { getProfileUser, updateProfileUser, updatePasswordsProfileUser } from '../api';
-import { localDb, notification } from '../../../services';
-import { UserContext } from '../../../core';
+import { getProfileUser, updateProfileUser } from '../api';
+import { localDb } from '../../../services';
+import { UserContext, useInitForm } from '../../../core';
 import TERRITORIES from '../../../constants';
 import { adminValidation, managerValidation } from '../validations';
 
-const successfulNotification = 'SuccessfulChangingPassword';
-const failureNotification = 'FailureChangingPassword';
-
 const useProfile = () => {
-  const [userId, setUserId] = useState(null);
   const [selectedTerritory, setSelectedTerritory] = useState({});
   const context = useContext(UserContext);
   const { role } = context;
 
-  const useFormProps = useForm({
+  const { id: userId } = localDb.getDataAuthUser();
+
+  const useFormProps = useInitForm({
     validationSchema: role === 'admin' ? adminValidation : managerValidation,
-    mode: 'onBlur',
+    defaultValues: {
+      fullName: '',
+      territory: '',
+      phone: '',
+      email: '',
+      login: '',
+    },
   });
   const { setValue } = useFormProps;
 
   useEffect(() => {
-    const { id } = localDb.getDataAuthUser();
-
-    setUserId(id);
-
-    getProfileUser(role, id).then(result => {
+    getProfileUser(role, userId).then(result => {
       const { data } = result;
       if (data.territory) {
         const profileData = {
@@ -68,33 +66,6 @@ const useProfile = () => {
     updateProfileUser(role, userId, body);
   });
 
-  const changePassword = useCallback(data => {
-    const { oldPassword, newPassword, confirmNewPassword } = data;
-
-    const body = {
-      oldPassword,
-      newPassword,
-      confirmNewPassword,
-    };
-
-    updatePasswordsProfileUser(role, userId, body)
-      .then(result => {
-        const builtNotification = notification.buildNotification(
-          result.message,
-          successfulNotification,
-        );
-        store.addNotification(builtNotification);
-      })
-      .catch(err => {
-        const { errors } = JSON.parse(err.message);
-        errors.forEach(error => {
-          const { msg: message } = error;
-          const builtNotification = notification.buildNotification(message, failureNotification);
-          store.addNotification(builtNotification);
-        });
-      });
-  });
-
   const changeSelectedTerritory = useCallback(
     territory => {
       setSelectedTerritory(territory);
@@ -102,7 +73,7 @@ const useProfile = () => {
     [selectedTerritory],
   );
 
-  return [changePassword, saveData, selectedTerritory, changeSelectedTerritory, useFormProps];
+  return [saveData, selectedTerritory, changeSelectedTerritory, useFormProps];
 };
 
 export default useProfile;

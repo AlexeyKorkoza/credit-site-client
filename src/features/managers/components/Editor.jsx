@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
 
 import { Button, Card, Error, Input, ReactSelect } from '../../../shared';
-import { Login, Passwords } from '../../profile/components';
+import { Login, Passwords } from '../../profile';
 import TERRITORIES from '../../../constants';
 import { useManagersEditor } from '../hooks';
 import BlockManager from './BlockManager';
-import { managerSchema } from '../validation';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -18,34 +16,15 @@ const customReactSelectStyles = {
 
 const Editor = () => {
   const [
-    managerData,
+    action,
     selectedTerritory,
-    updateSelectedTerritory,
-    ,
     saveManager,
+    useFormProps,
+    handleSelectedTerritory,
   ] = useManagersEditor();
-  const { handleSubmit, setValue, register, unregister, watch, errors, getValues } = useForm({
-    defaultValues: {
-      ...managerData,
-    },
-    validationSchema: managerSchema,
-  });
-
-  useEffect(() => {
-    register({ name: 'selectedTerritory' });
-
-    return () => {
-      unregister('selectedTerritory');
-    };
-  }, [register]);
-
-  const handleSelectedTerritory = territory => {
-    setValue('selectedTerritory', territory);
-    updateSelectedTerritory(territory);
-  };
-
-  const action = watch('action');
-  const isBlocked = watch('isBlocked');
+  const { getValues, errors, handleSubmit, register } = useFormProps;
+  const { isBlocked } = getValues();
+  console.log(getValues());
 
   return (
     <Card.List>
@@ -98,7 +77,7 @@ const Editor = () => {
       {action === 'edit' && <Passwords />}
       {action === 'edit' && (
         <Card.List.Item>
-          <BlockManager isBlocked={isBlocked} />
+          <BlockManager name="isBlocked" register={register} isBlocked={isBlocked} />
         </Card.List.Item>
       )}
     </Card.List>

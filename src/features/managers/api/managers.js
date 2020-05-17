@@ -2,9 +2,11 @@ import fetch from '../../../api/fetch';
 
 /**
  * @param id {Number}
+ * @param isBlocked {Boolean}
  * @return {Promise<any | void>}
  */
-const blockManager = id => fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', {});
+const blockManager = (id, isBlocked) =>
+  fetch(`${API_URL}/api/v1/managers/${id}/block-manager`, 'put', { is_blocked: isBlocked });
 
 /**
  * @param id {Number}

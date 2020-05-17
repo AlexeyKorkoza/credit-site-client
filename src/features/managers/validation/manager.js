@@ -9,7 +9,6 @@ const managerSchema = yup.object().shape({
     })
     .required(),
   phone: yup.string().required(),
-  password: yup.string().required(),
   action: yup.string(),
   isBlocked: yup.bool(),
 });

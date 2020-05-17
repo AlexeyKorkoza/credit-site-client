@@ -1,15 +1,11 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
 
 import { Button, Card, Error, Input } from '../../../shared';
-import useProfile from '../hooks';
-import { passwordsValidation } from '../validations';
+import { usePasswords } from '../hooks';
 
 const Passwords = () => {
-  const { errors, handleSubmit, register } = useForm({
-    validationSchema: passwordsValidation,
-  });
-  const [changePassword] = useProfile();
+  const [changePassword, useFormProps] = usePasswords();
+  const { errors, handleSubmit, register } = useFormProps;
 
   return (
     <Card.List.Item>

@@ -3,10 +3,10 @@ import React from 'react';
 import Login from './Login';
 import Passwords from './Passwords';
 import { Button, Error, Card } from '../../../shared';
-import useProfile from '../hooks';
+import { useProfile } from '../hooks';
 
 const Admin = () => {
-  const [, saveData, , , useFormProps] = useProfile();
+  const [saveData, , , useFormProps] = useProfile();
   const { errors, handleSubmit, register } = useFormProps;
 
   return (

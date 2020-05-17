@@ -1,19 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 
 import { Button, Card, Input } from '../../../shared';
-import { useManagersEditor } from '../hooks';
-import { blockManagerSchema } from '../validation';
+import { useBlockManager } from '../hooks';
 
 const BlockManager = ({ isBlocked }) => {
-  const { handleSubmit, register } = useForm({
-    defaultValues: {
-      isBlocked,
-    },
-    validationSchema: blockManagerSchema,
-  });
-  const [, , , blockManager] = useManagersEditor();
+  const [blockManager, formProps] = useBlockManager(isBlocked);
+  const { handleSubmit, register } = formProps;
 
   return (
     <Card.Form>

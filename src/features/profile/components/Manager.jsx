@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import Login from './Login';
 import Passwords from './Passwords';
 import { Button, Card, Input, ReactSelect } from '../../../shared';
-import useProfile from '../hooks';
+import { useProfile } from '../hooks';
 import TERRITORIES from '../../../constants';
 import { managerValidation } from '../validations';
 
@@ -20,7 +20,7 @@ const Manager = () => {
   const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
     validationSchema: managerValidation,
   });
-  const [, , saveData, selectedTerritory, changeSelectedTerritory] = useProfile();
+  const [saveData, selectedTerritory, changeSelectedTerritory] = useProfile();
 
   useEffect(() => {
     register({ name: 'selectedTerritory' });
