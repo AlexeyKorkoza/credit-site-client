@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { store } from 'react-notifications-component';
 
 import { transformResponse, useInitForm } from '../../../core';
-import { getManager, saveManager } from '../api';
+import { blockManager, getManager, saveManager } from '../api';
 import { notification } from '../../../services';
 import TERRITORIES from '../../../constants';
 import { managerSchema } from '../validation';
@@ -99,12 +99,46 @@ const useManagersEditor = () => {
     [action],
   );
 
+  const handleBlockingManager = useCallback(
+    data => {
+      blockManager(+managerId, data.isBlocked)
+        .then(() => {
+          const message = 'Manager was updated successfully';
+          const builtNotification = notification.buildNotification(
+            message,
+            successfulNotificationType,
+          );
+          if (builtNotification) {
+            store.addNotification(builtNotification);
+          }
+        })
+        .catch(error => {
+          const { message } = error;
+          const builtNotification = notification.buildNotification(
+            message,
+            failureNotificationType,
+          );
+          if (builtNotification) {
+            store.addNotification(builtNotification);
+          }
+        });
+    },
+    [managerId],
+  );
+
   const handleSelectedTerritory = useCallback(territory => {
     setValue('selectedTerritory', territory);
     updateSelectedTerritory(territory);
   }, []);
 
-  return [action, selectedTerritory, saveManagerData, useFormProps, handleSelectedTerritory];
+  return [
+    action,
+    selectedTerritory,
+    saveManagerData,
+    useFormProps,
+    handleSelectedTerritory,
+    handleBlockingManager,
+  ];
 };
 
 export default useManagersEditor;

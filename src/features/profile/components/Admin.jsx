@@ -22,7 +22,9 @@ const Admin = () => {
           </Card.List>
         </Card.Form>
       </Card.List.Item>
-      <Passwords />
+      <Card.List.Item>
+        <Passwords />
+      </Card.List.Item>
     </Card.List>
   );
 };

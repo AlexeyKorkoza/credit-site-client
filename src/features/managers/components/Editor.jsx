@@ -4,7 +4,6 @@ import { Button, Card, Error, Input, ReactSelect } from '../../../shared';
 import { Login, Passwords } from '../../profile';
 import TERRITORIES from '../../../constants';
 import { useManagersEditor } from '../hooks';
-import BlockManager from './BlockManager';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -21,10 +20,9 @@ const Editor = () => {
     saveManager,
     useFormProps,
     handleSelectedTerritory,
+    blockManager,
   ] = useManagersEditor();
-  const { getValues, errors, handleSubmit, register } = useFormProps;
-  const { isBlocked } = getValues();
-  console.log(getValues());
+  const { errors, handleSubmit, register } = useFormProps;
 
   return (
     <Card.List>
@@ -74,10 +72,22 @@ const Editor = () => {
           </Card.Form.Item>
         </Card.Form>
       </Card.List.Item>
-      {action === 'edit' && <Passwords />}
       {action === 'edit' && (
         <Card.List.Item>
-          <BlockManager name="isBlocked" register={register} isBlocked={isBlocked} />
+          <Passwords />
+        </Card.List.Item>
+      )}
+      {action === 'edit' && (
+        <Card.List.Item>
+          <Card.Form>
+            <Card.Form.Item>
+              <Card.Form.Label htmlFor="isBlocked">Is Blocked</Card.Form.Label>
+              <Input type="checkbox" name="isBlocked" register={register} />
+            </Card.Form.Item>
+            <Card.Form.Item>
+              <Button onClick={handleSubmit(blockManager)}>Block</Button>
+            </Card.Form.Item>
+          </Card.Form>
         </Card.List.Item>
       )}
     </Card.List>

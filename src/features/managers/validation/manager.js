@@ -13,8 +13,4 @@ const managerSchema = yup.object().shape({
   isBlocked: yup.bool(),
 });
 
-const blockManagerSchema = yup.object().shape({
-  isBlocked: yup.bool(),
-});
-
-export { blockManagerSchema, managerSchema };
+export { managerSchema };

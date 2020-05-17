@@ -13,7 +13,7 @@ const useProfile = () => {
 
   const { id: userId } = localDb.getDataAuthUser();
 
-  const useFormProps = useInitForm({
+  const [useFormProps] = useInitForm({
     validationSchema: role === 'admin' ? adminValidation : managerValidation,
     defaultValues: {
       fullName: '',
@@ -42,10 +42,6 @@ const useProfile = () => {
   }, [userId]);
 
   const saveData = useCallback(data => {
-    // if (!this.validatorProfile.allValid()) {
-    //   return;
-    // }
-
     const { login } = data;
 
     let body = {
