@@ -15,6 +15,7 @@ const useSecondStep = () => {
   const [focusedDateIssue, setFocusedDateIssue] = useState(null);
   const [focusedDateMaturity, setFocusedDateMaturity] = useState(null);
 
+  // getClientLoans(clientId))
   const modifyFocusDateIssue = useCallback(({ focused }) => {
     setFocusedDateIssue(focused);
   });

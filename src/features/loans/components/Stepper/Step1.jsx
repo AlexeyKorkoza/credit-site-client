@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
+import { useHistory } from 'react-router';
 
 import { Button, Card, Input, ReactSelect } from '../../../../shared';
-import { useFirstStep, useStepper } from '../../hooks';
+import { useFirstStep } from '../../hooks';
 import TERRITORIES from '../../../../constants';
-import { loanFirstStepSchema } from '../../validation';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -15,25 +14,14 @@ const customReactSelectStyles = {
 };
 
 const Step1 = () => {
-  const [handleCreatingClientCard, loanData, modifySelectedTerritory] = useFirstStep();
-  const [currentStep, handleBackClick] = useStepper();
-  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
-    defaultValues: loanData,
-    validationSchema: loanFirstStepSchema,
-  });
-
-  useEffect(() => {
-    register({ name: 'selectedTerritory' });
-
-    return () => {
-      unregister('selectedTerritory');
-    };
-  });
-
-  const handleSelectedTerritory = useCallback(territory => {
-    setValue('selectedTerritory', territory);
-    modifySelectedTerritory(territory);
-  }, []);
+  const history = useHistory();
+  const [
+    handleCreatingClientCard,
+    formProps,
+    selectedTerritory,
+    modifySelectedTerritory,
+  ] = useFirstStep();
+  const { errors, handleSubmit, register } = formProps;
 
   return (
     <Card.List>
@@ -46,8 +34,8 @@ const Step1 = () => {
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
             <ReactSelect
-              value={handleSelectedTerritory}
-              onChange={handleSelectedTerritory}
+              value={selectedTerritory}
+              onChange={modifySelectedTerritory}
               options={TERRITORIES}
               placeholder="Select Territory ..."
               styles={customReactSelectStyles}
@@ -75,7 +63,7 @@ const Step1 = () => {
             />
           </Card.Form.Item>
           <Card.Form.Item>
-            <Button onClick={handleBackClick}>Back</Button>
+            <Button onClick={() => history.goBack()}>Back</Button>
             <Button onClick={handleSubmit(handleCreatingClientCard)}>Issue a loan</Button>
           </Card.Form.Item>
         </Card.Form>

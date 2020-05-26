@@ -4361,6 +4361,11 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
 
+little-state-machine@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/little-state-machine/-/little-state-machine-3.0.1.tgz#08ab1e1d6ac1d68a72d4a11e0f13df30c988064a"
+  integrity sha512-/0mabJirUiD4sYdj8oI5mtJ/zRGUIfYxq7em2PiaUE5+DO9r9CRlcMgD5KYJx0sahe8V+5VMtW5PQnGsf229jA==
+
 load-json-file@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-2.0.0.tgz#7947e42149af80d696cbf797bcaabcfe1fe29ca8"

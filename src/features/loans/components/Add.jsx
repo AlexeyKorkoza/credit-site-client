@@ -1,18 +1,20 @@
 import React from 'react';
+import { StateMachineProvider, createStore } from 'little-state-machine';
 
-import { Step1, Step2 } from './Add';
-import { useStepper } from '../hooks';
+import { Stepper } from './Stepper';
 
-const components = {
-  1: Step1,
-  2: Step2,
-};
+createStore({
+  data: {
+    clientId: null,
+    currentStep: 1,
+    amount: 0,
+  },
+});
 
-const Add = () => {
-  const [currentStep, ,] = useStepper();
-  const CurrentComponent = components[currentStep];
-
-  return <CurrentComponent />;
-};
+const Add = () => (
+  <StateMachineProvider>
+    <Stepper />
+  </StateMachineProvider>
+);
 
 export default Add;
