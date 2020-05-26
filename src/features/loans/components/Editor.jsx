@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { useForm } from 'react-hook-form';
+import React from 'react';
 
 import { Button, Card, Input, ReactSelect, SingleDatePicker } from '../../../shared';
 import { useEditor } from '../hooks';
 import TERRITORIES from '../../../constants';
-import { loanEditorSchema } from '../validation';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -18,7 +14,7 @@ const customReactSelectStyles = {
 
 const Editor = () => {
   const [
-    loanData,
+    ,
     focusedDateIssue,
     modifyFocusDateIssue,
     focusedDateMaturity,
@@ -28,26 +24,9 @@ const Editor = () => {
     changeSelectedTerritory,
     saveLoanData,
     selectedTerritory,
+    formProps,
   ] = useEditor();
-  const [handleSubmit, setValue, register, unregister, watch] = useForm({
-    defaultValues: {
-      ...loanData,
-    },
-    validationSchema: loanEditorSchema,
-  });
-
-  useEffect(() => {
-    register({ name: 'selectedTerritory' });
-
-    return () => {
-      unregister('selectedTerritory');
-    };
-  }, [register, unregister]);
-
-  const handleSelectedTerritory = territory => {
-    setValue(territory);
-    changeSelectedTerritory(territory);
-  };
+  const [handleSubmit, register, watch] = formProps;
 
   const dateIssue = watch('dateIssue');
   const dateMaturity = watch('dateMaturity');
@@ -64,7 +43,7 @@ const Editor = () => {
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
             <ReactSelect
               value={selectedTerritory}
-              onChange={handleSelectedTerritory}
+              onChange={changeSelectedTerritory}
               options={TERRITORIES}
               placeholder="Select Territory ..."
               styles={customReactSelectStyles}
@@ -77,7 +56,7 @@ const Editor = () => {
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
             <SingleDatePicker
-              date={dateIssue ? moment(dateIssue) : null}
+              date={dateIssue}
               id="date_issue_id"
               onDateChange={changeDateIssue}
               focused={focusedDateIssue}
@@ -88,7 +67,7 @@ const Editor = () => {
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
             <SingleDatePicker
-              date={dateMaturity ? moment(dateMaturity) : null}
+              date={dateMaturity}
               id="date_maturity_id"
               onDateChange={changeDateMaturity}
               focused={focusedDateMaturity}

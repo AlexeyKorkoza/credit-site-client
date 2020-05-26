@@ -24,7 +24,7 @@ const useList = () => {
         setLoans(savedLoans);
       }
     });
-  });
+  }, []);
 
   return [loans];
 };

@@ -6,71 +6,89 @@ import { store } from 'react-notifications-component';
 import { getLoan, saveLoan } from '../api';
 import TERRITORIES from '../../../constants';
 import { calculation, notification } from '../../../services';
+import { useInitForm } from '../../../core';
+import { loanEditorSchema } from '../validation';
 
 const failureNotificationType = 'FailureEditingLoan';
 const successfulNotificationType = 'SuccessfulEditingLoan';
 
 const useEditor = () => {
-  const params = useParams();
-  const [loanData, setLoanData] = useState({});
   const [selectedTerritory, setSelectedTerritory] = useState({});
   const [focusedDateIssue, setFocusedDateIssue] = useState(null);
   const [focusedDateMaturity, setFocusedDateMaturity] = useState(null);
+  const [action, setAction] = useState('add');
+  const [formProps] = useInitForm({
+    defaultValues: {
+      amount: null,
+      coefficient: '',
+      dateIssue: null,
+      dateMaturity: null,
+      territory: '',
+      totalRepaymentAmount: null,
+    },
+    validationSchema: loanEditorSchema,
+    registerValues: ['selectedTerritory'],
+  });
+  const [getValues, setValue] = formProps;
+
+  const params = useParams();
+  const { id: loanId } = params;
 
   useEffect(() => {
-    if (Object.keys(params).length > 0) {
-      const { id: loanId } = params;
+    getLoan(loanId).then(result => {
+      const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
 
-      getLoan(loanId).then(result => {
-        const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
-
-        setLoanData({
-          action: 'edit',
-          dateIssue: moment(dateIssue),
-          dateMaturity: moment(dateMaturity),
-          loanId,
-          selectedTerritory: TERRITORIES.find(e => +e.value === +territory),
-          ...rest,
-        });
+      setValue({
+        dateIssue: moment(dateIssue),
+        dateMaturity: moment(dateMaturity),
+        ...rest,
       });
-    } else {
-      setLoanData({
-        action: 'add',
-      });
-    }
-  });
-
-  const changeSelectedTerritory = useCallback(territory => {
-    setSelectedTerritory(territory);
+      setAction('edit');
+      setSelectedTerritory(TERRITORIES.find(e => +e.value === +territory));
+    });
   }, []);
 
-  const modifyFocusDateIssue = useCallback(({ focused }) => {
-    setFocusedDateIssue(focused);
-  });
+  const changeSelectedTerritory = useCallback(
+    territory => {
+      setSelectedTerritory(territory);
+    },
+    [setSelectedTerritory],
+  );
 
-  const modifyFocusDateMaturity = useCallback(({ focused }) => {
-    setFocusedDateMaturity(focused);
-  });
+  const modifyFocusDateIssue = useCallback(
+    ({ focused }) => {
+      setFocusedDateIssue(focused);
+    },
+    [setFocusedDateIssue],
+  );
+
+  const modifyFocusDateMaturity = useCallback(
+    ({ focused }) => {
+      setFocusedDateMaturity(focused);
+    },
+    [setFocusedDateMaturity],
+  );
 
   const changeDateIssue = useCallback(dateIssue => {
-    const { dateMaturity } = loanData;
+    const dateMaturity = getValues('dateMaturity');
+    const values = getValues();
 
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
-    setLoanData(result);
-  });
+    setValue(result);
+  }, []);
 
   const changeDateMaturity = useCallback(dateMaturity => {
-    const { dateIssue } = loanData;
+    const dateIssue = getValues('dateIssue');
+    const values = getValues();
 
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
-    setLoanData(result);
-  });
+    setValue(result);
+  }, []);
 
   const saveLoanData = useCallback(data => {
     const { amount, coefficient, dateIssue, dateMaturity, totalRepaymentAmount } = data;
-    const { loanId } = params;
     const { value: territory } = selectedTerritory;
 
     const body = {
@@ -103,7 +121,7 @@ const useEditor = () => {
   });
 
   return [
-    loanData,
+    action,
     focusedDateIssue,
     modifyFocusDateIssue,
     focusedDateMaturity,
@@ -113,6 +131,7 @@ const useEditor = () => {
     changeSelectedTerritory,
     saveLoanData,
     selectedTerritory,
+    formProps,
   ];
 };
 
