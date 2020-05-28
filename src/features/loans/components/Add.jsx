@@ -6,8 +6,10 @@ import { Stepper } from './Stepper';
 createStore({
   data: {
     clientId: null,
+    clientName: '',
     currentStep: 1,
     amount: 0,
+    selectedTerritory: {},
   },
 });
 

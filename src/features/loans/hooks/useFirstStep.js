@@ -66,9 +66,11 @@ const useFirstStep = () => {
 
       createClientCard(body).then(() => {
         action({
+          clientName,
           clientId,
           amount: surchargeFactor,
           currentStep: 2,
+          selectedTerritory,
         });
       });
     },

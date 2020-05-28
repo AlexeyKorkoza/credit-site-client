@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useContext } from 'react';
 
 import LoansTable from '../Table';
 import { Button, Card, H1, Input, ReactSelect, SingleDatePicker } from '../../../../shared';
-import { useSecondStep } from '../../hooks';
 import TERRITORIES from '../../../../constants';
-import { loanSecondStepSchema } from '../../validation';
+import { useSecondStep } from '../../hooks';
+import { UserContext } from '../../../../core';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -26,21 +25,13 @@ const Step2 = () => {
     changeDateIssue,
     changeDateMaturity,
     handleCreatingLoan,
+    formProps,
+    loans,
+    selectedTerritory,
   ] = useSecondStep();
-  const { errors, handleSubmit, register, unregister, setValue, watch } = useForm({
-    // defaultValues: loanData,
-    validationSchema: loanSecondStepSchema,
-  });
-
-  useEffect(() => {
-    register({ name: 'dateIssue' });
-    register({ name: 'dateMaturity' });
-
-    return () => {
-      unregister('dateIssue');
-      unregister('dateMaturity');
-    };
-  }, [register, unregister]);
+  const context = useContext(UserContext);
+  const { role } = context;
+  const { errors, handleSubmit, register } = formProps;
 
   return (
     <div>
@@ -48,10 +39,10 @@ const Step2 = () => {
         {/* {clientName} */}
         loans
       </H1>
-      {/* <LoansTable loans={loans} outputProperties={outputProperties} role={role} /> */}
+      <LoansTable loans={loans} outputProperties={outputProperties} role={role} />
       <Card.List>
         <Card.List.Item>
-          <Card.Form noValidate>
+          <Card.Form>
             <Card.Form.Item>
               <Card.Form.Label htmlFor="amount">Amount</Card.Form.Label>
               <Input name="amount" placeholder="Amount ..." register={register} disabled />
@@ -59,7 +50,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
               <ReactSelect
-                // value={selectedTerritory}
+                value={selectedTerritory}
                 options={TERRITORIES}
                 placeholder="Select Territory ..."
                 isDisabled

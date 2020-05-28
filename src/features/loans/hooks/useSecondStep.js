@@ -1,54 +1,74 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { store } from 'react-notifications-component';
 import { useHistory } from 'react-router';
+import { useStateMachine } from 'little-state-machine';
 
-import { notification } from '../../../services';
+import { notification, calculation } from '../../../services';
 import TERRITORIES from '../../../constants';
 import { saveLoan } from '../api';
 import { routesScheme } from '../../../routing';
+import { useInitForm } from '../../../core';
+import { loanSecondStepSchema } from '../validation';
+import { getClientLoans } from '../../clients/api';
+import updateAction from '../store/action';
 
 const failureNotificationType = 'FailureCreatingLoan';
 const successfulNotificationType = 'SuccessfulCreatingLoan';
 
 const useSecondStep = () => {
   const history = useHistory();
+  const { action, state } = useStateMachine(updateAction);
+  const { amount, clientId, selectedTerritory } = state;
+  const [formProps] = useInitForm({
+    defaultValues: {
+      amount,
+      coefficient: '',
+      dateIssue: null,
+      dateMaturity: null,
+      totalRepaymentAmount: null,
+    },
+    validationSchema: loanSecondStepSchema,
+    registerValues: ['dateIssue', 'dateMaturity'],
+  });
+  const { setValue, getValues } = formProps;
+  const [loans, setLoans] = useState([]);
   const [focusedDateIssue, setFocusedDateIssue] = useState(null);
   const [focusedDateMaturity, setFocusedDateMaturity] = useState(null);
 
-  // getClientLoans(clientId))
+  useEffect(() => {
+    getClientLoans(clientId).then(result => {
+      setLoans(result.loans);
+    });
+  }, [clientId]);
+
   const modifyFocusDateIssue = useCallback(({ focused }) => {
     setFocusedDateIssue(focused);
-  });
+  }, []);
 
   const modifyFocusDateMaturity = useCallback(({ focused }) => {
     setFocusedDateMaturity(focused);
-  });
+  }, []);
 
   const changeDateIssue = useCallback(dateIssue => {
-    // const { dateMaturity } = loanData;
-    //
-    // const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
-    //
-    // setLoanData(result);
-  });
+    const { dateMaturity } = getValues();
+    const values = getValues();
+
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+    setValue(result);
+  }, []);
 
   const changeDateMaturity = useCallback(dateMaturity => {
-    // const { dateIssue } = loanData;
-    //
-    // const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, loanData);
-    //
-    // setLoanData(result);
-  });
+    const { dateIssue } = getValues();
+    const values = getValues();
+
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+    setValue(result);
+  }, []);
 
   const handleCreatingLoan = useCallback(data => {
-    const {
-      amount,
-      selectedTerritory,
-      dateIssue,
-      dateMaturity,
-      clientId,
-      totalRepaymentAmount,
-    } = data;
+    const { dateIssue, dateMaturity, totalRepaymentAmount } = data;
 
     const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value);
 
@@ -72,6 +92,14 @@ const useSecondStep = () => {
           store.addNotification(builtNotification);
         }
 
+        action({
+          clientName: '',
+          clientId: null,
+          amount: null,
+          currentStep: 1,
+          selectedTerritory: {},
+        });
+
         history.push(routesScheme.clients);
       })
       .catch(error => {
@@ -91,6 +119,9 @@ const useSecondStep = () => {
     changeDateIssue,
     changeDateMaturity,
     handleCreatingLoan,
+    formProps,
+    loans,
+    selectedTerritory,
   ];
 };
 
