@@ -13,7 +13,9 @@ const useFirstStep = () => {
   const location = useLocation();
   const { state } = location;
 
-  const { action } = useStateMachine(updateAction);
+  const { action } = useStateMachine(updateAction, {
+    shouldReRenderApp: true,
+  });
   const [formProps] = useInitForm({
     defaultValues: {
       fullName: '',
@@ -25,8 +27,7 @@ const useFirstStep = () => {
     validationSchema: loanFirstStepSchema,
     registerValues: ['selectedTerritory'],
   });
-  const [clientName, setClientName] = useState('');
-  const { setValue } = formProps;
+  const { getValues, setValue } = formProps;
   const [selectedTerritory, setSelectedTerritory] = useState({});
 
   useEffect(() => {
@@ -36,22 +37,31 @@ const useFirstStep = () => {
       getClient(clientId).then(result => {
         const { client } = result;
 
-        setClientName(client.name);
         setValue(client);
-        setSelectedTerritory(TERRITORIES.find(e => +e.value === +client.territory));
+        setValue(
+          'selectedTerritory',
+          TERRITORIES.find(e => +e.value === +client.territory),
+        );
       });
     }
   }, []);
 
   const handleCreatingClientCard = useCallback(
     data => {
-      const { email, fullName, phone, passportData, surchargeFactor } = data;
+      const {
+        email,
+        fullName,
+        phone,
+        passportData,
+        surchargeFactor,
+        selectedTerritory: { value: selectedTerritoryValue },
+      } = data;
 
       if (surchargeFactor === 0) {
         return;
       }
 
-      const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value).value;
+      const territory = TERRITORIES.find(e => +e.value === +selectedTerritoryValue).value;
       const { clientId } = state;
 
       const body = {
@@ -65,6 +75,8 @@ const useFirstStep = () => {
       };
 
       createClientCard(body).then(() => {
+        const { name: clientName } = getValues();
+
         action({
           clientName,
           clientId,
@@ -79,12 +91,16 @@ const useFirstStep = () => {
 
   const modifySelectedTerritory = useCallback(
     territory => {
-      setSelectedTerritory(territory);
+      setValue('selectedTerritory', territory);
     },
     [setSelectedTerritory],
   );
 
-  return [handleCreatingClientCard, formProps, selectedTerritory, modifySelectedTerritory];
+  return {
+    handleCreatingClientCard,
+    formProps,
+    modifySelectedTerritory,
+  };
 };
 
 export default useFirstStep;

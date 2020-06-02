@@ -11,11 +11,15 @@ const components = {
 };
 
 const Stepper = () => {
-  const { state } = useStateMachine(updateAction);
-  const { currentStep } = state;
+  const {
+    state: { data },
+  } = useStateMachine(updateAction, {
+    shouldReRenderApp: true,
+  });
+  const { currentStep } = data;
   const CurrentComponent = components[currentStep];
 
-  return <CurrentComponent />;
+  return CurrentComponent ? <CurrentComponent /> : null;
 };
 
 export default Stepper;

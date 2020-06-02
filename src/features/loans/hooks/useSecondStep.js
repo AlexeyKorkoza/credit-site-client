@@ -17,8 +17,13 @@ const successfulNotificationType = 'SuccessfulCreatingLoan';
 
 const useSecondStep = () => {
   const history = useHistory();
-  const { action, state } = useStateMachine(updateAction);
-  const { amount, clientId, selectedTerritory } = state;
+  const {
+    action,
+    state: { data },
+  } = useStateMachine(updateAction, {
+    shouldReRenderApp: true,
+  });
+  const { amount, clientId, clientName, selectedTerritory } = data;
   const [formProps] = useInitForm({
     defaultValues: {
       amount,
@@ -41,13 +46,19 @@ const useSecondStep = () => {
     });
   }, [clientId]);
 
-  const modifyFocusDateIssue = useCallback(({ focused }) => {
-    setFocusedDateIssue(focused);
-  }, []);
+  const modifyFocusDateIssue = useCallback(
+    ({ focused }) => {
+      setFocusedDateIssue(focused);
+    },
+    [setFocusedDateIssue],
+  );
 
-  const modifyFocusDateMaturity = useCallback(({ focused }) => {
-    setFocusedDateMaturity(focused);
-  }, []);
+  const modifyFocusDateMaturity = useCallback(
+    ({ focused }) => {
+      setFocusedDateMaturity(focused);
+    },
+    [setFocusedDateMaturity],
+  );
 
   const changeDateIssue = useCallback(dateIssue => {
     const { dateMaturity } = getValues();
@@ -111,7 +122,7 @@ const useSecondStep = () => {
       });
   }, []);
 
-  return [
+  return {
     focusedDateIssue,
     modifyFocusDateIssue,
     focusedDateMaturity,
@@ -122,7 +133,8 @@ const useSecondStep = () => {
     formProps,
     loans,
     selectedTerritory,
-  ];
+    clientName,
+  };
 };
 
 export default useSecondStep;

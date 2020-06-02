@@ -15,13 +15,9 @@ const customReactSelectStyles = {
 
 const Step1 = () => {
   const history = useHistory();
-  const [
-    handleCreatingClientCard,
-    formProps,
-    selectedTerritory,
-    modifySelectedTerritory,
-  ] = useFirstStep();
-  const { errors, handleSubmit, register } = formProps;
+  const { handleCreatingClientCard, formProps, modifySelectedTerritory } = useFirstStep();
+  const { getValues, errors, handleSubmit, register } = formProps;
+  const { selectedTerritory } = getValues();
 
   return (
     <Card.List>

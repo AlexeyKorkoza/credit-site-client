@@ -17,7 +17,7 @@ const customReactSelectStyles = {
 const outputProperties = ['dateMaturity'];
 
 const Step2 = () => {
-  const [
+  const {
     focusedDateIssue,
     modifyFocusDateIssue,
     focusedDateMaturity,
@@ -28,15 +28,17 @@ const Step2 = () => {
     formProps,
     loans,
     selectedTerritory,
-  ] = useSecondStep();
+    clientName,
+  } = useSecondStep();
   const context = useContext(UserContext);
   const { role } = context;
-  const { errors, handleSubmit, register } = formProps;
+  const { getValues, handleSubmit, register } = formProps;
+  const { dateIssue, dateMaturity } = getValues();
 
   return (
     <div>
       <H1 color="#3f4357">
-        {/* {clientName} */}
+        {clientName}
         loans
       </H1>
       <LoansTable loans={loans} outputProperties={outputProperties} role={role} />
@@ -60,7 +62,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
               <SingleDatePicker
-                // date={dateIssue}
+                date={dateIssue}
                 id="date_issue_id"
                 onDateChange={changeDateIssue}
                 focused={focusedDateIssue}
@@ -71,7 +73,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
               <SingleDatePicker
-                // date={dateMaturity}
+                date={dateMaturity}
                 id="date_maturity_id"
                 onDateChange={changeDateMaturity}
                 focused={focusedDateMaturity}
