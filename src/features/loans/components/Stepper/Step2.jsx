@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import LoansTable from '../Table';
-import { Button, Card, H1, Input, ReactSelect, SingleDatePicker } from '../../../../shared';
+import { Button, Card, DatePicker, Error, H1, Input, ReactSelect } from '../../../../shared';
 import TERRITORIES from '../../../../constants';
 import { useSecondStep } from '../../hooks';
-import { UserContext } from '../../../../core';
 
 const customReactSelectStyles = {
   valueContainer: () => ({
@@ -18,10 +17,6 @@ const outputProperties = ['dateMaturity'];
 
 const Step2 = () => {
   const {
-    focusedDateIssue,
-    modifyFocusDateIssue,
-    focusedDateMaturity,
-    modifyFocusDateMaturity,
     changeDateIssue,
     changeDateMaturity,
     handleCreatingLoan,
@@ -29,11 +24,12 @@ const Step2 = () => {
     loans,
     selectedTerritory,
     clientName,
+    role,
   } = useSecondStep();
-  const context = useContext(UserContext);
-  const { role } = context;
-  const { getValues, handleSubmit, register } = formProps;
-  const { dateIssue, dateMaturity } = getValues();
+
+  const { errors, handleSubmit, register, watch } = formProps;
+  const dateIssue = watch('dateIssue');
+  const dateMaturity = watch('dateMaturity');
 
   return (
     <div>
@@ -52,7 +48,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
               <ReactSelect
-                value={selectedTerritory}
+                defaultValue={selectedTerritory}
                 options={TERRITORIES}
                 placeholder="Select Territory ..."
                 isDisabled
@@ -60,33 +56,33 @@ const Step2 = () => {
               />
             </Card.Form.Item>
             <Card.Form.Item>
-              <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
-              <SingleDatePicker
-                date={dateIssue}
-                id="date_issue_id"
-                onDateChange={changeDateIssue}
-                focused={focusedDateIssue}
-                firstDayOfWeek={1}
-                onFocusChange={modifyFocusDateIssue}
+              <Card.Form.Label htmlFor="dateIssue">Date Issue</Card.Form.Label>
+              <DatePicker
+                locale="en-GB"
+                selected={dateIssue}
+                minDate={new Date()}
+                dateFormat="dd.MM.yyyy"
+                onChange={changeDateIssue}
               />
+              {errors.dateIssue?.message && <Error>{errors.dateIssue.message}</Error>}
             </Card.Form.Item>
             <Card.Form.Item>
-              <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
-              <SingleDatePicker
-                date={dateMaturity}
-                id="date_maturity_id"
-                onDateChange={changeDateMaturity}
-                focused={focusedDateMaturity}
-                firstDayOfWeek={1}
-                onFocusChange={modifyFocusDateMaturity}
+              <Card.Form.Label htmlFor="dateMaturity">Date Maturity</Card.Form.Label>
+              <DatePicker
+                locale="en-GB"
+                selected={dateMaturity}
+                minDate={new Date()}
+                dateFormat="dd.MM.yyyy"
+                onChange={changeDateMaturity}
               />
+              {errors.dateMaturity?.message && <Error>{errors.dateMaturity.message}</Error>}
             </Card.Form.Item>
             <Card.Form.Item>
               <Card.Form.Label htmlFor="totalRepaymentAmount">
                 Total Repayment Amount
               </Card.Form.Label>
               <Input
-                type="number"
+                type="text"
                 name="totalRepaymentAmount"
                 placeholder="Total Repayment Amount..."
                 register={register}

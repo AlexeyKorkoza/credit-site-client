@@ -12,8 +12,9 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
   border: none;
 `;
 
-const Input = ({ disabled, register, type, name, placeholder = '' }) => (
+const Input = ({ defaultValue = '', disabled = false, register, type, name, placeholder = '' }) => (
   <StyledInput
+    defaultValue={defaultValue}
     disabled={disabled}
     name={name}
     placeholder={placeholder}
@@ -23,6 +24,7 @@ const Input = ({ disabled, register, type, name, placeholder = '' }) => (
 );
 
 Input.defaultProps = {
+  defaultValue: '',
   disabled: false,
   type: '',
   name: '',
@@ -32,6 +34,7 @@ Input.defaultProps = {
 };
 
 Input.propTypes = {
+  defaultValue: PropTypes.any,
   disabled: PropTypes.bool,
   type: PropTypes.string,
   name: PropTypes.string,

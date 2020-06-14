@@ -1,11 +1,15 @@
-import * as yup from 'yup';
+import { date, number, object, string } from 'yup';
 
-const loanSecondStepSchema = yup.object().shape({
-  amount: yup.number().required(),
-  coefficient: yup.number().required(),
-  dateIssue: yup.date().required(),
-  dateMaturity: yup.date().required(),
-  totalRepaymentAmount: yup.number().required(),
+const loanSecondStepSchema = object().shape({
+  amount: number().required(),
+  coefficient: number().required(),
+  dateIssue: date().required(),
+  dateMaturity: date().required(),
+  totalRepaymentAmount: number().required(),
+  selectedTerritory: object({
+    label: string(),
+    value: string(),
+  }).required(),
 });
 
 export default loanSecondStepSchema;

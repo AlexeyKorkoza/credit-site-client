@@ -1,22 +1,12 @@
 import React from 'react';
-import { StateMachineProvider, createStore } from 'little-state-machine';
 
 import { Stepper } from './Stepper';
-
-createStore({
-  data: {
-    clientId: null,
-    clientName: '',
-    currentStep: 1,
-    amount: 0,
-    selectedTerritory: {},
-  },
-});
+import { LoansProvider } from '../hooks';
 
 const Add = () => (
-  <StateMachineProvider>
+  <LoansProvider>
     <Stepper />
-  </StateMachineProvider>
+  </LoansProvider>
 );
 
 export default Add;

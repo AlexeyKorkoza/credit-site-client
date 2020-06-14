@@ -1,7 +1,8 @@
 import dates from '../utils';
+import TERRITORIES from '../constants';
 
 const calculateTotalRepaymentAmount = (dateIssue, dateMaturity, state) => {
-  const { amount: surchargeFactor, selectedTerritory, territories } = state;
+  const { amount: surchargeFactor, selectedTerritory } = state;
 
   if (!dateIssue || !dateMaturity) {
     return {
@@ -17,7 +18,7 @@ const calculateTotalRepaymentAmount = (dateIssue, dateMaturity, state) => {
     };
   }
 
-  const territory = territories.find(e => +e.value === +selectedTerritory.value);
+  const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value);
   const { value: territoryValue } = territory;
   const duration = dates.subtractDates(dateIssue, dateMaturity);
   const totalRepaymentAmount = duration * +territoryValue + +surchargeFactor;

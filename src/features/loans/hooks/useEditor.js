@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { store } from 'react-notifications-component';
@@ -14,8 +13,6 @@ const successfulNotificationType = 'SuccessfulEditingLoan';
 
 const useEditor = () => {
   const [selectedTerritory, setSelectedTerritory] = useState({});
-  const [focusedDateIssue, setFocusedDateIssue] = useState(null);
-  const [focusedDateMaturity, setFocusedDateMaturity] = useState(null);
   const [action, setAction] = useState('add');
   const [formProps] = useInitForm({
     defaultValues: {
@@ -39,8 +36,8 @@ const useEditor = () => {
       const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
 
       setValue({
-        dateIssue: moment(dateIssue),
-        dateMaturity: moment(dateMaturity),
+        dateIssue: new Date(dateIssue),
+        dateMaturity: new Date(dateMaturity),
         ...rest,
       });
       setAction('edit');
@@ -55,23 +52,8 @@ const useEditor = () => {
     [setSelectedTerritory],
   );
 
-  const modifyFocusDateIssue = useCallback(
-    ({ focused }) => {
-      setFocusedDateIssue(focused);
-    },
-    [setFocusedDateIssue],
-  );
-
-  const modifyFocusDateMaturity = useCallback(
-    ({ focused }) => {
-      setFocusedDateMaturity(focused);
-    },
-    [setFocusedDateMaturity],
-  );
-
   const changeDateIssue = useCallback(dateIssue => {
-    const dateMaturity = getValues('dateMaturity');
-    const values = getValues();
+    const { dateMaturity, ...values } = getValues();
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
@@ -79,8 +61,7 @@ const useEditor = () => {
   }, []);
 
   const changeDateMaturity = useCallback(dateMaturity => {
-    const dateIssue = getValues('dateIssue');
-    const values = getValues();
+    const { dateIssue, ...values } = getValues();
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
@@ -120,19 +101,15 @@ const useEditor = () => {
       });
   });
 
-  return [
+  return {
     action,
-    focusedDateIssue,
-    modifyFocusDateIssue,
-    focusedDateMaturity,
-    modifyFocusDateMaturity,
     changeDateIssue,
     changeDateMaturity,
     changeSelectedTerritory,
     saveLoanData,
     selectedTerritory,
     formProps,
-  ];
+  };
 };
 
 export default useEditor;

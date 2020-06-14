@@ -1,44 +1,54 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { store } from 'react-notifications-component';
 import { useHistory } from 'react-router';
-import { useStateMachine } from 'little-state-machine';
+import { addDays } from 'date-fns';
 
 import { notification, calculation } from '../../../services';
 import TERRITORIES from '../../../constants';
 import { saveLoan } from '../api';
 import { routesScheme } from '../../../routing';
-import { useInitForm } from '../../../core';
+import { useInitForm, UserContext } from '../../../core';
 import { loanSecondStepSchema } from '../validation';
 import { getClientLoans } from '../../clients/api';
-import updateAction from '../store/action';
+import { LoansContext } from './index';
 
 const failureNotificationType = 'FailureCreatingLoan';
 const successfulNotificationType = 'SuccessfulCreatingLoan';
 
 const useSecondStep = () => {
   const history = useHistory();
-  const {
-    action,
-    state: { data },
-  } = useStateMachine(updateAction, {
-    shouldReRenderApp: true,
-  });
-  const { amount, clientId, clientName, selectedTerritory } = data;
+
+  const context = useContext(LoansContext);
+  const { loansFormStore, updateLoansFormStore } = context;
+  const { amount, clientId, clientName, selectedTerritory } = loansFormStore;
+
+  const userContext = useContext(UserContext);
+  const { role } = userContext;
+
   const [formProps] = useInitForm({
     defaultValues: {
       amount,
       coefficient: '',
-      dateIssue: null,
-      dateMaturity: null,
+      dateIssue: new Date(),
+      dateMaturity: addDays(new Date(), 7),
+      selectedTerritory,
       totalRepaymentAmount: null,
     },
     validationSchema: loanSecondStepSchema,
-    registerValues: ['dateIssue', 'dateMaturity'],
+    registerValues: ['dateIssue', 'dateMaturity', 'selectedTerritory'],
   });
   const { setValue, getValues } = formProps;
+
   const [loans, setLoans] = useState([]);
-  const [focusedDateIssue, setFocusedDateIssue] = useState(null);
-  const [focusedDateMaturity, setFocusedDateMaturity] = useState(null);
+
+  useEffect(() => {
+    const { dateIssue, dateMaturity, ...values } = getValues();
+
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+    setValue('selectedTerritory', selectedTerritory);
+    setValue([result]);
+  }, []);
 
   useEffect(() => {
     getClientLoans(clientId).then(result => {
@@ -46,37 +56,27 @@ const useSecondStep = () => {
     });
   }, [clientId]);
 
-  const modifyFocusDateIssue = useCallback(
-    ({ focused }) => {
-      setFocusedDateIssue(focused);
+  const changeDateIssue = useCallback(
+    dateIssue => {
+      const { dateMaturity, ...values } = getValues();
+
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+      setValue([result]);
     },
-    [setFocusedDateIssue],
+    [setValue],
   );
 
-  const modifyFocusDateMaturity = useCallback(
-    ({ focused }) => {
-      setFocusedDateMaturity(focused);
+  const changeDateMaturity = useCallback(
+    dateMaturity => {
+      const { dateIssue, ...values } = getValues();
+
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+      setValue([result]);
     },
-    [setFocusedDateMaturity],
+    [setValue],
   );
-
-  const changeDateIssue = useCallback(dateIssue => {
-    const { dateMaturity } = getValues();
-    const values = getValues();
-
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-
-    setValue(result);
-  }, []);
-
-  const changeDateMaturity = useCallback(dateMaturity => {
-    const { dateIssue } = getValues();
-    const values = getValues();
-
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-
-    setValue(result);
-  }, []);
 
   const handleCreatingLoan = useCallback(data => {
     const { dateIssue, dateMaturity, totalRepaymentAmount } = data;
@@ -103,7 +103,7 @@ const useSecondStep = () => {
           store.addNotification(builtNotification);
         }
 
-        action({
+        updateLoansFormStore({
           clientName: '',
           clientId: null,
           amount: null,
@@ -123,10 +123,6 @@ const useSecondStep = () => {
   }, []);
 
   return {
-    focusedDateIssue,
-    modifyFocusDateIssue,
-    focusedDateMaturity,
-    modifyFocusDateMaturity,
     changeDateIssue,
     changeDateMaturity,
     handleCreatingLoan,
@@ -134,6 +130,7 @@ const useSecondStep = () => {
     loans,
     selectedTerritory,
     clientName,
+    role,
   };
 };
 

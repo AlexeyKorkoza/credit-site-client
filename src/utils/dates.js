@@ -1,18 +1,19 @@
-import moment from 'moment';
+import isAfter from 'date-fns/isAfter';
+import differenceInDays from 'date-fns/differenceInDays';
 
 /**
  * @param start {Date}
  * @param end {Date}
  * @return {boolean}
  */
-const compareDates = (start, end) => !!moment(end).isAfter(start, 'days');
+const compareDates = (start, end) => isAfter(end, start);
 
 /**
  * @param start {Date}
  * @param end {Date}
  * @return {number}
  */
-const subtractDates = (start, end) => moment(end).diff(start, 'days');
+const subtractDates = (start, end) => differenceInDays(end, start);
 
 export default {
   compareDates,

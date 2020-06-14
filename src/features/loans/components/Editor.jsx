@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Card, Input, ReactSelect, SingleDatePicker } from '../../../shared';
+import { Button, Card, DatePicker, Input, ReactSelect } from '../../../shared';
 import { useEditor } from '../hooks';
 import TERRITORIES from '../../../constants';
 
@@ -13,19 +13,14 @@ const customReactSelectStyles = {
 };
 
 const Editor = () => {
-  const [
-    ,
-    focusedDateIssue,
-    modifyFocusDateIssue,
-    focusedDateMaturity,
-    modifyFocusDateMaturity,
+  const {
     changeDateIssue,
     changeDateMaturity,
     changeSelectedTerritory,
     saveLoanData,
     selectedTerritory,
     formProps,
-  ] = useEditor();
+  } = useEditor();
   const [handleSubmit, register, watch] = formProps;
 
   const dateIssue = watch('dateIssue');
@@ -55,24 +50,22 @@ const Editor = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
-            <SingleDatePicker
-              date={dateIssue}
-              id="date_issue_id"
-              onDateChange={changeDateIssue}
-              focused={focusedDateIssue}
-              firstDayOfWeek={1}
-              onFocusChange={modifyFocusDateIssue}
+            <DatePicker
+              locale="en-GB"
+              selected={dateIssue}
+              minDate={new Date()}
+              dateFormat="dd.MM.yyyy"
+              onChange={changeDateIssue}
             />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
-            <SingleDatePicker
-              date={dateMaturity}
-              id="date_maturity_id"
-              onDateChange={changeDateMaturity}
-              focused={focusedDateMaturity}
-              firstDayOfWeek={1}
-              onFocusChange={modifyFocusDateMaturity}
+            <DatePicker
+              locale="en-GB"
+              selected={dateMaturity}
+              minDate={new Date()}
+              dateFormat="dd.MM.yyyy"
+              onChange={changeDateMaturity}
             />
           </Card.Form.Item>
           <Card.Form.Item>

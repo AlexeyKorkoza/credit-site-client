@@ -20,7 +20,6 @@ const plugins = [
   }),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
-  new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ru|en/),
 ];
 
 if (analyzeBundle) {

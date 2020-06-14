@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import format from 'date-fns/format';
 import { v4 as uuidv4 } from 'uuid';
 
 import { H1, Table } from '../../../shared';
@@ -50,28 +50,26 @@ const LoansTable = props => {
           {role === 'admin' && <Table.List.Row.Column />}
         </Table.Header>
         <Table.List>
-          {loans.map(loan => {
-            return (
-              <Table.List.Row key={loan.id}>
-                {outputProperties.map(item => {
-                  if (item === 'dateMaturity' || item === 'dateIssue') {
-                    return (
-                      <Table.List.Row.Column key={item}>
-                        {moment(loan[item]).format('MM/DD/YYYY')}
-                      </Table.List.Row.Column>
-                    );
-                  }
+          {loans.map(loan => (
+            <Table.List.Row key={loan.id}>
+              {outputProperties.map(item => {
+                if (item === 'dateMaturity' || item === 'dateIssue') {
+                  return (
+                    <Table.List.Row.Column key={item}>
+                      {format(loan[item], 'dd.MM.yyyy')}
+                    </Table.List.Row.Column>
+                  );
+                }
 
-                  return <Table.List.Row.Column key={item}>{loan[item]}</Table.List.Row.Column>;
-                })}
-                {role === 'admin' && (
-                  <Table.List.Row.LastColumn>
-                    <List.Link to={`/loans/${loan.id}`}>Edit</List.Link>
-                  </Table.List.Row.LastColumn>
-                )}
-              </Table.List.Row>
-            );
-          })}
+                return <Table.List.Row.Column key={item}>{loan[item]}</Table.List.Row.Column>;
+              })}
+              {role === 'admin' && (
+                <Table.List.Row.LastColumn>
+                  <List.Link to={`/loans/${loan.id}`}>Edit</List.Link>
+                </Table.List.Row.LastColumn>
+              )}
+            </Table.List.Row>
+          ))}
         </Table.List>
       </Table>
     </List>

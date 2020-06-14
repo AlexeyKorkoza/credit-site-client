@@ -1,21 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useStateMachine } from 'little-state-machine';
 
 import { getClient } from '../../clients/api';
 import TERRITORIES from '../../../constants';
 import { createClientCard } from '../api';
 import { useInitForm } from '../../../core';
 import { loanFirstStepSchema } from '../validation';
-import updateAction from '../store/action';
+import { LoansContext } from './index';
 
 const useFirstStep = () => {
   const location = useLocation();
   const { state } = location;
 
-  const { action } = useStateMachine(updateAction, {
-    shouldReRenderApp: true,
-  });
+  const context = useContext(LoansContext);
+  const { updateLoansFormStore } = context;
   const [formProps] = useInitForm({
     defaultValues: {
       fullName: '',
@@ -48,19 +46,13 @@ const useFirstStep = () => {
 
   const handleCreatingClientCard = useCallback(
     data => {
-      const {
-        email,
-        fullName,
-        phone,
-        passportData,
-        surchargeFactor,
-        selectedTerritory: { value: selectedTerritoryValue },
-      } = data;
+      const { email, fullName, phone, passportData, surchargeFactor } = data;
 
       if (surchargeFactor === 0) {
         return;
       }
 
+      const { value: selectedTerritoryValue } = selectedTerritory;
       const territory = TERRITORIES.find(e => +e.value === +selectedTerritoryValue).value;
       const { clientId } = state;
 
@@ -77,7 +69,7 @@ const useFirstStep = () => {
       createClientCard(body).then(() => {
         const { name: clientName } = getValues();
 
-        action({
+        updateLoansFormStore({
           clientName,
           clientId,
           amount: surchargeFactor,
@@ -86,11 +78,12 @@ const useFirstStep = () => {
         });
       });
     },
-    [state],
+    [state, selectedTerritory],
   );
 
   const modifySelectedTerritory = useCallback(
     territory => {
+      setSelectedTerritory(territory);
       setValue('selectedTerritory', territory);
     },
     [setSelectedTerritory],
