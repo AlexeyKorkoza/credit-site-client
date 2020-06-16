@@ -25,14 +25,18 @@ const useSecondStep = () => {
   const userContext = useContext(UserContext);
   const { role } = userContext;
 
+  const initDates = {
+    dateIssue: new Date(),
+    dateMaturity: addDays(new Date(), 7),
+  };
+
   const [formProps] = useInitForm({
     defaultValues: {
       amount,
       coefficient: '',
-      dateIssue: new Date(),
-      dateMaturity: addDays(new Date(), 7),
       selectedTerritory,
       totalRepaymentAmount: null,
+      ...initDates,
     },
     validationSchema: loanSecondStepSchema,
     registerValues: ['dateIssue', 'dateMaturity', 'selectedTerritory'],
@@ -40,6 +44,7 @@ const useSecondStep = () => {
   const { setValue, getValues } = formProps;
 
   const [loans, setLoans] = useState([]);
+  const [dates, setDates] = useState(initDates);
 
   useEffect(() => {
     const { dateIssue, dateMaturity, ...values } = getValues();
@@ -61,8 +66,11 @@ const useSecondStep = () => {
       const { dateMaturity, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-
       setValue([result]);
+      setDates({
+        dateIssue,
+        dateMaturity,
+      });
     },
     [setValue],
   );
@@ -72,8 +80,11 @@ const useSecondStep = () => {
       const { dateIssue, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-
       setValue([result]);
+      setDates({
+        dateIssue,
+        dateMaturity,
+      });
     },
     [setValue],
   );
@@ -131,6 +142,7 @@ const useSecondStep = () => {
     selectedTerritory,
     clientName,
     role,
+    dates,
   };
 };
 

@@ -17,6 +17,7 @@ const outputProperties = ['dateMaturity'];
 
 const Step2 = () => {
   const {
+    dates,
     changeDateIssue,
     changeDateMaturity,
     handleCreatingLoan,
@@ -27,9 +28,7 @@ const Step2 = () => {
     role,
   } = useSecondStep();
 
-  const { errors, handleSubmit, register, watch } = formProps;
-  const dateIssue = watch('dateIssue');
-  const dateMaturity = watch('dateMaturity');
+  const { errors, handleSubmit, register } = formProps;
 
   return (
     <div>
@@ -58,8 +57,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="dateIssue">Date Issue</Card.Form.Label>
               <DatePicker
-                locale="en-GB"
-                selected={dateIssue}
+                selected={dates.dateIssue}
                 minDate={new Date()}
                 dateFormat="dd.MM.yyyy"
                 onChange={changeDateIssue}
@@ -69,8 +67,7 @@ const Step2 = () => {
             <Card.Form.Item>
               <Card.Form.Label htmlFor="dateMaturity">Date Maturity</Card.Form.Label>
               <DatePicker
-                locale="en-GB"
-                selected={dateMaturity}
+                selected={dates.dateMaturity}
                 minDate={new Date()}
                 dateFormat="dd.MM.yyyy"
                 onChange={changeDateMaturity}
