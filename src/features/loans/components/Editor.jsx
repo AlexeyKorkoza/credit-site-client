@@ -17,14 +17,13 @@ const Editor = () => {
     changeDateIssue,
     changeDateMaturity,
     changeSelectedTerritory,
+    dates,
+    formProps,
     saveLoanData,
     selectedTerritory,
-    formProps,
+    updateTotalRepaymentAmount,
   } = useEditor();
-  const [handleSubmit, register, watch] = formProps;
-
-  const dateIssue = watch('dateIssue');
-  const dateMaturity = watch('dateMaturity');
+  const { handleSubmit, register } = formProps;
 
   return (
     <Card.List>
@@ -32,7 +31,12 @@ const Editor = () => {
         <Card.Form>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="amount">Amount</Card.Form.Label>
-            <Input name="amount" placeholder="Amount ..." register={register} />
+            <Input
+              name="amount"
+              onChange={updateTotalRepaymentAmount}
+              placeholder="Amount ..."
+              register={register}
+            />
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -52,7 +56,7 @@ const Editor = () => {
             <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
             <DatePicker
               locale="en-GB"
-              selected={dateIssue}
+              selected={dates.dateIssue}
               minDate={new Date()}
               dateFormat="dd.MM.yyyy"
               onChange={changeDateIssue}
@@ -62,7 +66,7 @@ const Editor = () => {
             <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
             <DatePicker
               locale="en-GB"
-              selected={dateMaturity}
+              selected={dates.dateMaturity}
               minDate={new Date()}
               dateFormat="dd.MM.yyyy"
               onChange={changeDateMaturity}
@@ -74,6 +78,7 @@ const Editor = () => {
               name="totalRepaymentAmount"
               placeholder="Total Repayment Amount..."
               register={register}
+              disabled
             />
           </Card.Form.Item>
           <Card.Form.Item>

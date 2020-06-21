@@ -1,10 +1,10 @@
 /**
- * @param {object} response
+ * @param {object} data
  * @return {array}
  */
-export const transformResponse = response =>
-  Object.keys(response).map(item => ({
-    [item]: response[item],
+export const transformToValidFormat = data =>
+  Object.keys(data).map(item => ({
+    [item]: data[item],
   }));
 
 /**

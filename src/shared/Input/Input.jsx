@@ -22,11 +22,20 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
   }
 `;
 
-const Input = ({ defaultValue = '', disabled = false, register, type, name, placeholder = '' }) => (
+const Input = ({
+  defaultValue = '',
+  disabled = false,
+  name,
+  onChange,
+  placeholder = '',
+  register,
+  type,
+}) => (
   <StyledInput
     defaultValue={defaultValue}
     disabled={disabled}
     name={name}
+    onChange={onChange}
     placeholder={placeholder}
     type={type}
     ref={register}
@@ -36,24 +45,24 @@ const Input = ({ defaultValue = '', disabled = false, register, type, name, plac
 Input.defaultProps = {
   defaultValue: '',
   disabled: false,
-  type: '',
   name: '',
+  onChange: PropTypes.func,
   placeholder: '',
   register: PropTypes.any,
-  value: '',
+  type: '',
 };
 
 Input.propTypes = {
   defaultValue: PropTypes.any,
   disabled: PropTypes.bool,
-  type: PropTypes.string,
   name: PropTypes.string,
+  onChange: PropTypes.func,
   placeholder: PropTypes.string,
   register: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
-  value: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default Input;

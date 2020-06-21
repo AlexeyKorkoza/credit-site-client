@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { store } from 'react-notifications-component';
 
-import { transformResponse, useInitForm } from '../../../core';
+import { transformToValidFormat, useInitForm } from '../../../core';
 import { blockManager, getManager, saveManager } from '../api';
 import { notification } from '../../../services';
 import TERRITORIES from '../../../constants';
@@ -36,7 +36,7 @@ const useManagersEditor = () => {
     if (managerId) {
       getManager(managerId).then(result => {
         const { territory, ...restData } = result.data;
-        const values = transformResponse(restData);
+        const values = transformToValidFormat(restData);
 
         setAction('edit');
         setValue([...values]);

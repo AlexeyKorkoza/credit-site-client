@@ -7,7 +7,7 @@ import { notification, calculation, localDb } from '../../../services';
 import TERRITORIES from '../../../constants';
 import { saveLoan } from '../api';
 import { routesScheme } from '../../../routing';
-import { useInitForm, UserContext, transformResponse } from '../../../core';
+import { useInitForm, UserContext, transformToValidFormat } from '../../../core';
 import { loanSecondStepSchema } from '../validation';
 import { getClientLoans } from '../../clients/api';
 import { LoansContext } from './index';
@@ -58,7 +58,7 @@ const useSecondStep = () => {
         values,
       );
 
-      const transformedCalculatedTotalRepayment = transformResponse(calculatedTotalRepayment);
+      const transformedCalculatedTotalRepayment = transformToValidFormat(calculatedTotalRepayment);
       setValue([...transformedCalculatedTotalRepayment]);
     });
   }, []);
@@ -68,7 +68,7 @@ const useSecondStep = () => {
       const { dateMaturity, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-      const transformedResult = transformResponse(result);
+      const transformedResult = transformToValidFormat(result);
       setValue([...transformedResult]);
       setDates({
         dateIssue,
@@ -83,7 +83,7 @@ const useSecondStep = () => {
       const { dateIssue, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-      const transformedResult = transformResponse(result);
+      const transformedResult = transformToValidFormat(result);
       setValue([...transformedResult]);
       setDates({
         dateIssue,

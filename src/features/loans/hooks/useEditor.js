@@ -5,40 +5,46 @@ import { store } from 'react-notifications-component';
 import { getLoan, saveLoan } from '../api';
 import TERRITORIES from '../../../constants';
 import { calculation, notification } from '../../../services';
-import { useInitForm } from '../../../core';
+import { transformToValidFormat, useInitForm } from '../../../core';
 import { loanEditorSchema } from '../validation';
 
 const failureNotificationType = 'FailureEditingLoan';
 const successfulNotificationType = 'SuccessfulEditingLoan';
 
 const useEditor = () => {
+  const initDates = {
+    dateIssue: null,
+    dateMaturity: null,
+  };
   const [selectedTerritory, setSelectedTerritory] = useState({});
   const [action, setAction] = useState('add');
+  const [dates, setDates] = useState(initDates);
   const [formProps] = useInitForm({
     defaultValues: {
       amount: null,
       coefficient: '',
-      dateIssue: null,
-      dateMaturity: null,
-      territory: '',
       totalRepaymentAmount: null,
+      ...initDates,
     },
     validationSchema: loanEditorSchema,
-    registerValues: ['selectedTerritory'],
+    registerValues: ['dateIssue', 'dateMaturity', 'selectedTerritory'],
   });
-  const [getValues, setValue] = formProps;
+  const { getValues, setValue } = formProps;
 
   const params = useParams();
   const { id: loanId } = params;
 
   useEffect(() => {
     getLoan(loanId).then(result => {
-      const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
+      const loanData = result.loan;
 
-      setValue({
+      const transformedLoanData = transformToValidFormat(loanData);
+      setValue([...transformedLoanData]);
+
+      const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
+      setDates({
         dateIssue: new Date(dateIssue),
         dateMaturity: new Date(dateMaturity),
-        ...rest,
       });
       setAction('edit');
       setSelectedTerritory(TERRITORIES.find(e => +e.value === +territory));
@@ -47,6 +53,13 @@ const useEditor = () => {
 
   const changeSelectedTerritory = useCallback(
     territory => {
+      const { dateIssue, dateMaturity, ...values } = getValues();
+      values.selectedTerritory = territory;
+
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      setValue({
+        totalRepaymentAmount: result.totalRepaymentAmount,
+      });
       setSelectedTerritory(territory);
     },
     [setSelectedTerritory],
@@ -57,6 +70,10 @@ const useEditor = () => {
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
+    setDates({
+      dateIssue,
+      dateMaturity,
+    });
     setValue(result);
   }, []);
 
@@ -65,6 +82,10 @@ const useEditor = () => {
 
     const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
+    setDates({
+      dateIssue,
+      dateMaturity,
+    });
     setValue(result);
   }, []);
 
@@ -101,14 +122,30 @@ const useEditor = () => {
       });
   });
 
+  const updateTotalRepaymentAmount = event => {
+    const amount = event.target.value;
+    const { dateIssue, dateMaturity, ...values } = getValues();
+    values.amount = amount;
+    values.selectedTerritory = selectedTerritory;
+
+    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+
+    setValue({
+      amount,
+      totalRepaymentAmount: result.totalRepaymentAmount,
+    });
+  };
+
   return {
     action,
     changeDateIssue,
     changeDateMaturity,
     changeSelectedTerritory,
+    dates,
+    formProps,
     saveLoanData,
     selectedTerritory,
-    formProps,
+    updateTotalRepaymentAmount,
   };
 };
 

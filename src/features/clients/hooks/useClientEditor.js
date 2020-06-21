@@ -5,7 +5,7 @@ import { useParams, useHistory } from 'react-router';
 import TERRITORIES from '../../../constants';
 import { notification } from '../../../services';
 import { deleteClient, getClient, markClientForDeletion, saveClient } from '../api';
-import { transformResponse, useInitForm, UserContext } from '../../../core';
+import { transformToValidFormat, useInitForm, UserContext } from '../../../core';
 import { routesScheme } from '../../../routing';
 import { clientSchema } from '../validation';
 
@@ -39,7 +39,7 @@ const useClientEditor = () => {
     if (clientId) {
       getClient(clientId).then(result => {
         const { territory, isRemoved, ...restData } = result.client;
-        const values = transformResponse(restData);
+        const values = transformToValidFormat(restData);
 
         setAction('edit');
         setValue([...values]);
