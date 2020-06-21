@@ -3,11 +3,11 @@ import { store } from 'react-notifications-component';
 import { useHistory } from 'react-router';
 import { addDays } from 'date-fns';
 
-import { notification, calculation } from '../../../services';
+import { notification, calculation, localDb } from '../../../services';
 import TERRITORIES from '../../../constants';
 import { saveLoan } from '../api';
 import { routesScheme } from '../../../routing';
-import { useInitForm, UserContext } from '../../../core';
+import { useInitForm, UserContext, transformResponse } from '../../../core';
 import { loanSecondStepSchema } from '../validation';
 import { getClientLoans } from '../../clients/api';
 import { LoansContext } from './index';
@@ -17,10 +17,9 @@ const successfulNotificationType = 'SuccessfulCreatingLoan';
 
 const useSecondStep = () => {
   const history = useHistory();
-
   const context = useContext(LoansContext);
   const { loansFormStore, updateLoansFormStore } = context;
-  const { amount, clientId, clientName, selectedTerritory } = loansFormStore;
+  const { amount, clientId, clientName, territory } = loansFormStore;
 
   const userContext = useContext(UserContext);
   const { role } = userContext;
@@ -30,12 +29,12 @@ const useSecondStep = () => {
     dateMaturity: addDays(new Date(), 7),
   };
 
+  const foundTerritory = TERRITORIES.find(e => +e.value === +territory);
   const [formProps] = useInitForm({
     defaultValues: {
       amount,
-      coefficient: '',
-      selectedTerritory,
-      totalRepaymentAmount: null,
+      selectedTerritory: foundTerritory,
+      totalRepaymentAmount: 0,
       ...initDates,
     },
     validationSchema: loanSecondStepSchema,
@@ -45,28 +44,32 @@ const useSecondStep = () => {
 
   const [loans, setLoans] = useState([]);
   const [dates, setDates] = useState(initDates);
-
-  useEffect(() => {
-    const { dateIssue, dateMaturity, ...values } = getValues();
-
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-
-    setValue('selectedTerritory', selectedTerritory);
-    setValue([result]);
-  }, []);
+  const [selectedTerritory] = useState(foundTerritory);
 
   useEffect(() => {
     getClientLoans(clientId).then(result => {
       setLoans(result.loans);
+
+      const { dateIssue, dateMaturity, ...values } = getValues();
+
+      const calculatedTotalRepayment = calculation.calculateTotalRepaymentAmount(
+        dateIssue,
+        dateMaturity,
+        values,
+      );
+
+      const transformedCalculatedTotalRepayment = transformResponse(calculatedTotalRepayment);
+      setValue([...transformedCalculatedTotalRepayment]);
     });
-  }, [clientId]);
+  }, []);
 
   const changeDateIssue = useCallback(
     dateIssue => {
       const { dateMaturity, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-      setValue([result]);
+      const transformedResult = transformResponse(result);
+      setValue([...transformedResult]);
       setDates({
         dateIssue,
         dateMaturity,
@@ -80,7 +83,8 @@ const useSecondStep = () => {
       const { dateIssue, ...values } = getValues();
 
       const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
-      setValue([result]);
+      const transformedResult = transformResponse(result);
+      setValue([...transformedResult]);
       setDates({
         dateIssue,
         dateMaturity,
@@ -92,15 +96,18 @@ const useSecondStep = () => {
   const handleCreatingLoan = useCallback(data => {
     const { dateIssue, dateMaturity, totalRepaymentAmount } = data;
 
-    const territory = TERRITORIES.find(e => +e.value === +selectedTerritory.value);
+    const { currentStep, ...firstStepData } = loansFormStore;
+    const authUserData = localDb.getDataAuthUser();
+    const { id: managerId } = authUserData;
 
     const body = {
-      amount,
-      coefficient: +territory.value,
-      clientId,
+      coefficient: +territory,
       dateIssue,
       dateMaturity,
+      managerId,
+      surchargeFactor: amount,
       totalRepaymentAmount,
+      ...firstStepData,
     };
 
     return saveLoan(body)
@@ -115,11 +122,10 @@ const useSecondStep = () => {
         }
 
         updateLoansFormStore({
-          clientName: '',
           clientId: null,
           amount: null,
           currentStep: 1,
-          selectedTerritory: {},
+          territory: null,
         });
 
         history.push(routesScheme.clients);

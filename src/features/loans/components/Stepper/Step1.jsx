@@ -68,6 +68,8 @@ const Step1 = () => {
           </Card.Form.Item>
           <Card.Form.Item>
             <Button onClick={() => history.goBack()}>Back</Button>
+          </Card.Form.Item>
+          <Card.Form.Item>
             <Button onClick={handleSubmit(handleCreatingClientCard)}>Issue a loan</Button>
           </Card.Form.Item>
         </Card.Form>

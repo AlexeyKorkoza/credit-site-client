@@ -6,10 +6,9 @@ export const LoansContext = createContext();
 const LoansProvider = ({ children = '' }) => {
   const [loansFormStore, setLoansFormStore] = useState({
     clientId: null,
-    clientName: '',
     currentStep: 1,
-    amount: 0,
-    selectedTerritory: {},
+    amount: null,
+    territory: null,
   });
 
   const updateLoansFormStore = useCallback(

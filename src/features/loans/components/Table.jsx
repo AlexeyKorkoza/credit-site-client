@@ -56,7 +56,7 @@ const LoansTable = props => {
                 if (item === 'dateMaturity' || item === 'dateIssue') {
                   return (
                     <Table.List.Row.Column key={item}>
-                      {format(loan[item], 'dd.MM.yyyy')}
+                      {format(new Date(loan[item]), 'dd.MM.yyyy')}
                     </Table.List.Row.Column>
                   );
                 }

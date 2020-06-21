@@ -24,7 +24,6 @@ const Step2 = () => {
     formProps,
     loans,
     selectedTerritory,
-    clientName,
     role,
   } = useSecondStep();
 
@@ -32,10 +31,7 @@ const Step2 = () => {
 
   return (
     <div>
-      <H1 color="#3f4357">
-        {clientName}
-        loans
-      </H1>
+      <H1 color="#3f4357">All the loans of the user</H1>
       <LoansTable loans={loans} outputProperties={outputProperties} role={role} />
       <Card.List>
         <Card.List.Item>
@@ -79,7 +75,6 @@ const Step2 = () => {
                 Total Repayment Amount
               </Card.Form.Label>
               <Input
-                type="text"
                 name="totalRepaymentAmount"
                 placeholder="Total Repayment Amount..."
                 register={register}

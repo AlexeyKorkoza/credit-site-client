@@ -3,7 +3,6 @@ import { useLocation } from 'react-router';
 
 import { getClient } from '../../clients/api';
 import TERRITORIES from '../../../constants';
-import { createClientCard } from '../api';
 import { useInitForm } from '../../../core';
 import { loanFirstStepSchema } from '../validation';
 import { LoansContext } from './index';
@@ -25,7 +24,7 @@ const useFirstStep = () => {
     validationSchema: loanFirstStepSchema,
     registerValues: ['selectedTerritory'],
   });
-  const { getValues, setValue } = formProps;
+  const { setValue } = formProps;
   const [selectedTerritory, setSelectedTerritory] = useState({});
 
   useEffect(() => {
@@ -57,25 +56,20 @@ const useFirstStep = () => {
       const { clientId } = state;
 
       const body = {
+        amount: surchargeFactor,
+        clientId,
         email,
         fullName,
+        passportData,
         phone,
         territory,
-        passportData,
-        clientId,
-        surchargeFactor,
       };
 
-      createClientCard(body).then(() => {
-        const { name: clientName } = getValues();
-
-        updateLoansFormStore({
-          clientName,
-          clientId,
-          amount: surchargeFactor,
-          currentStep: 2,
-          selectedTerritory,
-        });
+      updateLoansFormStore({
+        ...body,
+        clientId,
+        currentStep: 2,
+        territory,
       });
     },
     [state, selectedTerritory],

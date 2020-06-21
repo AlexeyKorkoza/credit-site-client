@@ -1,15 +1,14 @@
 import { date, number, object, string } from 'yup';
 
 const loanSecondStepSchema = object().shape({
-  amount: number().required(),
-  coefficient: number().required(),
-  dateIssue: date().required(),
-  dateMaturity: date().required(),
-  totalRepaymentAmount: number().required(),
+  amount: number(),
+  dateIssue: date().required('Date issue is not set'),
+  dateMaturity: date().required('Date issue is not set'),
+  totalRepaymentAmount: number(),
   selectedTerritory: object({
     label: string(),
     value: string(),
-  }).required(),
+  }),
 });
 
 export default loanSecondStepSchema;

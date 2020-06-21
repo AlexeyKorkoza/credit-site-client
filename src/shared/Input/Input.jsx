@@ -10,6 +10,16 @@ const StyledInput = styled.input.attrs(({ type, name }) => ({
   border-radius: 5px;
   padding: 10px;
   border: none;
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `;
 
 const Input = ({ defaultValue = '', disabled = false, register, type, name, placeholder = '' }) => (
