@@ -6,14 +6,14 @@ import differenceInDays from 'date-fns/differenceInDays';
  * @param end {Date}
  * @return {boolean}
  */
-const compareDates = (start, end) => isAfter(end, start);
+const compareDates = (start, end) => isAfter(new Date(end), new Date(start));
 
 /**
  * @param start {Date}
  * @param end {Date}
  * @return {number}
  */
-const subtractDates = (start, end) => differenceInDays(end, start);
+const subtractDates = (start, end) => differenceInDays(new Date(end), new Date(start));
 
 export default {
   compareDates,

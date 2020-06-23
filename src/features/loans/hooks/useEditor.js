@@ -41,7 +41,7 @@ const useEditor = () => {
       const transformedLoanData = transformToValidFormat(loanData);
       setValue([...transformedLoanData]);
 
-      const { dateIssue, dateMaturity, territory, ...rest } = result.loan;
+      const { dateIssue, dateMaturity, territory } = result.loan;
       setDates({
         dateIssue: new Date(dateIssue),
         dateMaturity: new Date(dateMaturity),
@@ -65,76 +65,92 @@ const useEditor = () => {
     [setSelectedTerritory],
   );
 
-  const changeDateIssue = useCallback(dateIssue => {
-    const { dateMaturity, ...values } = getValues();
+  const changeDateIssue = useCallback(
+    dateIssue => {
+      const { dateMaturity, ...values } = getValues();
+      values.selectedTerritory = selectedTerritory;
 
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      const transformedResult = transformToValidFormat(result);
 
-    setDates({
-      dateIssue,
-      dateMaturity,
-    });
-    setValue(result);
-  }, []);
+      setDates(currentDates => ({
+        ...currentDates,
+        dateIssue: new Date(dateIssue),
+      }));
+      setValue([...transformedResult]);
+    },
+    [setDates, selectedTerritory, setValue],
+  );
 
-  const changeDateMaturity = useCallback(dateMaturity => {
-    const { dateIssue, ...values } = getValues();
+  const changeDateMaturity = useCallback(
+    dateMaturity => {
+      const { dateIssue, ...values } = getValues();
+      values.selectedTerritory = selectedTerritory;
 
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      const transformedResult = transformToValidFormat(result);
 
-    setDates({
-      dateIssue,
-      dateMaturity,
-    });
-    setValue(result);
-  }, []);
+      setDates(currentDates => ({
+        ...currentDates,
+        dateMaturity: new Date(dateMaturity),
+      }));
+      setValue([...transformedResult]);
+    },
+    [setDates, selectedTerritory, setValue],
+  );
 
-  const saveLoanData = useCallback(data => {
-    const { amount, coefficient, dateIssue, dateMaturity, totalRepaymentAmount } = data;
-    const { value: territory } = selectedTerritory;
+  const saveLoanData = useCallback(
+    data => {
+      const { amount, coefficient, dateIssue, dateMaturity, totalRepaymentAmount } = data;
+      const { value: territory } = selectedTerritory;
 
-    const body = {
-      amount,
-      coefficient,
-      dateIssue,
-      dateMaturity,
-      territory,
-      totalRepaymentAmount,
-    };
+      const body = {
+        amount,
+        coefficient,
+        dateIssue,
+        dateMaturity,
+        territory,
+        totalRepaymentAmount,
+      };
 
-    return saveLoan(body, loanId)
-      .then(() => {
-        const message = 'Loan was edited successfully';
-        const builtNotification = notification.buildNotification(
-          message,
-          successfulNotificationType,
-        );
-        if (builtNotification) {
-          store.addNotification(builtNotification);
-        }
-      })
-      .catch(error => {
-        const { message } = error;
-        const builtNotification = notification.buildNotification(message, failureNotificationType);
-        if (builtNotification) {
-          store.addNotification(builtNotification);
-        }
-      });
-  });
+      return saveLoan(body, loanId)
+        .then(() => {
+          const message = 'Loan was edited successfully';
+          const builtNotification = notification.buildNotification(
+            message,
+            successfulNotificationType,
+          );
+          if (builtNotification) {
+            store.addNotification(builtNotification);
+          }
+        })
+        .catch(error => {
+          const { message } = error;
+          const builtNotification = notification.buildNotification(
+            message,
+            failureNotificationType,
+          );
+          if (builtNotification) {
+            store.addNotification(builtNotification);
+          }
+        });
+    },
+    [selectedTerritory],
+  );
 
-  const updateTotalRepaymentAmount = event => {
-    const amount = event.target.value;
-    const { dateIssue, dateMaturity, ...values } = getValues();
-    values.amount = amount;
-    values.selectedTerritory = selectedTerritory;
+  const updateTotalRepaymentAmount = useCallback(
+    event => {
+      const amount = event.target.value;
+      const { dateIssue, dateMaturity, ...values } = getValues();
+      values.amount = amount;
+      values.selectedTerritory = selectedTerritory;
 
-    const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
+      const result = calculation.calculateTotalRepaymentAmount(dateIssue, dateMaturity, values);
 
-    setValue({
-      amount,
-      totalRepaymentAmount: result.totalRepaymentAmount,
-    });
-  };
+      setValue([{ amount }, { totalRepaymentAmount: result.totalRepaymentAmount }]);
+    },
+    [selectedTerritory, setValue],
+  );
 
   return {
     action,
