@@ -13,7 +13,13 @@ const customReactSelectStyles = {
   }),
 };
 
-const outputProperties = ['dateMaturity'];
+const outputProperties = [
+  'amount',
+  'coefficient',
+  'dateIssue',
+  'dateMaturity',
+  'totalRepaymentAmount',
+];
 
 const Step2 = () => {
   const {
