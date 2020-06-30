@@ -1,31 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import format from 'date-fns/format';
-import { v4 as uuidv4 } from 'uuid';
 
 import { H1, Table } from '../../../shared';
 import List from './styles';
 
 const headers = [
   {
-    content: 'Amount',
-    key: uuidv4(),
+    title: 'Amount',
+    backendPropertyName: 'amount',
   },
   {
-    content: 'Coefficient',
-    key: uuidv4(),
+    title: 'Coefficient',
+    backendPropertyName: 'coefficient',
   },
   {
-    content: 'Date Issue',
-    key: uuidv4(),
+    title: 'Date Issue',
+    backendPropertyName: 'dateIssue',
   },
   {
-    content: 'Date Maturity',
-    key: uuidv4(),
+    title: 'Date Maturity',
+    backendPropertyName: 'dateMaturity',
   },
   {
-    content: 'Total Repayment Amount',
-    key: uuidv4(),
+    title: 'Total Repayment Amount',
+    backendPropertyName: 'totalRepaymentAmount',
   },
 ];
 
@@ -41,11 +40,11 @@ const LoansTable = props => {
           <Table>
             <Table.Header>
               {headers
-                .filter(e => outputProperties.includes(e.key))
+                .filter(e => outputProperties.includes(e.backendPropertyName))
                 .map(item => {
-                  const { content, key } = item;
+                  const { title, key } = item;
 
-                  return <Table.List.Row.Column key={key}>{content}</Table.List.Row.Column>;
+                  return <Table.List.Row.Column key={title}>{title}</Table.List.Row.Column>;
                 })}
               {role === 'admin' && <Table.List.Row.Column />}
             </Table.Header>
