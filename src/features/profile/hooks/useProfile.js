@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { getProfileUser, updateProfileUser } from '../api';
 import { localDb } from '../../../services';
-import { UserContext, useInitForm } from '../../../core';
+import { UserContext, useInitForm, transformToValidFormat } from '../../../core';
 import TERRITORIES from '../../../constants';
 import { adminValidation, managerValidation } from '../validations';
 
@@ -17,11 +17,11 @@ const useProfile = () => {
     validationSchema: role === 'admin' ? adminValidation : managerValidation,
     defaultValues: {
       fullName: '',
-      territory: '',
       phone: '',
       email: '',
       login: '',
     },
+    registerValues: role === 'manager' ? ['selectedTerritory'] : [],
   });
   const { setValue } = useFormProps;
 
@@ -29,17 +29,19 @@ const useProfile = () => {
     getProfileUser(role, userId).then(result => {
       const { data } = result;
       if (data.territory) {
-        const profileData = {
-          data,
-          selectedTerritory: TERRITORIES.find(territory => +territory.value === data.territory),
-        };
+        const foundSelectedTerritory = TERRITORIES.find(
+          territory => +territory.value === data.territory,
+        );
 
-        setValue(profileData);
+        const transformedData = transformToValidFormat(data);
+        setSelectedTerritory(foundSelectedTerritory);
+        setValue([...transformedData]);
       } else {
-        setValue(data);
+        const transformedData = transformToValidFormat(data);
+        setValue([...transformedData]);
       }
     });
-  }, [userId]);
+  }, []);
 
   const saveData = useCallback(data => {
     const { login } = data;
