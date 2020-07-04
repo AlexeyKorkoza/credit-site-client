@@ -42,6 +42,9 @@ const Editor = () => {
               placeholder="Select Territory ..."
               styles={customReactSelectStyles}
             />
+            {errors.selectedTerritory?.value?.message && (
+              <Error>{errors.selectedTerritory.value.message}</Error>
+            )}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="phone">Phone</Card.Form.Label>
@@ -66,6 +69,7 @@ const Editor = () => {
           <Card.Form.Item>
             <Card.Form.Label htmlFor="email">Email</Card.Form.Label>
             <Input type="email" name="email" register={register} placeholder="Email..." />
+            {errors.email?.message && <Error>{errors.email.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Button onClick={handleSubmit(saveManager)}>Save</Button>

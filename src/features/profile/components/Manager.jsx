@@ -36,6 +36,9 @@ const Manager = () => {
               placeholder="Select Territory ..."
               styles={customReactSelectStyles}
             />
+            {errors.selectedTerritory?.value?.message && (
+              <Error>{errors.selectedTerritory.value.message}</Error>
+            )}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="phone">Phone</Card.Form.Label>

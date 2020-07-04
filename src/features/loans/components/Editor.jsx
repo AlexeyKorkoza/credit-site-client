@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Card, DatePicker, Input, ReactSelect } from '../../../shared';
+import { Button, Card, DatePicker, Error, Input, ReactSelect } from '../../../shared';
 import { useEditor } from '../hooks';
 import TERRITORIES from '../../../constants';
 
@@ -11,6 +11,8 @@ const customReactSelectStyles = {
     width: 129,
   }),
 };
+
+const DATE_FORMAT = 'dd.MM.yyyy';
 
 const Editor = () => {
   const {
@@ -23,7 +25,7 @@ const Editor = () => {
     selectedTerritory,
     updateTotalRepaymentAmount,
   } = useEditor();
-  const { handleSubmit, register } = formProps;
+  const { errors, handleSubmit, register } = formProps;
 
   return (
     <Card.List>
@@ -37,6 +39,7 @@ const Editor = () => {
               placeholder="Amount ..."
               register={register}
             />
+            {errors.amount?.message && <Error>{errors.amount.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="territory">Territory</Card.Form.Label>
@@ -47,30 +50,34 @@ const Editor = () => {
               placeholder="Select Territory ..."
               styles={customReactSelectStyles}
             />
+            {errors.selectedTerritory?.value?.message && (
+              <Error>{errors.selectedTerritory.value.message}</Error>
+            )}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Coefficient</Card.Form.Label>
             <Input name="coefficient" placeholder="Coefficient..." register={register} />
+            {errors.coefficient?.message && <Error>{errors.coefficient.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Issue</Card.Form.Label>
             <DatePicker
-              locale="en-GB"
               selected={dates.dateIssue}
               minDate={new Date()}
-              dateFormat="dd.MM.yyyy"
+              dateFormat={DATE_FORMAT}
               onChange={changeDateIssue}
             />
+            {errors.dateIssue?.message && <Error>{errors.dateIssue.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="coefficient">Date Maturity</Card.Form.Label>
             <DatePicker
-              locale="en-GB"
               selected={dates.dateMaturity}
               minDate={new Date()}
-              dateFormat="dd.MM.yyyy"
+              dateFormat={DATE_FORMAT}
               onChange={changeDateMaturity}
             />
+            {errors.dateMaturity?.message && <Error>{errors.dateMaturity.message}</Error>}
           </Card.Form.Item>
           <Card.Form.Item>
             <Card.Form.Label htmlFor="totalRepaymentAmount">Total Repayment Amount</Card.Form.Label>

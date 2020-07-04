@@ -23,7 +23,7 @@ const Editor = () => {
     saveClient,
     formProps,
   ] = useClientEditor();
-  const { getValues, handleSubmit, errors, register, watch } = formProps;
+  const { handleSubmit, errors, register, watch } = formProps;
   const isRemoved = watch('isRemoved');
 
   return (
@@ -46,6 +46,9 @@ const Editor = () => {
                 placeholder="Select Territory ..."
                 styles={customReactSelectStyles}
               />
+              {errors.selectedTerritory?.value?.message && (
+                <Error>{errors.selectedTerritory.value.message}</Error>
+              )}
             </Card.Form.Item>
           )}
           <Card.Form.Item>
