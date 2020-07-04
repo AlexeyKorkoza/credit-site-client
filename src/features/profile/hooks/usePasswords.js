@@ -3,7 +3,7 @@ import { store } from 'react-notifications-component';
 
 import { getProfileUser, updatePasswordsProfileUser } from '../api';
 import { localDb, notification } from '../../../services';
-import { UserContext, useInitForm } from '../../../core';
+import { transformToValidFormat, UserContext, useInitForm } from '../../../core';
 import TERRITORIES from '../../../constants';
 import { passwordsValidation } from '../validations';
 
@@ -34,9 +34,11 @@ const usePasswords = () => {
           selectedTerritory: TERRITORIES.find(territory => +territory.value === data.territory),
         };
 
-        setValue(profileData);
+        const transformedProfileData = transformToValidFormat(profileData);
+        setValue([...transformedProfileData]);
       } else {
-        setValue(data);
+        const transformedData = transformToValidFormat(data);
+        setValue([...transformedData]);
       }
     });
   }, [userId]);
