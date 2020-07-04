@@ -43,7 +43,7 @@ const useClientEditor = () => {
 
         setAction('edit');
         setValue([...values]);
-        setSelectedTerritory(TERRITORIES.find(e => +e.value === territory));
+        setSelectedTerritory(TERRITORIES.find(e => +e.value === +territory));
       });
     } else {
       setAction('add');
