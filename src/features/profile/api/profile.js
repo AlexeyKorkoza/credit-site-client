@@ -1,4 +1,4 @@
-import fetch from '../../../api/fetch';
+import { fetch } from '../../../core';
 
 const routes = {
   admin: '/admins',
