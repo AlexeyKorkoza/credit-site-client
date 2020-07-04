@@ -1,1 +1,1 @@
-export { removeClientSchema, clientSchema } from './clientSchema';
+export { clientSchema } from './clientSchema';

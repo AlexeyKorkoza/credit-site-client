@@ -1,9 +1,11 @@
 import { date, number, object, string } from 'yup';
 
+import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+
 const loanSecondStepSchema = object().shape({
   amount: number(),
-  dateIssue: date().required('Date issue is not set'),
-  dateMaturity: date().required('Date issue is not set'),
+  dateIssue: date().required(VALIDATION_ERROR_MESSAGES.dateIssue),
+  dateMaturity: date().required(VALIDATION_ERROR_MESSAGES.dateMaturity),
   totalRepaymentAmount: number(),
   selectedTerritory: object({
     label: string(),

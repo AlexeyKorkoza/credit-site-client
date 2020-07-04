@@ -1,11 +1,13 @@
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
-export default Yup.object({
-  fullName: Yup.string().required(),
-  phone: Yup.string().required(),
-  selectedTerritory: Yup.object({
-    label: Yup.string(),
-    value: Yup.string(),
-  }).required(),
-  email: Yup.string().required(),
+import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+
+export default object({
+  fullName: string().required(VALIDATION_ERROR_MESSAGES.fullName),
+  phone: string().required(VALIDATION_ERROR_MESSAGES.password),
+  selectedTerritory: object({
+    label: string(),
+    value: string(),
+  }).required(VALIDATION_ERROR_MESSAGES.selectedTerritory),
+  email: string().required(VALIDATION_ERROR_MESSAGES.email),
 });

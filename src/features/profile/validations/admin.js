@@ -1,5 +1,7 @@
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 
-export default Yup.object({
-  login: Yup.string().required('Please, enter your login'),
+import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+
+export default object({
+  login: string().required(VALIDATION_ERROR_MESSAGES.login),
 });

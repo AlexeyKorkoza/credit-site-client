@@ -1,16 +1,16 @@
-import * as yup from 'yup';
+import { bool, object, string } from 'yup';
 
-const managerSchema = yup.object().shape({
-  fullName: yup.string().required(),
-  selectedTerritory: yup
-    .object({
-      label: yup.string(),
-      value: yup.string(),
-    })
-    .required(),
-  phone: yup.string().required(),
-  action: yup.string(),
-  isBlocked: yup.bool(),
+import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+
+const managerSchema = object().shape({
+  fullName: string().required(VALIDATION_ERROR_MESSAGES.fullName),
+  selectedTerritory: object({
+    label: string(),
+    value: string(),
+  }).required(VALIDATION_ERROR_MESSAGES.selectedTerritory),
+  phone: string().required(VALIDATION_ERROR_MESSAGES.phone),
+  action: string(),
+  isBlocked: bool(),
 });
 
 export { managerSchema };

@@ -1,16 +1,16 @@
-import * as yup from 'yup';
+import { number, object, string } from 'yup';
 
-const loanFirstStepSchema = yup.object().shape({
-  fullName: yup.string().required(),
-  phone: yup.string().required(),
-  email: yup.string().required(),
-  surchargeFactor: yup.number().required(),
-  selectedTerritory: yup
-    .object({
-      label: yup.string(),
-      value: yup.string(),
-    })
-    .required(),
+import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+
+const loanFirstStepSchema = object().shape({
+  fullName: string().required(VALIDATION_ERROR_MESSAGES.fullName),
+  phone: string().required(VALIDATION_ERROR_MESSAGES.phone),
+  email: string().required(VALIDATION_ERROR_MESSAGES.email),
+  surchargeFactor: number().required(VALIDATION_ERROR_MESSAGES.surchargeFactor),
+  selectedTerritory: object({
+    label: string(),
+    value: string(),
+  }).required(VALIDATION_ERROR_MESSAGES.selectedTerritory),
 });
 
 export default loanFirstStepSchema;
