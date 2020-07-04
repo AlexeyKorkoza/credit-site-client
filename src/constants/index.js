@@ -21,6 +21,7 @@ export const VALIDATION_ERROR_MESSAGES = {
   dateMaturity: 'Please, enter the date maturity',
   email: 'Please, enter the email',
   fullName: 'Please, enter the full name',
+  invalidPhone: 'Please, enter the valid phone',
   login: 'Please, enter the login',
   oldPassword: 'Please, enter the old password',
   name: 'Please, enter the name',
@@ -32,3 +33,5 @@ export const VALIDATION_ERROR_MESSAGES = {
   selectedTerritory: 'Please, select the territory',
   surchargeFactor: 'Please, enter the surcharge factor',
 };
+
+export const PHONE_NUMBER_REGEX = /(\d{5,15})$/;

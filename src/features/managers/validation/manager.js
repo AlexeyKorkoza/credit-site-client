@@ -1,6 +1,6 @@
 import { bool, object, string } from 'yup';
 
-import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+import { PHONE_NUMBER_REGEX, VALIDATION_ERROR_MESSAGES } from '../../../constants';
 
 const managerSchema = object().shape({
   fullName: string().required(VALIDATION_ERROR_MESSAGES.fullName),
@@ -8,7 +8,9 @@ const managerSchema = object().shape({
     label: string(),
     value: string(),
   }).required(VALIDATION_ERROR_MESSAGES.selectedTerritory),
-  phone: string().required(VALIDATION_ERROR_MESSAGES.phone),
+  phone: string()
+    .matches(PHONE_NUMBER_REGEX, VALIDATION_ERROR_MESSAGES.invalidPhone)
+    .required(VALIDATION_ERROR_MESSAGES.phone),
   action: string(),
   isBlocked: bool(),
 });

@@ -1,10 +1,12 @@
 import { number, object, string } from 'yup';
 
-import { VALIDATION_ERROR_MESSAGES } from '../../../constants';
+import { PHONE_NUMBER_REGEX, VALIDATION_ERROR_MESSAGES } from '../../../constants';
 
 const loanFirstStepSchema = object().shape({
   fullName: string().required(VALIDATION_ERROR_MESSAGES.fullName),
-  phone: string().required(VALIDATION_ERROR_MESSAGES.phone),
+  phone: string()
+    .matches(PHONE_NUMBER_REGEX, VALIDATION_ERROR_MESSAGES.invalidPhone)
+    .required(VALIDATION_ERROR_MESSAGES.phone),
   email: string().required(VALIDATION_ERROR_MESSAGES.email),
   surchargeFactor: number().required(VALIDATION_ERROR_MESSAGES.surchargeFactor),
   selectedTerritory: object({
