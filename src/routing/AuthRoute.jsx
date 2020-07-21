@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { routesScheme } from './routesScheme';
@@ -7,9 +7,15 @@ import { localDb } from '../services';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const userData = localDb.getDataAuthUser();
+  const { pathname } = useLocation();
 
   if (!userData) {
-    return <Redirect to={routesScheme.auth} />;
+    const redirectTo = {
+      pathname: routesScheme.auth,
+      search: `return_url=${encodeURIComponent(pathname)}`,
+    };
+
+    return <Redirect to={redirectTo} />;
   }
 
   return <Route {...rest} render={props => <Component {...props} />} />;

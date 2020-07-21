@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { store } from 'react-notifications-component';
 import { useForm } from 'react-hook-form';
+import { parse as parseQuery } from 'query-string';
 
 import { logIn } from '../api';
 import { localDb, notification } from '../../../services';
@@ -13,6 +14,7 @@ const NOTIFICATION_TYPE = 'Sign In';
 
 const useAuthentication = () => {
   const history = useHistory();
+  const location = useLocation();
   const context = useContext(UserContext);
   const { updateUserRole } = context;
 
@@ -49,7 +51,10 @@ const useAuthentication = () => {
 
           updateUserRole(value);
 
-          history.push(routesScheme.profile);
+          const queryParams = parseQuery(location.search);
+          const url = queryParams.return_url || routesScheme.profile;
+
+          history.push(url);
         })
         .catch(error => {
           const { message } = error;
