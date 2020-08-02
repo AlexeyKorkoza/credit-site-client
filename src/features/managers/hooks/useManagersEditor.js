@@ -128,10 +128,13 @@ const useManagersEditor = () => {
     [managerId],
   );
 
-  const handleSelectedTerritory = useCallback(territory => {
-    setValue('selectedTerritory', territory);
-    updateSelectedTerritory(territory);
-  }, []);
+  const handleSelectedTerritory = useCallback(
+    territory => {
+      setValue('selectedTerritory', territory);
+      updateSelectedTerritory(territory);
+    },
+    [setValue],
+  );
 
   return [
     action,

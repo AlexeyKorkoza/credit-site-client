@@ -43,26 +43,29 @@ const useProfile = () => {
     });
   }, []);
 
-  const saveData = useCallback(data => {
-    const { login } = data;
+  const saveData = useCallback(
+    data => {
+      const { login } = data;
 
-    let body = {
-      login,
-    };
-    if (role === 'manager') {
-      const { fullName, phone, email } = data;
-      const { value: territory } = selectedTerritory;
-      body = {
-        ...body,
-        fullName,
-        territory,
-        phone,
-        email,
+      let body = {
+        login,
       };
-    }
+      if (role === 'manager') {
+        const { fullName, phone, email } = data;
+        const { value: territory } = selectedTerritory;
+        body = {
+          ...body,
+          fullName,
+          territory,
+          phone,
+          email,
+        };
+      }
 
-    updateProfileUser(role, userId, body);
-  });
+      updateProfileUser(role, userId, body);
+    },
+    [selectedTerritory],
+  );
 
   const changeSelectedTerritory = useCallback(
     territory => {

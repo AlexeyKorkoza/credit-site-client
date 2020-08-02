@@ -14,9 +14,9 @@ const updateRefreshToken = () => {
   }).then(() => {
     localDb.logoutUser();
     const currentUrl = location.href;
-    const url = new URL(currentUrl);
-    const { pathname } = url;
-    window.location.href = `http://localhost:8008/auth/?return_url=${encodeURIComponent(pathname)}`;
+    const formedUrl = new URL(currentUrl);
+    const { pathname } = formedUrl;
+    window.location.href = `${API_URL}/auth/?return_url=${encodeURIComponent(pathname)}`;
   });
 };
 

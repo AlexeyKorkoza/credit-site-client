@@ -14,7 +14,7 @@ const logIn = body => {
 /**
  * @return {Promise<any | void>}
  */
-// TODO remove item data from localstorage
+
 const logOut = () => {
   const url = `${API_URL}/auth/logout`;
 

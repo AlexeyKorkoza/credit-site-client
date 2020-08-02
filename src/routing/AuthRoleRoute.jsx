@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 
 import { localDb } from '../services';
 import { Forbidden } from '../shared/ErrorPages';
+import { routesScheme } from './routesScheme';
 
-const accessRoles = ['admin', 'manager'];
+const ACCESS_ROLES = ['admin', 'manager'];
 
 const AuthRoleRoute = ({ component: Component, accessRole, ...rest }) => {
-  const isAccess = accessRoles.includes(accessRole);
+  const isAccess = ACCESS_ROLES.includes(accessRole);
 
   if (!isAccess) {
-    return <Redirect to="/profile" />;
+    return <Redirect to={routesScheme.profile} />;
   }
 
   const { role: userRole } = localDb.getDataAuthUser();
@@ -23,6 +24,7 @@ const AuthRoleRoute = ({ component: Component, accessRole, ...rest }) => {
 
   return <Route {...rest} render={props => <Component {...props} />} />;
 };
+
 AuthRoleRoute.defaultProps = {
   accessRole: PropTypes.string,
   component: PropTypes.func,

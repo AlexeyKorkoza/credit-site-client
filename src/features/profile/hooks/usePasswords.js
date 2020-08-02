@@ -68,7 +68,7 @@ const usePasswords = () => {
           store.addNotification(builtNotification);
         });
       });
-  });
+  }, []);
 
   return [changePassword, useFormProps];
 };
