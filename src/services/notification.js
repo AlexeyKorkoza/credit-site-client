@@ -18,18 +18,22 @@ const successNotificationSettings = {
   dismissable: { click: true },
 };
 
+const buildFailureNotificationSettings = (message, title) => ({
+  ...failureNotificationSettings,
+  message,
+  title,
+});
+
+const buildSuccessNotificationSettings = (message, title) => ({
+  ...successNotificationSettings,
+  message,
+  title,
+});
+
 const executeBuildingNotification = (message, title, isSuccess) =>
   isSuccess
     ? buildSuccessNotificationSettings(message, title)
     : buildFailureNotificationSettings(message, title);
-
-const buildFailureNotificationSettings = (message, title) => {
-  return Object.assign({}, failureNotificationSettings, { message, title });
-};
-
-const buildSuccessNotificationSettings = (message, title) => {
-  return Object.assign({}, successNotificationSettings, { message, title });
-};
 
 const types = [
   {

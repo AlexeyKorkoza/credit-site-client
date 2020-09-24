@@ -26,13 +26,14 @@ Card.Form = styled.form`
 Card.Form.Item = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   align-items: baseline;
   margin: 10px 0;
 `;
 
 Card.Form.Label = styled.label`
   color: grey;
-  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 
 export default Card;

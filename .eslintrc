@@ -11,20 +11,26 @@
     "document": true,
     "fetch": true,
     "localStorage": true,
+    "location": true,
     "window": true
   },
   "ecmaFeatures": {
     "jsx": true
   },
   "plugins": [
-    "react"
+    "react",
+    "react-hooks"
   ],
   "extends": [
     "airbnb",
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "react/jsx-props-no-spreading": "off",
+    "arrow-parens": "off",
+    "no-restricted-globals": ["location"]
   }
 }

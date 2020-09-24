@@ -1,0 +1,1 @@
+export { managerSchema } from './manager';

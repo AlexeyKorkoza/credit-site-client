@@ -3,9 +3,6 @@
 .vscode/
 node_modules/
 config/local.json
-*/config/local.json
-yarn.lock*
-src/public
 
 # Logs
 logs
@@ -33,3 +30,5 @@ Desktop.ini
 
 # Optional eslint cache
 .eslintcache
+
+dist
