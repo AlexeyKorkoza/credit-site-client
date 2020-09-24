@@ -1,8 +1,0 @@
-{
-  "api": {
-    "url": "http://localhost:9000"
-  },
-  "app": {
-    "env": "development"
-  }
-}

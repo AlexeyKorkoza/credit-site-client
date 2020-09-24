@@ -1,0 +1,1 @@
+export { clientSchema } from './clientSchema';
